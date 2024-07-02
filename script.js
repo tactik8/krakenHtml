@@ -62,7 +62,7 @@ function test1(){
 
 
     //let htmlContent = krakenHtml.record(record)
-    let htmlContent = krakenHtml.card(record)
+    let htmlContent = krakenHtml.cards([record, record, record, record])
 
     
     let e = document.getElementById('test1')

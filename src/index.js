@@ -5,6 +5,7 @@ import { htmlPage } from './krakenHtml/src/htmlPage.js'
 import { htmlTable } from './krakenHtml/src/htmlTable.js'
 import { htmlValue } from './krakenHtml/src/htmlValue.js'
 import { htmlCard } from './krakenHtml/src/htmlCard.js'
+import { htmlCards } from './krakenHtml/src/htmlCard.js'
 
 
 export const krakenHtml = {
@@ -12,5 +13,6 @@ export const krakenHtml = {
     'record': htmlRecord,
     'table': htmlTable,
     'value': htmlValue,
-    'card': htmlCard
+    'card': htmlCard,
+    'cards': htmlCards
 }

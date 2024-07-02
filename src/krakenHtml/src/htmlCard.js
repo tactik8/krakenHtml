@@ -9,6 +9,42 @@ export function htmlCard(value){
     return _getCard(value)
     
 }
+export function htmlCards(value){
+
+    return _getCards(value)
+
+}
+
+
+
+
+
+
+
+function _getCards(values){
+
+    values = ensureArray(values)
+
+    let content = ``
+
+    content += `<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">`
+
+    for(let value of values){
+
+        content += '<div class="col">'
+
+            content += _getCard(value)
+        
+        content += '</div>'
+
+    }
+
+
+    content += '</div>'
+
+    return content
+
+}
 
 
 function _getCard(value){
@@ -22,7 +58,7 @@ function _getCard(value){
     let desc = value?.text || value?.description || ''
     
     let content = `
-        <div class="card" style="width: 18rem;">
+        <div class="card h-100" style="width: 18rem;">
       <a type="button" data-bs-toggle="modal" data-bs-target="#${modalId}">
         <img src="${imageUrl}" class="card-img-top" alt="...">
       </a>
@@ -35,7 +71,7 @@ function _getCard(value){
 
         <!-- Modal -->
         <div class="modal fade" id="${modalId}" tabindex="-1" aria-labelledby="${modalId}" aria-hidden="true">
-          <div class="modal-dialog">
+          <div class="modal-dialog modal-xl">
             <div class="modal-content">
               <div class="modal-header">
                 
@@ -58,4 +94,15 @@ function _getCard(value){
 
     return content
     
+}
+
+
+
+
+function ensureArray(value) {
+    if (Array.isArray(value)) {
+        return value;
+    } else {
+        return [value];
+    }
 }

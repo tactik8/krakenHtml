@@ -189,13 +189,28 @@ function $0ea0e18bb6665923$var$ensureArray(value) {
 function $0f8c405a4572c421$export$31c173b099afd3ce(value) {
     return $0f8c405a4572c421$var$_getCard(value);
 }
+function $0f8c405a4572c421$export$c668812a50c07d21(value) {
+    return $0f8c405a4572c421$var$_getCards(value);
+}
+function $0f8c405a4572c421$var$_getCards(values) {
+    values = $0f8c405a4572c421$var$ensureArray(values);
+    let content = ``;
+    content += `<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">`;
+    for (let value of values){
+        content += '<div class="col">';
+        content += $0f8c405a4572c421$var$_getCard(value);
+        content += "</div>";
+    }
+    content += "</div>";
+    return content;
+}
 function $0f8c405a4572c421$var$_getCard(value) {
     let imageUrl = value.contentUrl || value.image?.contentUrl || "";
     let modalId = "modal_" + String(crypto.randomUUID());
     let heading1 = (0, $32ba22f6ec84c003$export$3db5d5f902fa227b)(value);
     let desc = value?.text || value?.description || "";
     let content = `
-        <div class="card" style="width: 18rem;">
+        <div class="card h-100" style="width: 18rem;">
       <a type="button" data-bs-toggle="modal" data-bs-target="#${modalId}">
         <img src="${imageUrl}" class="card-img-top" alt="...">
       </a>
@@ -208,7 +223,7 @@ function $0f8c405a4572c421$var$_getCard(value) {
 
         <!-- Modal -->
         <div class="modal fade" id="${modalId}" tabindex="-1" aria-labelledby="${modalId}" aria-hidden="true">
-          <div class="modal-dialog">
+          <div class="modal-dialog modal-xl">
             <div class="modal-content">
               <div class="modal-header">
                 
@@ -230,6 +245,12 @@ function $0f8c405a4572c421$var$_getCard(value) {
     </div>`;
     return content;
 }
+function $0f8c405a4572c421$var$ensureArray(value) {
+    if (Array.isArray(value)) return value;
+    else return [
+        value
+    ];
+}
 
 
 const $cf838c15c8b009ba$export$a4b3bd7dfd4f2cdb = {
@@ -237,7 +258,8 @@ const $cf838c15c8b009ba$export$a4b3bd7dfd4f2cdb = {
     "record": (0, $c9d793a6343af207$export$9994024ef36d93e2),
     "table": (0, $0ea0e18bb6665923$export$52d811370d113530),
     "value": (0, $32ba22f6ec84c003$export$3db5d5f902fa227b),
-    "card": (0, $0f8c405a4572c421$export$31c173b099afd3ce)
+    "card": (0, $0f8c405a4572c421$export$31c173b099afd3ce),
+    "cards": (0, $0f8c405a4572c421$export$c668812a50c07d21)
 };
 
 

@@ -1,12 +1,16 @@
 
 import { krakenHtml } from './src/index.js'
 
+function clickFnA() {
+
+    console.log('click fn')
+}
+
+
 
 function test1(){
 
-    
 
-    
 
     let website  = new krakenHtml.krakenWebsite()
 
@@ -36,22 +40,22 @@ function test1(){
     page.addSection(krakenHtml.accordion('Heading 1', 'Content'))
 
 
+    
 
+    let clickEvent = function (){ console.log('click')}
+    
     let actions = [
         {
             "@type": "action",
-            "name": "action1",
-            "url": "https://www.test.com"
+            "name": "action1"
         },
         {
             "@type": "action",
-            "name": "action2",
-            "url": "https://www.test.com"
+            "name": "action2"
         },
         {
             "@type": "action",
-            "name": "action3",
-            "url": "https://www.test.com"
+            "name": "action3"
         }
     ]
     page.addSection(krakenHtml.actionMenu(actions))
@@ -63,10 +67,6 @@ function test1(){
     //htmlContent += krakenHtml.section(krakenHtml.cards([record, record, record, record]))
   
     
-    
-  
-
-    
     let e = document.getElementById('test1')
 
     e.innerHTML= htmlContent
@@ -74,6 +74,7 @@ function test1(){
 }
 
 test1()
+
 
 
 

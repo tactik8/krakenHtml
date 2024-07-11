@@ -493,16 +493,23 @@ function $81607166ccf27aff$var$_getActionMenu(actions) {
     // Generate action menu items
     actions = $81607166ccf27aff$var$ensureArray(actions);
     let actionMenuItems = ``;
-    for (let action of actions)actionMenuItems += `
+    for (let action of actions){
+        let hrefValue = "";
+        if (action.url && action.url != null) hrefValue = `href="${action.url}"`;
+        let onClickValue = "";
+        if (action.onClick && action.onClick != null) onClickValue = `onclick="${action.onClick}"`;
+        actionMenuItems += `
             <li>
-                <a class="dropdown-item" href="#${action.url}">
+                <a data-record-type="${action?.["@type"]}" data-record-id="${action?.["@id"]}" id="${action["@id"]}" class="dropdown-item" ${hrefValue} ${onClickValue}>
                     ${action.name}
                 </a>
-            </li>`;
+            </li>
+            `;
+    }
     // Generate action menu icon
     let content = `
     <div class="dropdown">
-        <a class="btn" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <a class="btn p-0" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"  fill="currentColor" class="bi bi-three-dots-vertical" >
                 <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
             </svg>

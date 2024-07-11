@@ -72,6 +72,19 @@ function _getValueArray(value){
 
 function _getValueOther(value){
 
+    
+    if(typeof value.getMonth === 'function'){
+        console.log('is date')
+        let options = {
+              weekday: 'short',
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric',
+            };
+        return value.toLocaleString()
+        
+    } 
+    
     return value
 
     
@@ -92,6 +105,9 @@ function _getHeading1(value){
     let email = value?.['email'] || null
     let contentUrl = value?.['contentUrl'] || null
 
+
+    heading1 = record_type + '/' + record_id
+    
     if(url && url != null){
         heading1 = url
     }
@@ -113,8 +129,12 @@ function _getHeading1(value){
     }
 
 
-    if(contentUrl){
+    if(record_type == "ImageObject" && contentUrl){
         heading1 = `<img src="${contentUrl}" class="img-fluid" alt="...">` 
+    }
+
+    if(record_type == "VideoObject" && contentUrl){
+        heading1 = `<video src="${contentUrl}" class="img-fluid" alt="...">` 
     }
 
     
@@ -132,7 +152,14 @@ function _getValueImage(value){
     
 }
 
+function _getValueVideo(value){
 
+
+    let contentUrl = value?.['contentUrl'] || null
+
+    let content = `<video src="${contentUrl}" class="img-fluid" alt="...">` 
+
+}
 
 
 function _isObject(value) {

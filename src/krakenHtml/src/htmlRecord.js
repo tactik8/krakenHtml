@@ -19,7 +19,6 @@ function _getHtml(value) {
 
     let content = ''
 
-    console.log(_isObject(value), _isArray(value))
     if (_isObject(value)==true) {
         content += `<dl class="row">`
         for (let k of Object.keys(value)) {
@@ -41,7 +40,7 @@ function _getHtml(value) {
         content += `</dl>`
         
     } else {
-        content = content + String(value)
+        content = content + String(htmlValue(value))
     }
 
     return content
@@ -67,7 +66,7 @@ function _getHtmlValue(value) {
                   </details>`
     }
     else {
-        content = value
+        content = htmlValue(value)
     }
 
     return content

@@ -169,6 +169,11 @@ function $0ea0e18bb6665923$export$52d811370d113530(records, keys, headers) {
 }
 function $0ea0e18bb6665923$var$_getTable(records, keys, headers) {
     records = $0ea0e18bb6665923$var$ensureArray(records);
+    // 
+    if (records.length == 0 && (!keys || keys == null)) keys = [
+        "@type",
+        "@id"
+    ];
     if (!keys || keys == null) keys = Object.keys(records[0]);
     if (!headers || headers == null) headers = keys;
     let content = `<table class="table">${$0ea0e18bb6665923$var$_getTableHeader(headers)} ${$0ea0e18bb6665923$var$_getTableRows(keys, records)}</table>`;

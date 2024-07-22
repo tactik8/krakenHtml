@@ -15,6 +15,11 @@ function _getTable(records, keys, headers){
 
     records = ensureArray(records)
 
+    // 
+    if(records.length == 0 && (!keys || keys == null)) { 
+        keys = ['@type', '@id']
+    }
+
     if(!keys || keys == null){
         keys = Object.keys(records[0])
     }

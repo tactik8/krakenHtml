@@ -11,6 +11,7 @@ export function htmlValue(value) {
 
 function _getValue(value){
 
+    if(!value || value == null){ return null }
 
     if(_isObject(value)){
 
@@ -72,6 +73,8 @@ function _getValueArray(value){
 
 function _getValueOther(value){
 
+
+    if(!value || value == null){ return null }
     
     if(typeof value.getMonth === 'function'){
         console.log('is date')

@@ -3,6 +3,7 @@ function $32ba22f6ec84c003$export$3db5d5f902fa227b(value) {
     return $32ba22f6ec84c003$var$_getValue(value);
 }
 function $32ba22f6ec84c003$var$_getValue(value) {
+    if (!value || value == null) return null;
     if ($32ba22f6ec84c003$var$_isObject(value)) return $32ba22f6ec84c003$var$_getValueObject(value);
     else if ($32ba22f6ec84c003$var$_isArray(value)) return $32ba22f6ec84c003$var$_getValueArray(value);
     else return $32ba22f6ec84c003$var$_getValueOther(value);
@@ -24,6 +25,7 @@ function $32ba22f6ec84c003$var$_getValueArray(value) {
     return `<details> <summary>[${value.length}]</summary>${content}</details>`;
 }
 function $32ba22f6ec84c003$var$_getValueOther(value) {
+    if (!value || value == null) return null;
     if (typeof value.getMonth === "function") {
         console.log("is date");
         let options = {

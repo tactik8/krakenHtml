@@ -50,14 +50,14 @@ export function htmlBreadcrumb(records){
 function _getBreadcrumb(records){
 
 
-
-
     let parts = ''
     for(let record of records){
 
         parts += `<li class="breadcrumb-item"><a href="${record.url}">${record.name}</a></li>`
 
+    }
 
+  
     let content = `
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
@@ -65,7 +65,6 @@ function _getBreadcrumb(records){
       </ol>
     </nav>`
         
-    }
   
     return content
 }

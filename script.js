@@ -47,6 +47,7 @@ function getArticle(){
         "@type": "CreativeWork",
         "@id": "article_1",
         "name": "article_1",
+        "url": "https://www.test.com",
         "headline": "Article 1",
         "text": getLorem(),
         "author": {

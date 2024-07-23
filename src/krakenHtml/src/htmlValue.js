@@ -86,7 +86,17 @@ function _getValueOther(value){
             };
         return value.toLocaleString()
         
-    } 
+    } else if (value instanceof String && value.startsWith('http')){
+        value = `<a href="${value}">${value}</a>`
+    }
+
+    try{
+        if (value.startsWith('http')){
+            value = `<a href="${value}">${value}</a>`
+        }
+    } catch {}
+
+
     
     return value
 
@@ -175,7 +185,7 @@ function _isObject(value) {
 }
 
 function _isArray(value) {
-    if (Array.isArray(value) == true) {
+    if (Array.isArray(value) == true && !(value instanceof String)) {
         return true
     }
     return false

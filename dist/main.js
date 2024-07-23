@@ -35,7 +35,10 @@ function $32ba22f6ec84c003$var$_getValueOther(value) {
             day: "numeric"
         };
         return value.toLocaleString();
-    }
+    } else if (value instanceof String && value.startsWith("http")) value = `<a href="${value}">${value}</a>`;
+    try {
+        if (value.startsWith("http")) value = `<a href="${value}">${value}</a>`;
+    } catch  {}
     return value;
 }
 function $32ba22f6ec84c003$var$_getHeading1(value) {
@@ -71,7 +74,7 @@ function $32ba22f6ec84c003$var$_isObject(value) {
     return false;
 }
 function $32ba22f6ec84c003$var$_isArray(value) {
-    if (Array.isArray(value) == true) return true;
+    if (Array.isArray(value) == true && !(value instanceof String)) return true;
     return false;
 }
 
@@ -793,15 +796,13 @@ function $b8d5dfc35bfd0099$export$a8a68544893af06(records) {
 }
 function $b8d5dfc35bfd0099$var$_getBreadcrumb(records) {
     let parts = "";
-    for (let record of records){
-        parts += `<li class="breadcrumb-item"><a href="${record.url}">${record.name}</a></li>`;
-        let content1 = `
+    for (let record of records)parts += `<li class="breadcrumb-item"><a href="${record.url}">${record.name}</a></li>`;
+    let content = `
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
        ${parts}
       </ol>
     </nav>`;
-    }
     return content;
 }
 

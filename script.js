@@ -1,5 +1,7 @@
 
 import { krakenHtml } from './src/index.js'
+import { HtmlPaginationClass } from './src/krakenHtml/src/htmlPagination.js'
+import { HtmlTableClass } from './src/krakenHtml/src/htmlTable.js'
 
 function clickFnA() {
 
@@ -7,74 +9,28 @@ function clickFnA() {
 }
 
 
-
 function test1(){
 
+    let element = document.getElementById('test1')
 
-
-    let website  = new krakenHtml.krakenWebsite()
-
-    
-    website.addHeader('Link1', 'https://www.test.com/l1')
-    website.addHeader('Link2', 'https://www.test.com/l2')
-    website.addHeader('Link3', 'https://www.test.com/l3')
-
-    website.addFooter('Link1', 'https://www.test.com/l1')
-    website.addFooter('Link2', 'https://www.test.com/l2')
-    website.addFooter('Link3', 'https://www.test.com/l3')
-
-    website.legalName = 'Abc Inc.'
-    website.name = 'Bob'
-    //website.wpHeader = getHeader()
-    
-    console.log(website.record)
-    
-    let article = getArticle()
-
-
-    let page = website.page
-    
-    //page.addSection(krakenHtml.article(article, true))
-
-    //page.addSection(krakenHtml.pagination('https://www.test.com/', '',  55, 10, null, null, 201))
-    page.addSection(krakenHtml.accordion('Heading 1', 'Content'))
-
+    let records = [getArticle(), getArticle(),getArticle(),getArticle(),getArticle(),getArticle(),getArticle(),getArticle(),getArticle(),getArticle(),getArticle()]
 
     
+    let table = new HtmlTableClass()
+    table.records = records
 
-    let clickEvent = function (){ console.log('click')}
-    
-    let actions = [
-        {
-            "@type": "action",
-            "name": "action1"
-        },
-        {
-            "@type": "action",
-            "name": "action2"
-        },
-        {
-            "@type": "action",
-            "name": "action3"
-        }
-    ]
-    page.addSection(krakenHtml.actionMenu(actions))
-    
-    
-    //let htmlContent = krakenHtml.record(record)
-    let htmlContent = page.content
-    
-    //htmlContent += krakenHtml.section(krakenHtml.cards([record, record, record, record]))
-  
-    
-    let e = document.getElementById('test1')
+    element.innerHTML = table.content
 
-    e.innerHTML= htmlContent
-    
+    let pagination = new HtmlPaginationClass()
+    pagination.records = records
+    pagination.limit = 20
+    pagination.baseUrl = 'https://www.test.com'
+    pagination.path = '/test1'
+
+    element.innerHTML += pagination.content
+
 }
-
 test1()
-
 
 
 

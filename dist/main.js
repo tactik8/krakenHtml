@@ -164,10 +164,37 @@ function $dd9b1b95cb167d3d$export$b7652f6cb30c4307(title, content) {
 
 
 
-function $0ea0e18bb6665923$export$52d811370d113530(records, keys, headers) {
-    return $0ea0e18bb6665923$var$_getTable(records, keys, headers);
+class $0ea0e18bb6665923$export$e4ef31a20800ff68 {
+    constructor(records){
+        this._records = records;
+        this.query = null;
+        this.limit = 20;
+        this.offset = 0;
+        this.orderBy = "createdDate";
+        this.orderDirection = -1;
+        this.potentialActions = null;
+    }
+    get records() {
+        return this._records;
+    }
+    set records(value) {
+        this._records = value;
+    }
+    set request(req) {
+        this.query = req.query["query"] || req.query["q"];
+        this.offset = req.query["offset"] || req.query["o"];
+        this.limit = req.query["limit"] || req.query["l"];
+        this.orderBy = req.query["orderBy"] || req.query["order"];
+        this.orderDirection = req.query["orderDirection"] || req.query["direction"];
+    }
+    get content() {
+        return $0ea0e18bb6665923$var$_getTable(this.records, this.keys, this.headers, this.potentialActions);
+    }
 }
-function $0ea0e18bb6665923$var$_getTable(records, keys, headers) {
+function $0ea0e18bb6665923$export$52d811370d113530(records, keys, headers, potentialActions) {
+    return $0ea0e18bb6665923$var$_getTable(records, keys, headers, potentialActions);
+}
+function $0ea0e18bb6665923$var$_getTable(records, keys, headers, potentialActions) {
     records = $0ea0e18bb6665923$var$ensureArray(records);
     // 
     if (records.length == 0 && (!keys || keys == null)) keys = [
@@ -422,10 +449,54 @@ function $64ebcd7c9c5f16e6$var$_getToC(value, level = 1) {
 }
 
 
+class $7ff3a9d3bb644157$export$726ef0cd58bc84d1 {
+    constructor(records){
+        this._records = records;
+        this.query = null;
+        this.limit = 20;
+        this.offset = 0;
+        this.orderBy = "createdDate";
+        this.orderDirection = -1;
+        this.potentialActions = null;
+        this.baseUrl = null;
+        this.path = null;
+        this.maxNo = null;
+    }
+    get baseUrl() {
+        return this._baseUrl;
+    }
+    set baseUrl(value) {
+        this._baseUrl = value;
+    }
+    get records() {
+        return this._records;
+    }
+    set records(value) {
+        this._records = value;
+    }
+    set request(req) {
+        this.query = req.query["query"] || req.query["q"];
+        this.offset = req.query["offset"] || req.query["o"];
+        this.limit = req.query["limit"] || req.query["l"];
+        this.orderBy = req.query["orderBy"] || req.query["order"];
+        this.orderDirection = req.query["orderDirection"] || req.query["direction"];
+        let PORT = "";
+        const protocol = req.protocol;
+        const host = req.hostname;
+        const url = ""; //req.originalUrl;
+        const port = PORT;
+        this.baseUrl = `${protocol}://${host}`;
+    }
+    get content() {
+        return $7ff3a9d3bb644157$var$_getPagination(this.baseUrl + this.path, this.query, this.offset, this.limit, this.orderBy, this.orderDirection, this.maxNo);
+    }
+}
 function $7ff3a9d3bb644157$export$17c6b15dacb75ccc(baseUrl, query, offset, limit, orderBy, orderDirection, maxNo) {
     return $7ff3a9d3bb644157$var$_getPagination(baseUrl, query, offset, limit, orderBy, orderDirection, maxNo);
 }
 function $7ff3a9d3bb644157$var$_getPagination(baseUrl, query, offset, limit, orderBy, orderDirection, maxNo) {
+    offset = Number(offset) || 0;
+    limit = Number(limit) || 20;
     let NoOfItems = 5;
     let content = ``;
     let startNo = offset - Math.floor(NoOfItems / 2) * limit;
@@ -665,9 +736,11 @@ const $cf838c15c8b009ba$export$a4b3bd7dfd4f2cdb = {
     "navbar": (0, $04bed36c37a84390$export$a5436958d2eb8066),
     "page": (0, $dd9b1b95cb167d3d$export$b7652f6cb30c4307),
     "pagination": (0, $7ff3a9d3bb644157$export$17c6b15dacb75ccc),
+    "PaginationClass": (0, $7ff3a9d3bb644157$export$726ef0cd58bc84d1),
     "record": (0, $c9d793a6343af207$export$9994024ef36d93e2),
     "section": (0, $a871279af8aa7d8b$export$e40a2164d99fef4d),
     "table": (0, $0ea0e18bb6665923$export$52d811370d113530),
+    "TableClass": (0, $0ea0e18bb6665923$export$e4ef31a20800ff68),
     "value": (0, $32ba22f6ec84c003$export$3db5d5f902fa227b),
     "krakenWebsite": (0, $8965cbda443616d8$export$8ab84c004e37b3e)
 };

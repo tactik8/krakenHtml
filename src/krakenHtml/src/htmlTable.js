@@ -3,15 +3,55 @@
 import { htmlValue } from './htmlValue.js'
 
 
-export function htmlTable(records, keys, headers) {
 
 
-    return _getTable(records, keys, headers)
+export class HtmlTableClass {
+
+    constructor(records) {
+        this._records = records
+        this.query = null
+        this.limit = 20
+        this.offset = 0
+        this.orderBy = 'createdDate'
+        this.orderDirection = -1
+        this.potentialActions = null
+        
+    }
+
+    get records(){
+        return this._records
+    }
+    set records(value){
+        this._records = value
+    }
+
+    set request(req){
+        this.query =  req.query['query'] ||  req.query['q']
+        this.offset =  req.query['offset'] ||  req.query['o']
+        this.limit =  req.query['limit'] ||  req.query['l']
+        this.orderBy =  req.query['orderBy'] || req.query['order'] 
+        this.orderDirection =  req.query['orderDirection'] ||  req.query['direction']
+
+    }
+
+    get content(){
+        return _getTable(this.records, this.keys, this.headers, this.potentialActions)
+    }
+
+        
+} 
+
+
+
+export function htmlTable(records, keys, headers, potentialActions) {
+
+
+    return _getTable(records, keys, headers, potentialActions)
 
 }
 
 
-function _getTable(records, keys, headers){
+function _getTable(records, keys, headers, potentialActions){
 
     records = ensureArray(records)
 
@@ -27,6 +67,8 @@ function _getTable(records, keys, headers){
     if(!headers || headers == null){
         headers = keys
     }
+
+    
     
     let content = `<table class="table">${_getTableHeader(headers)} ${_getTableRows(keys, records)}</table>`
 

@@ -17,6 +17,7 @@ function test1(){
 
     let record = getArticle()
     let table = new HtmlTableClass()
+    table.urlPath = '/test/test2'
     table.records = records
 
     element.innerHTML = table.content
@@ -28,7 +29,7 @@ function test1(){
     pagination.path = '/test1'
 
     element.innerHTML += pagination.content
-
+    
     let re = krakenHtml.record(record)
     element.innerHTML += re
 

@@ -107,94 +107,6 @@ function $32ba22f6ec84c003$var$_isArray(value) {
 }
 
 
-function $c9d793a6343af207$export$9994024ef36d93e2(record) {
-    let content = `<dl class="row">${$c9d793a6343af207$var$_getHtml(record)} </dl>`;
-    return content;
-}
-function $c9d793a6343af207$var$_getHtml(value) {
-    let content = "";
-    if ($c9d793a6343af207$var$_isObject(value) == true) {
-        content += `<dl class="row">`;
-        for (let k of Object.keys(value)){
-            let v = value[k];
-            content += ` <dt class="col-sm-2">${k}</dt>`;
-            content += ` <dd class="col-sm-10">${$c9d793a6343af207$var$_getHtmlValue(v)}</dd>`;
-        }
-        content += `</dl>`;
-    } else if ($c9d793a6343af207$var$_isArray(value) == true) {
-        let n = 0;
-        content += `<dl class="row">`;
-        for (let v of value){
-            content += ` <dt class="col-sm-1">[${n}]</dt>`;
-            content += ` <dd class="col-sm-11">${$c9d793a6343af207$var$_getHtmlValue(v)}</dd>`;
-            n += 1;
-        }
-        content += `</dl>`;
-    } else content = content + String((0, $32ba22f6ec84c003$export$3db5d5f902fa227b)(value));
-    return content;
-}
-function $c9d793a6343af207$var$_getHtmlValue(value) {
-    let content = "";
-    if ($c9d793a6343af207$var$_isObject(value) == true) {
-        let s = (0, $32ba22f6ec84c003$export$3db5d5f902fa227b)(value);
-        content += ` <details>
-                    <summary>${s}</summary>
-                    ${$c9d793a6343af207$var$_getHtml(value)}
-                </details>`;
-    } else if ($c9d793a6343af207$var$_isArray(value) == true) {
-        let s = value.length;
-        content += ` <details>
-                      <summary>[${s}]</summary>
-                      ${$c9d793a6343af207$var$_getHtml(value)}
-                  </details>`;
-    } else content = (0, $32ba22f6ec84c003$export$3db5d5f902fa227b)(value);
-    return content;
-}
-function $c9d793a6343af207$var$_isObject(value) {
-    if (value !== null && typeof value === "object" && Array.isArray(value) == false) return true;
-    return false;
-}
-function $c9d793a6343af207$var$_isArray(value) {
-    if (Array.isArray(value) == true) return true;
-    return false;
-}
-
-
-function $dd9b1b95cb167d3d$export$b7652f6cb30c4307(title, content) {
-    return `
-
-    <!doctype html>
-    <html lang="en">
-
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>${title}</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    </head>
-
-    <body>
-        
-        ${content}
-        
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-            crossorigin="anonymous"></script>
-
-        <script type="module" src="script.js"></script>
-
-
-    </body>
-
-    </html>
-    
-    
-    `;
-}
-
-
-
 class $89b885d9c9545d83$export$2ac64f08771c2db6 {
     constructor(record, request){
         if (Array.isArray(record)) this.things = record;
@@ -281,6 +193,103 @@ function $89b885d9c9545d83$var$ensureArray(value) {
         value
     ];
 }
+
+
+class $c9d793a6343af207$export$6bfbce2f9cd9b0e4 extends (0, $89b885d9c9545d83$export$2ac64f08771c2db6) {
+    constructor(records, request){
+        super(records, request);
+    }
+    get content() {
+        return $c9d793a6343af207$var$_getHtml(this.record, this.urlPath);
+    }
+}
+function $c9d793a6343af207$export$9994024ef36d93e2(record, path) {
+    let content = `<dl class="row">${$c9d793a6343af207$var$_getHtml(record, record["@type"], path)} </dl>`;
+    return content;
+}
+function $c9d793a6343af207$var$_getHtml(value, record_type, path) {
+    let content = "";
+    if ($c9d793a6343af207$var$_isObject(value) == true) {
+        content += `<dl class="row">`;
+        for (let k of Object.keys(value)){
+            let v = value[k];
+            content += ` <dt class="col-sm-2">${k}</dt>`;
+            content += ` <dd class="col-sm-10">${$c9d793a6343af207$var$_getHtmlValue(v, record_type, path, k)}</dd>`;
+        }
+        content += `</dl>`;
+    } else if ($c9d793a6343af207$var$_isArray(value) == true) {
+        let n = 0;
+        content += `<dl class="row">`;
+        for (let v of value){
+            content += ` <dt class="col-sm-1">[${n}]</dt>`;
+            content += ` <dd class="col-sm-11">${$c9d793a6343af207$var$_getHtmlValue(v, record_type, path)}</dd>`;
+            n += 1;
+        }
+        content += `</dl>`;
+    } else content = content + String((0, $32ba22f6ec84c003$export$3db5d5f902fa227b)(value, record_type, path));
+    return content;
+}
+function $c9d793a6343af207$var$_getHtmlValue(value) {
+    let content = "";
+    if ($c9d793a6343af207$var$_isObject(value) == true) {
+        let s = (0, $32ba22f6ec84c003$export$3db5d5f902fa227b)(value);
+        content += ` <details>
+                    <summary>${s}</summary>
+                    ${$c9d793a6343af207$var$_getHtml(value)}
+                </details>`;
+    } else if ($c9d793a6343af207$var$_isArray(value) == true) {
+        let s = value.length;
+        content += ` <details>
+                      <summary>[${s}]</summary>
+                      ${$c9d793a6343af207$var$_getHtml(value)}
+                  </details>`;
+    } else content = (0, $32ba22f6ec84c003$export$3db5d5f902fa227b)(value);
+    return content;
+}
+function $c9d793a6343af207$var$_isObject(value) {
+    if (value !== null && typeof value === "object" && Array.isArray(value) == false) return true;
+    return false;
+}
+function $c9d793a6343af207$var$_isArray(value) {
+    if (Array.isArray(value) == true) return true;
+    return false;
+}
+
+
+function $dd9b1b95cb167d3d$export$b7652f6cb30c4307(title, content) {
+    return `
+
+    <!doctype html>
+    <html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>${title}</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    </head>
+
+    <body>
+        
+        ${content}
+        
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
+
+        <script type="module" src="script.js"></script>
+
+
+    </body>
+
+    </html>
+    
+    
+    `;
+}
+
+
 
 
 class $0ea0e18bb6665923$export$e4ef31a20800ff68 extends (0, $89b885d9c9545d83$export$2ac64f08771c2db6) {
@@ -849,6 +858,7 @@ const $cf838c15c8b009ba$export$a4b3bd7dfd4f2cdb = {
     "pagination": (0, $7ff3a9d3bb644157$export$17c6b15dacb75ccc),
     "PaginationClass": (0, $7ff3a9d3bb644157$export$726ef0cd58bc84d1),
     "record": (0, $c9d793a6343af207$export$9994024ef36d93e2),
+    "RecordClass": (0, $c9d793a6343af207$export$6bfbce2f9cd9b0e4),
     "section": (0, $a871279af8aa7d8b$export$e40a2164d99fef4d),
     "table": (0, $0ea0e18bb6665923$export$52d811370d113530),
     "TableClass": (0, $0ea0e18bb6665923$export$e4ef31a20800ff68),

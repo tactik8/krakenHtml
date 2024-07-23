@@ -3,10 +3,37 @@ import { htmlValue } from './htmlValue.js'
 
 
 
-export function htmlRecord(record) {
 
 
-    let content = `<dl class="row">${_getHtml(record)} </dl>`
+
+
+
+import { ClassBase } from './ClassBase.js'
+
+
+export class HtmlRecordClass extends ClassBase {
+    constructor(records, request) {
+        super(records, request)
+    }
+
+    get content(){
+        return _getHtml(this.record, this.urlPath)
+    }
+
+}
+
+
+
+
+
+
+
+
+
+export function htmlRecord(record, path) {
+
+
+    let content = `<dl class="row">${_getHtml(record, record['@type'], path)} </dl>`
 
     return content
 
@@ -15,7 +42,7 @@ export function htmlRecord(record) {
 
 
 
-function _getHtml(value) {
+function _getHtml(value, record_type, path) {
 
     let content = ''
 
@@ -24,7 +51,7 @@ function _getHtml(value) {
         for (let k of Object.keys(value)) {
             let v = value[k]
             content += ` <dt class="col-sm-2">${k}</dt>`
-            content += ` <dd class="col-sm-10">${_getHtmlValue(v)}</dd>`
+            content += ` <dd class="col-sm-10">${_getHtmlValue(v, record_type, path, k)}</dd>`
         }
         content += `</dl>`
 
@@ -34,13 +61,13 @@ function _getHtml(value) {
         content += `<dl class="row">`
         for (let v of value) {
             content += ` <dt class="col-sm-1">[${n}]</dt>`
-            content += ` <dd class="col-sm-11">${_getHtmlValue(v)}</dd>`
+            content += ` <dd class="col-sm-11">${_getHtmlValue(v, record_type, path)}</dd>`
             n += 1
         }
         content += `</dl>`
         
     } else {
-        content = content + String(htmlValue(value))
+        content = content + String(htmlValue(value,record_type, path ))
     }
 
     return content

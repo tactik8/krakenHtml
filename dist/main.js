@@ -164,28 +164,97 @@ function $dd9b1b95cb167d3d$export$b7652f6cb30c4307(title, content) {
 
 
 
-class $0ea0e18bb6665923$export$e4ef31a20800ff68 {
-    constructor(records){
-        this._records = records;
+class $89b885d9c9545d83$export$2ac64f08771c2db6 {
+    constructor(record, request){
+        if (Array.isArray(record)) this.things = record;
+        else this.thing = record;
+        // Object related
+        this.record_type = null;
+        this.record_id = null;
+        // Array related
         this.query = null;
         this.limit = 20;
         this.offset = 0;
         this.orderBy = "createdDate";
         this.orderDirection = -1;
         this.potentialActions = null;
+        // Links
+        this.baseUrl = null;
+        this.fullUrl = null;
+        this.path = null;
+        if (request) this.loadFromRequest(request);
+    }
+    get record() {
+        return this._record;
+    }
+    set record(value) {
+        this.thing = value;
     }
     get records() {
         return this._records;
     }
     set records(value) {
-        this._records = value;
+        this.things = value;
+    }
+    get thing() {
+        return this._thing;
+    }
+    set thing(value) {
+        if (value?.record_type) {
+            this._thing = value;
+            this._record = value.record;
+        } else this._record = value;
+    }
+    get things() {
+        return this._things;
+    }
+    set things(value) {
+        value = $89b885d9c9545d83$var$ensureArray(value);
+        if (value[0] && value[0]?.record_type) {
+            this._things = value;
+            this._records = value.map((x)=>x.record);
+        } else this._records = value;
     }
     set request(req) {
+        this.loadFromRequest(req);
+    }
+    loadFromRequest(req) {
+        this.record_type = req.query["@type"] || req.query["record_type"] || req.params["@type"] || req.params["record_type"];
+        this.record_id = req.query["@id"] || req.query["record_id"] || req.params["@id"] || req.params["record_id"];
         this.query = req.query["query"] || req.query["q"];
         this.offset = req.query["offset"] || req.query["o"];
         this.limit = req.query["limit"] || req.query["l"];
         this.orderBy = req.query["orderBy"] || req.query["order"];
         this.orderDirection = req.query["orderDirection"] || req.query["direction"];
+        let PORT = "";
+        this.protocol = req.protocol;
+        this.host = req.hostname;
+        this.urlPath = req.originalUrl;
+        this.port = PORT;
+        this.baseUrl = `${this.protocol}://${this.host}`;
+        this.fullUrl = `${this.protocol}://${ByteLengthQueuingStrategy.host}/${this.urlPath}`;
+    }
+    get content() {
+        return null;
+    }
+    get element() {
+        let tempElement = document.createElement("div");
+        tempElement.innerHTMl = this.content;
+        let element = tempElement.firstChild;
+        return element;
+    }
+}
+function $89b885d9c9545d83$var$ensureArray(value) {
+    if (Array.isArray(value)) return value;
+    else return [
+        value
+    ];
+}
+
+
+class $0ea0e18bb6665923$export$e4ef31a20800ff68 extends (0, $89b885d9c9545d83$export$2ac64f08771c2db6) {
+    constructor(records, request){
+        super(records, request);
     }
     get content() {
         return $0ea0e18bb6665923$var$_getTable(this.records, this.keys, this.headers, this.potentialActions);
@@ -449,43 +518,10 @@ function $64ebcd7c9c5f16e6$var$_getToC(value, level = 1) {
 }
 
 
-class $7ff3a9d3bb644157$export$726ef0cd58bc84d1 {
-    constructor(records){
-        this._records = records;
-        this.query = null;
-        this.limit = 20;
-        this.offset = 0;
-        this.orderBy = "createdDate";
-        this.orderDirection = -1;
-        this.potentialActions = null;
-        this.baseUrl = null;
-        this.path = null;
-        this.maxNo = null;
-    }
-    get baseUrl() {
-        return this._baseUrl;
-    }
-    set baseUrl(value) {
-        this._baseUrl = value;
-    }
-    get records() {
-        return this._records;
-    }
-    set records(value) {
-        this._records = value;
-    }
-    set request(req) {
-        this.query = req.query["query"] || req.query["q"];
-        this.offset = req.query["offset"] || req.query["o"];
-        this.limit = req.query["limit"] || req.query["l"];
-        this.orderBy = req.query["orderBy"] || req.query["order"];
-        this.orderDirection = req.query["orderDirection"] || req.query["direction"];
-        let PORT = "";
-        const protocol = req.protocol;
-        const host = req.hostname;
-        const url = ""; //req.originalUrl;
-        const port = PORT;
-        this.baseUrl = `${protocol}://${host}`;
+
+class $7ff3a9d3bb644157$export$726ef0cd58bc84d1 extends (0, $89b885d9c9545d83$export$2ac64f08771c2db6) {
+    constructor(records, request){
+        super(records, request);
     }
     get content() {
         return $7ff3a9d3bb644157$var$_getPagination(this.baseUrl + this.path, this.query, this.offset, this.limit, this.orderBy, this.orderDirection, this.maxNo);
@@ -726,10 +762,70 @@ class $8965cbda443616d8$export$8ab84c004e37b3e {
 }
 
 
+
+class $b8d5dfc35bfd0099$export$8f2baf8a28f733af extends (0, $89b885d9c9545d83$export$2ac64f08771c2db6) {
+    constructor(records, request){
+        super(records, request);
+    }
+    get content() {
+        if (this.records && this.records != null && this.records.length > 0) return $b8d5dfc35bfd0099$var$_getBreadcrumb(this.records);
+        else {
+            let records = [];
+            let items = this.urlPath.split("/");
+            let runningUrl = "";
+            for (let item of items){
+                runningUrl = [
+                    runningUrl,
+                    item
+                ].join("/");
+                let record = {
+                    "name": "item",
+                    "url": runningUrl
+                };
+                records.push(record);
+            }
+            return $b8d5dfc35bfd0099$var$_getBreadcrumb(records);
+        }
+    }
+}
+function $b8d5dfc35bfd0099$export$a8a68544893af06(records) {
+    return $b8d5dfc35bfd0099$var$_getBreadcrumb(records);
+}
+function $b8d5dfc35bfd0099$var$_getBreadcrumb(records) {
+    let parts = "";
+    for (let record of records){
+        parts += `<li class="breadcrumb-item"><a href="${record.url}">${record.name}</a></li>`;
+        let content = `<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">`;
+    }
+    let cID = "collapse_" + String(crypto.randomUUID());
+    let content = `
+    <div class="accordion accordion-flush" id="accordionExample">
+
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#${cID}" aria-expanded="false" aria-controls="${cID}">
+            ${heading}
+          </button>
+        </h2>
+        <div id="${cID}" class="accordion-collapse collapse show" data-bs-parent="#${cID}">
+          <div class="accordion-body">
+            ${baseContent}
+          </div>
+        </div>
+  </div>
+    </div>
+    `;
+    return content;
+}
+
+
 const $cf838c15c8b009ba$export$a4b3bd7dfd4f2cdb = {
     "accordion": (0, $805cd539bcbfab21$export$41da80d3811e604b),
     "actionMenu": (0, $81607166ccf27aff$export$b03720a6c3e1de32),
     "article": (0, $64ebcd7c9c5f16e6$export$bca84a77ec8b9a9b),
+    "breadcrumb": (0, $b8d5dfc35bfd0099$export$a8a68544893af06),
+    "BreadcrumbClass": (0, $b8d5dfc35bfd0099$export$8f2baf8a28f733af),
     "card": (0, $0f8c405a4572c421$export$31c173b099afd3ce),
     "cards": (0, $0f8c405a4572c421$export$c668812a50c07d21),
     "footer": (0, $eaa0dfe8dd336822$export$b565a899447a9241),

@@ -3,43 +3,22 @@
 import { htmlValue } from './htmlValue.js'
 
 
+import { ClassBase } from './ClassBase.js'
 
 
-export class HtmlTableClass {
-
-    constructor(records) {
-        this._records = records
-        this.query = null
-        this.limit = 20
-        this.offset = 0
-        this.orderBy = 'createdDate'
-        this.orderDirection = -1
-        this.potentialActions = null
-        
-    }
-
-    get records(){
-        return this._records
-    }
-    set records(value){
-        this._records = value
-    }
-
-    set request(req){
-        this.query =  req.query['query'] ||  req.query['q']
-        this.offset =  req.query['offset'] ||  req.query['o']
-        this.limit =  req.query['limit'] ||  req.query['l']
-        this.orderBy =  req.query['orderBy'] || req.query['order'] 
-        this.orderDirection =  req.query['orderDirection'] ||  req.query['direction']
-
+export class HtmlTableClass extends ClassBase {
+    constructor(records, request) {
+        super(records, request)
     }
 
     get content(){
         return _getTable(this.records, this.keys, this.headers, this.potentialActions)
     }
 
-        
-} 
+}
+
+
+
 
 
 

@@ -1,49 +1,13 @@
-export class HtmlPaginationClass {
-    constructor(records) {
-        this._records = records;
-        this.query = null;
-        this.limit = 20;
-        this.offset = 0;
-        this.orderBy = "createdDate";
-        this.orderDirection = -1;
-        this.potentialActions = null;
-        this.baseUrl = null;
-        this.path = null
-        this.maxNo = null;
-    }
 
-    get baseUrl() {
-        return this._baseUrl;
-    }
 
-    set baseUrl(value) {
-        this._baseUrl = value;
-    }
+import { ClassBase } from './ClassBase.js'
 
-    get records() {
-        return this._records;
-    }
-    set records(value) {
-        this._records = value;
-    }
 
-    set request(req) {
-        this.query = req.query["query"] || req.query["q"];
-        this.offset = req.query["offset"] || req.query["o"];
-        this.limit = req.query["limit"] || req.query["l"];
-        this.orderBy = req.query["orderBy"] || req.query["order"];
-        this.orderDirection =
-            req.query["orderDirection"] || req.query["direction"];
-
-        let PORT = "";
-        const protocol = req.protocol;
-        const host = req.hostname;
-        const url = ""; //req.originalUrl;
-        const port = process.env.PORT || PORT;
-        this.baseUrl = `${protocol}://${host}`;
-        
+export class HtmlPaginationClass extends ClassBase {
+    constructor(records, request) {
+        super(records, request)
     }
-
+    
     get content() {
         return _getPagination(
             this.baseUrl + this.path,

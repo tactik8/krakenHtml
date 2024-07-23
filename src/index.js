@@ -15,6 +15,7 @@ import { htmlAccordion } from './krakenHtml/src/htmlAccordion.js'
 import { htmlActionMenu } from './krakenHtml/src/htmlActionMenu.js'
 import { KrakenWebsite } from './krakenHtml/src/krakenWebsite.js'
 
+import { htmlBreadcrumb, HtmlBreadcrumbClass } from './krakenHtml/src/htmlBreadcrumb.js'
 
 
 
@@ -23,6 +24,8 @@ export const krakenHtml = {
     'accordion': htmlAccordion,
     'actionMenu': htmlActionMenu,
     'article': htmlArticle,
+    'breadcrumb': htmlBreadcrumb,
+    'BreadcrumbClass': HtmlBreadcrumbClass,
     'card': htmlCard,
     'cards': htmlCards,
     'footer': htmlFooter,

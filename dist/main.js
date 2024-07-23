@@ -39,18 +39,9 @@ function $32ba22f6ec84c003$var$_getValueOther(value, record_type, path, key, tab
     if (tableFormat == true) length = 30;
     if (!value || value == null) return null;
     if (key && key != null) {
-        if (key.toLowerCase().endsWith("url")) value = `<a href="${value}">${$32ba22f6ec84c003$var$trimLength(value, length)}</a>`;
-    }
-    if (key && key != null) {
-        if (key.toLowerCase().includes("date") || key.toLowerCase().includes("time")) {
-            value = new Date(value);
-            let options = {
-                weekday: "short",
-                year: "numeric",
-                month: "short",
-                day: "numeric"
-            };
-            return value.toLocaleString();
+        if (key.toLowerCase().endsWith("url")) {
+            value = `<a href="${value}">${$32ba22f6ec84c003$var$trimLength(value, length)}</a>`;
+            return value;
         }
     }
     if (key && key != null) {

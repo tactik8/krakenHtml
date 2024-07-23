@@ -99,29 +99,14 @@ function _getValueOther(value, record_type, path, key, tableFormat){
         length = 30
     }
 
-    
     if(!value || value == null){ return null }
     
-
     if(key && key != null){
       if(key.toLowerCase().endsWith('url') ){
           value = `<a href="${value}">${trimLength(value, length)}</a>`
+          return value
       }  
     } 
-
-    if(key && key != null){
-      if(key.toLowerCase().includes('date') || key.toLowerCase().includes('time') ){
-          value = new Date(value)
-          let options = {
-                weekday: 'short',
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',
-              };
-          return value.toLocaleString()
-      }  
-    } 
-
     
     if(key && key != null){
       if(key=="@id"){
@@ -136,13 +121,10 @@ function _getValueOther(value, record_type, path, key, tableFormat){
           value = `<a href="${path}/${value}">${trimLength(value, length)}</a>`
           return value
       }  
-        
     } 
 
-    
     return trimLength(value, length)
 
-    
 }
 
 

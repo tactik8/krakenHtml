@@ -1,22 +1,23 @@
 
-function $32ba22f6ec84c003$export$3db5d5f902fa227b(value) {
-    return $32ba22f6ec84c003$var$_getValue(value);
+function $32ba22f6ec84c003$export$3db5d5f902fa227b(value, record_type, path, key, tableFormat = false) {
+    return $32ba22f6ec84c003$var$_getValue(value, record_type, path, key, tableFormat);
 }
-function $32ba22f6ec84c003$var$_getValue(value) {
+function $32ba22f6ec84c003$var$_getValue(value, record_type, path, key, tableFormat) {
     if (!value || value == null) return null;
-    if ($32ba22f6ec84c003$var$_isObject(value)) return $32ba22f6ec84c003$var$_getValueObject(value);
-    else if ($32ba22f6ec84c003$var$_isArray(value)) return $32ba22f6ec84c003$var$_getValueArray(value);
-    else return $32ba22f6ec84c003$var$_getValueOther(value);
+    if ($32ba22f6ec84c003$var$_isDate(value)) return $32ba22f6ec84c003$var$_getValueDate(value, record_type, path, key, tableFormat);
+    else if ($32ba22f6ec84c003$var$_isObject(value)) return $32ba22f6ec84c003$var$_getValueObject(value, record_type, path, key, tableFormat);
+    else if ($32ba22f6ec84c003$var$_isArray(value)) return $32ba22f6ec84c003$var$_getValueArray(value, record_type, path, key, tableFormat);
+    else return $32ba22f6ec84c003$var$_getValueOther(value, record_type, path, key, tableFormat);
 }
-function $32ba22f6ec84c003$var$_getValueObject(value) {
+function $32ba22f6ec84c003$var$_getValueObject(value, record_type, path, key, tableFormat) {
     let content = "";
-    let record_type = value?.["@type"] || null;
-    let record_id = value?.["@id"] || null;
-    if (record_type && record_id) content += `<a href="/${record_type}/${record_id}">${$32ba22f6ec84c003$var$_getHeading1(value)}</a>`;
+    let value_record_type = value?.["@type"] || null;
+    let value_record_id = value?.["@id"] || null;
+    if (value_record_type && value_record_id) content += `<a href="${path}/${value_record_type}/${value_record_id}">${$32ba22f6ec84c003$var$_getHeading1(value)}</a>`;
     else content += JSON.stringify(value);
     return content;
 }
-function $32ba22f6ec84c003$var$_getValueArray(value) {
+function $32ba22f6ec84c003$var$_getValueArray(value, record_type, path, key, tableFormat) {
     if (value.length == 1) return $32ba22f6ec84c003$var$_getValue(value);
     let content = "";
     content += "<ul>";
@@ -24,20 +25,52 @@ function $32ba22f6ec84c003$var$_getValueArray(value) {
     content += "</ul>";
     return `<details> <summary>[${value.length}]</summary>${content}</details>`;
 }
-function $32ba22f6ec84c003$var$_getValueOther(value) {
+function $32ba22f6ec84c003$var$_getValueDate(value, record_type, path, key, tableFormat) {
+    let options = {
+        weekday: "short",
+        year: "numeric",
+        month: "short",
+        day: "numeric"
+    };
+    return value.toLocaleString();
+}
+function $32ba22f6ec84c003$var$_getValueOther(value, record_type, path, key, tableFormat) {
+    let length = null;
+    if (tableFormat == true) length = 30;
     if (!value || value == null) return null;
-    if (typeof value.getMonth === "function") {
-        console.log("is date");
-        let options = {
-            weekday: "short",
-            year: "numeric",
-            month: "short",
-            day: "numeric"
-        };
-        return value.toLocaleString();
-    } else if (value instanceof String && value.startsWith("http")) value = `<a href="${value}">${value}</a>`;
+    if (key && key != null) {
+        if (key.toLowerCase().endsWith("url")) value = `<a href="${value}">${$32ba22f6ec84c003$var$trimLength(value, length)}</a>`;
+    }
+    if (key && key != null) {
+        if (key.toLowerCase().includes("date") || key.toLowerCase().includes("time")) {
+            value = new Date(value);
+            let options = {
+                weekday: "short",
+                year: "numeric",
+                month: "short",
+                day: "numeric"
+            };
+            return value.toLocaleString();
+        }
+    }
+    if (key && key != null) {
+        if (key == "@id") {
+            value = `<a href="${path}/${record_type}/${value}">${$32ba22f6ec84c003$var$trimLength(value, length)}</a>`;
+            return value;
+        }
+    }
+    if (key && key != null) {
+        if (key == "@type") {
+            value = `<a href="${path}/${value}">${$32ba22f6ec84c003$var$trimLength(value, length)}</a>`;
+            return value;
+        }
+    }
+    return $32ba22f6ec84c003$var$trimLength(value, length);
+}
+function $32ba22f6ec84c003$var$trimLength(value, length = 30) {
+    if (!length || length == null) return value;
     try {
-        if (value.startsWith("http")) value = `<a href="${value}">${value}</a>`;
+        if (value.length > 30) value = value.slice(0, length) + "...";
     } catch  {}
     return value;
 }
@@ -68,6 +101,10 @@ function $32ba22f6ec84c003$var$_getValueImage(value) {
 function $32ba22f6ec84c003$var$_getValueVideo(value) {
     let contentUrl = value?.["contentUrl"] || null;
     let content = `<video src="${contentUrl}" class="img-fluid" alt="...">`;
+}
+function $32ba22f6ec84c003$var$_isDate(value) {
+    if (typeof value.getMonth === "function") return true;
+    return false;
 }
 function $32ba22f6ec84c003$var$_isObject(value) {
     if (value !== null && typeof value === "object" && Array.isArray(value) == false) return true;
@@ -263,10 +300,10 @@ class $0ea0e18bb6665923$export$e4ef31a20800ff68 extends (0, $89b885d9c9545d83$ex
         return $0ea0e18bb6665923$var$_getTable(this.records, this.keys, this.headers, this.potentialActions);
     }
 }
-function $0ea0e18bb6665923$export$52d811370d113530(records, keys, headers, potentialActions) {
-    return $0ea0e18bb6665923$var$_getTable(records, keys, headers, potentialActions);
+function $0ea0e18bb6665923$export$52d811370d113530(records, keys, headers, path, potentialActions) {
+    return $0ea0e18bb6665923$var$_getTable(records, keys, headers, path, potentialActions);
 }
-function $0ea0e18bb6665923$var$_getTable(records, keys, headers, potentialActions) {
+function $0ea0e18bb6665923$var$_getTable(records, keys, headers, path, potentialActions) {
     records = $0ea0e18bb6665923$var$ensureArray(records);
     // 
     if (records.length == 0 && (!keys || keys == null)) keys = [
@@ -275,22 +312,22 @@ function $0ea0e18bb6665923$var$_getTable(records, keys, headers, potentialAction
     ];
     if (!keys || keys == null) keys = Object.keys(records[0]);
     if (!headers || headers == null) headers = keys;
-    let content = `<table class="table">${$0ea0e18bb6665923$var$_getTableHeader(headers)} ${$0ea0e18bb6665923$var$_getTableRows(keys, records)}</table>`;
+    let content = `<table class="table table-responsive-xl">${$0ea0e18bb6665923$var$_getTableHeader(headers, path)} ${$0ea0e18bb6665923$var$_getTableRows(keys, records, path)}</table>`;
     return content;
 }
-function $0ea0e18bb6665923$var$_getTableHeader(keys) {
+function $0ea0e18bb6665923$var$_getTableHeader(keys, path) {
     let content = ``;
     content += `<thead><tr>`;
-    for (let k of keys)content += `  <th scope="col">${k}</th>`;
+    for (let k of keys)content += `  <th style="max-width: 30%" class="text-truncate" scope="col">${k}</th>`;
     content += `</tr></thead>`;
     return content;
 }
-function $0ea0e18bb6665923$var$_getTableRows(keys, records) {
+function $0ea0e18bb6665923$var$_getTableRows(keys, records, path) {
     let content = "";
     content += `<tbody>`;
     for (let record of records){
         content += `<tr>`;
-        for (let k of keys)content += `<td class="text-truncate">${(0, $32ba22f6ec84c003$export$3db5d5f902fa227b)(record[k])}</td>`;
+        for (let k of keys)content += `<td  class="text-truncate">${(0, $32ba22f6ec84c003$export$3db5d5f902fa227b)(record[k], record["@type"], path, k, true)}</td>`;
         content += `</tr>`;
     }
     content += `</tbody>`;
@@ -782,7 +819,7 @@ class $b8d5dfc35bfd0099$export$8f2baf8a28f733af extends (0, $89b885d9c9545d83$ex
                     item
                 ].join("/");
                 let record = {
-                    "name": "item",
+                    "name": item,
                     "url": runningUrl
                 };
                 records.push(record);

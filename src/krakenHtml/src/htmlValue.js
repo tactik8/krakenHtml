@@ -1,30 +1,34 @@
 
 import {htmlRecord} from './htmlRecord.js'
 
-export function htmlValue(value) {
+export function htmlValue(value, record_type, path, key, tableFormat=false) {
 
 
-    return _getValue(value)
+    return _getValue(value, record_type, path, key, tableFormat)
 
 }
 
 
-function _getValue(value){
+function _getValue(value, record_type, path, key, tableFormat){
 
     if(!value || value == null){ return null }
 
-    if(_isObject(value)){
 
-        return _getValueObject(value)
+    if(_isDate(value)){
+        return _getValueDate(value, record_type, path, key, tableFormat)
+    }
+    else if(_isObject(value)){
+
+        return _getValueObject(value, record_type, path, key, tableFormat)
         
     } else if (_isArray(value)){
 
 
-        return _getValueArray(value)
+        return _getValueArray(value, record_type, path, key, tableFormat)
         
     } else {
 
-        return _getValueOther(value)
+        return _getValueOther(value, record_type, path, key, tableFormat)
         
     }
     
@@ -34,15 +38,15 @@ function _getValue(value){
 }
 
 
-function _getValueObject(value){
+function _getValueObject(value, record_type, path, key, tableFormat){
 
     let content = ''
-    let record_type = value?.['@type'] || null
-    let record_id = value?.['@id'] || null
+    let value_record_type = value?.['@type'] || null
+    let value_record_id = value?.['@id'] || null
 
 
-    if(record_type && record_id){
-        content += `<a href="/${record_type}/${record_id}">${_getHeading1(value)}</a>`
+    if(value_record_type && value_record_id){
+        content += `<a href="${path}/${value_record_type}/${value_record_id}">${_getHeading1(value)}</a>`
     } else {
         content += JSON.stringify(value)
     }
@@ -54,7 +58,7 @@ function _getValueObject(value){
 
 
 
-function _getValueArray(value){
+function _getValueArray(value, record_type, path, key, tableFormat){
  
     if(value.length == 1){
         return _getValue(value)
@@ -71,38 +75,87 @@ function _getValueArray(value){
 
 }
 
-function _getValueOther(value){
 
 
-    if(!value || value == null){ return null }
+
+
+function _getValueDate(value, record_type, path, key, tableFormat){
+
+    let options = {
+          weekday: 'short',
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+        };
+    return value.toLocaleString()
     
-    if(typeof value.getMonth === 'function'){
-        console.log('is date')
-        let options = {
-              weekday: 'short',
-              year: 'numeric',
-              month: 'short',
-              day: 'numeric',
-            };
-        return value.toLocaleString()
-        
-    } else if (value instanceof String && value.startsWith('http')){
-        value = `<a href="${value}">${value}</a>`
+}
+
+
+function _getValueOther(value, record_type, path, key, tableFormat){
+
+    let length = null
+    if(tableFormat == true){
+        length = 30
     }
 
-    try{
-        if (value.startsWith('http')){
-            value = `<a href="${value}">${value}</a>`
-        }
-    } catch {}
+    
+    if(!value || value == null){ return null }
+    
 
+    if(key && key != null){
+      if(key.toLowerCase().endsWith('url') ){
+          value = `<a href="${value}">${trimLength(value, length)}</a>`
+      }  
+    } 
+
+    if(key && key != null){
+      if(key.toLowerCase().includes('date') || key.toLowerCase().includes('time') ){
+          value = new Date(value)
+          let options = {
+                weekday: 'short',
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+              };
+          return value.toLocaleString()
+      }  
+    } 
 
     
-    return value
+    if(key && key != null){
+      if(key=="@id"){
+          value = `<a href="${path}/${record_type}/${value}">${trimLength(value, length)}</a>`
+           return value
+      }  
+       
+    } 
+
+    if(key && key != null){
+      if(key=="@type"){
+          value = `<a href="${path}/${value}">${trimLength(value, length)}</a>`
+          return value
+      }  
+        
+    } 
+
+    
+    return trimLength(value, length)
 
     
 }
 
+
+function trimLength(value, length = 30, ){
+
+    if(!length || length == null){ return value }
+    try{
+        if(value.length > 30){
+            value = value.slice(0, length) + '...'
+        }
+    } catch{}
+    return value
+}
 
 
 function _getHeading1(value){
@@ -173,6 +226,22 @@ function _getValueVideo(value){
     let content = `<video src="${contentUrl}" class="img-fluid" alt="...">` 
 
 }
+
+
+
+function _isDate(value) {
+
+    
+    if(typeof value.getMonth === 'function'){
+        
+       return true
+
+    } 
+    
+    return false
+
+}
+
 
 
 function _isObject(value) {

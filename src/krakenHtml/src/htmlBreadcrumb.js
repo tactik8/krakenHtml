@@ -25,7 +25,7 @@ export class HtmlBreadcrumbClass extends ClassBase {
 
           runningUrl = [runningUrl, item].join('/')
           let record = {
-            "name": "item",
+            "name": item,
             "url": runningUrl
           }
           records.push(record)

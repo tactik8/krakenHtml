@@ -128,7 +128,7 @@ function _getValueOther(value, record_type, path, key, tableFormat){
 }
 
 
-function trimLength(value, length = 30, ){
+function trimLength(value, length=30){
 
     if(!length || length == null){ return value }
     try{

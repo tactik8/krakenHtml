@@ -288,7 +288,7 @@ class $0ea0e18bb6665923$export$e4ef31a20800ff68 extends (0, $89b885d9c9545d83$ex
         super(records, request);
     }
     get content() {
-        return $0ea0e18bb6665923$var$_getTable(this.records, this.keys, this.headers, this.potentialActions);
+        return $0ea0e18bb6665923$var$_getTable(this.records, this.keys, this.headers, this.urlPath, this.potentialActions);
     }
 }
 function $0ea0e18bb6665923$export$52d811370d113530(records, keys, headers, path, potentialActions) {

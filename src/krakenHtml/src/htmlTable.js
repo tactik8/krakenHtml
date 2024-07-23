@@ -12,7 +12,7 @@ export class HtmlTableClass extends ClassBase {
     }
 
     get content(){
-        return _getTable(this.records, this.keys, this.headers, this.potentialActions)
+        return _getTable(this.records, this.keys, this.headers, this.urlPath, this.potentialActions)
     }
 
 }

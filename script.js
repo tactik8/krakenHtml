@@ -15,7 +15,7 @@ function test1(){
 
     let records = [getArticle(), getArticle(),getArticle(),getArticle(),getArticle(),getArticle(),getArticle(),getArticle(),getArticle(),getArticle(),getArticle()]
 
-    
+    let record = getArticle()
     let table = new HtmlTableClass()
     table.records = records
 
@@ -29,6 +29,11 @@ function test1(){
 
     element.innerHTML += pagination.content
 
+    let re = krakenHtml.record(record)
+    element.innerHTML += re
+
+
+    
 }
 test1()
 

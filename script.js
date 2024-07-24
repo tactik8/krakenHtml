@@ -2,6 +2,7 @@
 import { krakenHtml } from './src/index.js'
 import { HtmlPaginationClass } from './src/krakenHtml/src/htmlPagination.js'
 import { HtmlTableClass } from './src/krakenHtml/src/htmlTable.js'
+import { HtmlUrlClass } from './src/krakenHtml/src/htmlUrl.js'
 
 function clickFnA() {
 
@@ -14,34 +15,34 @@ function test1(){
     let element = document.getElementById('test1')
 
 
-    let b = new krakenHtml.BreadcrumbClass()
-    b.urlPath = '/test0/test1/test2'
-    console.log(b.content)
-    element.innerHTML += b.content
 
 
     
-    let records = [getArticle(), getArticle(),getArticle(),getArticle(),getArticle(),getArticle(),getArticle(),getArticle(),getArticle(),getArticle(),getArticle()]
-
-    let record = getArticle()
-    let table = new HtmlTableClass()
-    table.urlPath = '/test/test2'
-    table.records = records
-
-    element.innerHTML += table.content
-
-    let pagination = new HtmlPaginationClass()
-    pagination.records = records
-    pagination.limit = 20
-    pagination.baseUrl = 'https://www.test.com'
-    pagination.path = '/test1'
-
-    element.innerHTML += pagination.content
-
-
-    let lc = new krakenHtml.RecordClass(record)
+    let record = {
+             "@type": "Person",
+             "@id": "person_1",
+             "givenName": "givenName_1",
+             "familyName": "familyName_1",
+             "email": "test@test.com",
+             "telephone": "1-514-111-2222",
+             "hasOccupation": {
+                 "@type": "Occupation",
+                 "@id": "occupation_1",
+                 "name": "occupation_1"
+                 },
+             "worksfor": {
+                 "@type": "Organization",
+                 "@id": "organization_1",
+                 "name": "test_org_1",
+                 "url": "https://www.test.com"
+                 }
+         }
     
-    element.innerHTML += lc.content
+    let r = new krakenHtml.RecordClass(record)
+   
+    r.basePath = '/test1/test2'
+
+    element.innerHTML = r.content
 
 
 

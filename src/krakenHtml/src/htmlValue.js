@@ -1,34 +1,39 @@
 
 import {htmlRecord} from './htmlRecord.js'
 
-export function htmlValue(value, record_type, path, key, tableFormat=false) {
+import { HtmlUrlClass, htmlUrl } from './htmlUrl.js'
 
 
-    return _getValue(value, record_type, path, key, tableFormat)
+
+
+
+export function htmlValue(value, record_type, key, options, tableFormat=false) {
+
+
+    return _getValue(value, record_type, key, options, tableFormat)
 
 }
 
 
-function _getValue(value, record_type, path, key, tableFormat){
+function _getValue(value, record_type, key, options, tableFormat){
 
     if(!value || value == null){ return null }
 
 
     if(_isDate(value)){
-        return _getValueDate(value, record_type, path, key, tableFormat)
+        return _getValueDate(value, record_type, key, options, tableFormat)
     }
     else if(_isObject(value)){
 
-        return _getValueObject(value, record_type, path, key, tableFormat)
+        return _getValueObject(value, record_type, key, options, tableFormat)
         
     } else if (_isArray(value)){
 
-
-        return _getValueArray(value, record_type, path, key, tableFormat)
+        return _getValueArray(value, record_type, key, options, tableFormat)
         
     } else {
 
-        return _getValueOther(value, record_type, path, key, tableFormat)
+        return _getValueOther(value, record_type, key, options, tableFormat)
         
     }
     
@@ -38,7 +43,7 @@ function _getValue(value, record_type, path, key, tableFormat){
 }
 
 
-function _getValueObject(value, record_type, path, key, tableFormat){
+function _getValueObject(value, record_type, key, options, tableFormat){
 
     let content = ''
     let value_record_type = value?.['@type'] || null
@@ -46,7 +51,13 @@ function _getValueObject(value, record_type, path, key, tableFormat){
 
 
     if(value_record_type && value_record_id){
-        content += `<a href="${path}/${value_record_type}/${value_record_id}">${_getHeading1(value)}</a>`
+
+        let url = new HtmlUrlClass()
+        url.urlOptions = options
+        url.record_type = value_record_type
+        url.record_id = value_record_id
+        
+        content += `<a href="${url.content}">${_getHeading1(value)}</a>`
     } else {
         content += JSON.stringify(value)
     }
@@ -58,7 +69,7 @@ function _getValueObject(value, record_type, path, key, tableFormat){
 
 
 
-function _getValueArray(value, record_type, path, key, tableFormat){
+function _getValueArray(value, record_type, key, options, tableFormat){
  
     if(value.length == 1){
         return _getValue(value)
@@ -67,7 +78,7 @@ function _getValueArray(value, record_type, path, key, tableFormat){
     let content = ''
     content += '<ul>'
     for(let v of value){
-        content += `<li>${_getValue(v)}</li>`
+        content += `<li>${_getValue(v, record_type, key, options, tableFormat)}</li>`
     }
     content += '</ul>'
     return `<details> <summary>[${value.length}]</summary>${content}</details>`
@@ -79,9 +90,9 @@ function _getValueArray(value, record_type, path, key, tableFormat){
 
 
 
-function _getValueDate(value, record_type, path, key, tableFormat){
+function _getValueDate(value, record_type, key, options, tableFormat){
 
-    let options = {
+    let dateOptions = {
           weekday: 'short',
           year: 'numeric',
           month: 'short',
@@ -92,7 +103,7 @@ function _getValueDate(value, record_type, path, key, tableFormat){
 }
 
 
-function _getValueOther(value, record_type, path, key, tableFormat){
+function _getValueOther(value, record_type, key, options, tableFormat){
 
     let length = null
     if(tableFormat == true){
@@ -110,7 +121,13 @@ function _getValueOther(value, record_type, path, key, tableFormat){
     
     if(key && key != null){
       if(key=="@id"){
-          value = `<a href="${path}/${record_type}/${value}">${trimLength(value, length)}</a>`
+
+          let url = new HtmlUrlClass()
+          url.urlOptions = options
+          url.record_type = record_type
+          url.record_id = value
+          
+          value = `<a href="${url.content}">${trimLength(value, length)}</a>`
            return value
       }  
        
@@ -118,7 +135,12 @@ function _getValueOther(value, record_type, path, key, tableFormat){
 
     if(key && key != null){
       if(key=="@type"){
-          value = `<a href="${path}/${value}">${trimLength(value, length)}</a>`
+            let url = new HtmlUrlClass()
+            url.urlOptions = options
+          
+            url.record_type = record_type
+
+          value = `<a href="${url.content}">${trimLength(value, length)}</a>`
           return value
       }  
     } 
@@ -146,12 +168,12 @@ function _getHeading1(value){
     let record_type = value?.['@type'] || null
     let record_id = value?.['@id'] || null
     
-    let name = value?.['name'] || null
-    let givenName = value?.['givenName'] || null
-    let familyName = value?.['familyName'] || null
-    let url = value?.['url'] || null
-    let email = value?.['email'] || null
-    let contentUrl = value?.['contentUrl'] || null
+    let name = value['name'] || null
+    let givenName = value['givenName'] || null
+    let familyName = value['familyName'] || null
+    let url = value['url'] || null
+    let email = value['email'] || null
+    let contentUrl = value['contentUrl'] || null
 
 
     heading1 = record_type + '/' + record_id

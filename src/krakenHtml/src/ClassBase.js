@@ -4,6 +4,13 @@ export class ClassBase {
 
     constructor(record, request) {
 
+
+        this._record = {}
+        this._records = []
+
+        this._record_type =null
+        this._record_id = null
+        
         if(Array.isArray(record)){
             this.things = record
         } else {
@@ -11,8 +18,8 @@ export class ClassBase {
         }
 
         // Object related
-        this.record_type = null
-        this.record_id = null
+       
+    
         
         // Array related
         this.query = null
@@ -27,13 +34,69 @@ export class ClassBase {
         this.fullUrl = null
         this.path = null
 
+        this._hostname = null
+        this._search = null
+        this._basePath = null
+        this._baseParams = {}
+        this._params = {}
+        
+
         if(request){
             this.loadFromRequest(request)
         }
     }
 
+    get search(){
+        return this._search
+    }
+
+    set search(value){
+        this._search = value
+    }
+
+    get hostname(){
+        return this._hostname
+    }
+
+    set hostname(value){
+         this._hostname= value
+    }
+
+    get basePath(){
+        return this._basePath
+    }
+
+    set basePath(value){
+         this._basePath= value
+    }
+
+    
+    get pathname(){
+        return this.path
+    }
+
+    set pathname(value){
+        this.path = value
+    }
 
 
+    get baseParams(){
+        return this._baseParams
+    }
+
+    set baseParams(value){
+         this._baseParams= value
+    }
+
+    get params(){
+        return this._params
+    }
+
+    set params(value){
+         this._params= value
+    }
+
+    
     get record(){
         return this._record
     }
@@ -50,17 +113,40 @@ export class ClassBase {
         this.things = value
     }
 
+    get record_type(){
+        return this._record_type
+    }
+
+    set record_type(value){
+        this._record_type = value
+    }
+
+    get record_id(){
+        return this._record_id
+    }
+    set record_id(value){
+        this._record_id = value
+    }
+
+
     get thing(){
         return this._thing
     }
 
     set thing(value){
-        if(value?.record_type){
+
+        if(!value || value == null) { return }
+        
+        if(value.record_type){
             this._thing = value
             this._record = value.record
         } else {
             this._record = value
         }
+       
+        this._record_type = this._record['@type'] || this._record_type
+        this._record_id = this._record['@id'] || this._record_id
+        
     }
 
     get things(){
@@ -84,8 +170,11 @@ export class ClassBase {
 
     loadFromRequest(req){
 
-        this.record_type = req.query['@type'] || req.query['record_type'] || req.params['@type'] || req.params['record_type']
-        this.record_id = req.query['@id'] || req.query['record_id'] || req.params['@id'] || req.params['record_id']
+
+        if(!req || req == null) { return }
+        
+        this.record_type = req.query['@type'] || req.query['record_type'] || req.params['@type'] || req.params['record_type'] || this.record_type
+        this.record_id = req.query['@id'] || req.query['record_id'] || req.params['@id'] || req.params['record_id'] || this.record_id
 
         
         this.query =  req.query['query'] ||  req.query['q']
@@ -114,6 +203,35 @@ export class ClassBase {
         tempElement.innerHTMl = this.content
         let element = tempElement.firstChild
         return element
+    }
+
+    
+    
+    get urlOptions(){
+
+        let options = {
+            'hostname': this.hostname,
+            'basePath': this.basePath,
+            'pathname': this.pathname,
+            'params': this.params,
+            'baseParams': this.baseParams,
+            'record_type': this.record_type,
+            'record_id': this.record_id
+        }
+        return options
+    }
+
+    set urlOptions(value){
+
+        if(!value || value == null) { return }
+        for(let k in value){
+            let v = value[k]
+
+            if(v && v != null){
+                this[k] = value[k]
+            }
+        }
+     
     }
 } 
 

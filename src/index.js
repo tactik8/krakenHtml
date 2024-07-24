@@ -1,6 +1,8 @@
 
 
 import { htmlRecord, HtmlRecordClass } from './krakenHtml/src/htmlRecord.js'
+import { htmlUrl, HtmlUrlClass } from './krakenHtml/src/htmlUrl.js'
+
 import { htmlPage } from './krakenHtml/src/htmlPage.js'
 import { htmlTable, HtmlTableClass } from './krakenHtml/src/htmlTable.js'
 import { htmlValue } from './krakenHtml/src/htmlValue.js'
@@ -37,6 +39,8 @@ export const krakenHtml = {
     'section': htmlSection,
     'table': htmlTable,
     'TableClass': HtmlTableClass,
+    'url': htmlUrl,
+    'UrlClass': HtmlUrlClass,
     'value': htmlValue,
     'krakenWebsite': KrakenWebsite
 }

@@ -1,32 +1,249 @@
 
-function $32ba22f6ec84c003$export$3db5d5f902fa227b(value, record_type, path, key, tableFormat = false) {
-    return $32ba22f6ec84c003$var$_getValue(value, record_type, path, key, tableFormat);
+class $89b885d9c9545d83$export$2ac64f08771c2db6 {
+    constructor(record, request){
+        this._record = {};
+        this._records = [];
+        this._record_type = null;
+        this._record_id = null;
+        if (Array.isArray(record)) this.things = record;
+        else this.thing = record;
+        // Object related
+        // Array related
+        this.query = null;
+        this.limit = 20;
+        this.offset = 0;
+        this.orderBy = "createdDate";
+        this.orderDirection = -1;
+        this.potentialActions = null;
+        // Links
+        this.baseUrl = null;
+        this.fullUrl = null;
+        this.path = null;
+        this._hostname = null;
+        this._search = null;
+        this._basePath = null;
+        this._baseParams = {};
+        this._params = {};
+        if (request) this.loadFromRequest(request);
+    }
+    get search() {
+        return this._search;
+    }
+    set search(value) {
+        this._search = value;
+    }
+    get hostname() {
+        return this._hostname;
+    }
+    set hostname(value) {
+        this._hostname = value;
+    }
+    get basePath() {
+        return this._basePath;
+    }
+    set basePath(value) {
+        this._basePath = value;
+    }
+    get pathname() {
+        return this.path;
+    }
+    set pathname(value) {
+        this.path = value;
+    }
+    get baseParams() {
+        return this._baseParams;
+    }
+    set baseParams(value) {
+        this._baseParams = value;
+    }
+    get params() {
+        return this._params;
+    }
+    set params(value) {
+        this._params = value;
+    }
+    get record() {
+        return this._record;
+    }
+    set record(value) {
+        this.thing = value;
+    }
+    get records() {
+        return this._records;
+    }
+    set records(value) {
+        this.things = value;
+    }
+    get record_type() {
+        return this._record_type;
+    }
+    set record_type(value) {
+        this._record_type = value;
+    }
+    get record_id() {
+        return this._record_id;
+    }
+    set record_id(value) {
+        this._record_id = value;
+    }
+    get thing() {
+        return this._thing;
+    }
+    set thing(value) {
+        if (!value || value == null) return;
+        if (value.record_type) {
+            this._thing = value;
+            this._record = value.record;
+        } else this._record = value;
+        this._record_type = this._record["@type"] || this._record_type;
+        this._record_id = this._record["@id"] || this._record_id;
+    }
+    get things() {
+        return this._things;
+    }
+    set things(value) {
+        value = $89b885d9c9545d83$var$ensureArray(value);
+        if (value[0] && value[0]?.record_type) {
+            this._things = value;
+            this._records = value.map((x)=>x.record);
+        } else this._records = value;
+    }
+    set request(req) {
+        this.loadFromRequest(req);
+    }
+    loadFromRequest(req) {
+        if (!req || req == null) return;
+        this.record_type = req.query["@type"] || req.query["record_type"] || req.params["@type"] || req.params["record_type"] || this.record_type;
+        this.record_id = req.query["@id"] || req.query["record_id"] || req.params["@id"] || req.params["record_id"] || this.record_id;
+        this.query = req.query["query"] || req.query["q"];
+        this.offset = req.query["offset"] || req.query["o"];
+        this.limit = req.query["limit"] || req.query["l"];
+        this.orderBy = req.query["orderBy"] || req.query["order"];
+        this.orderDirection = req.query["orderDirection"] || req.query["direction"];
+        let PORT = "";
+        this.protocol = req.protocol;
+        this.host = req.hostname;
+        this.urlPath = req.originalUrl;
+        this.port = PORT;
+        this.baseUrl = `${this.protocol}://${this.host}`;
+        this.fullUrl = `${this.protocol}://${ByteLengthQueuingStrategy.host}/${this.urlPath}`;
+    }
+    get content() {
+        return null;
+    }
+    get element() {
+        let tempElement = document.createElement("div");
+        tempElement.innerHTMl = this.content;
+        let element = tempElement.firstChild;
+        return element;
+    }
+    get urlOptions() {
+        let options = {
+            "hostname": this.hostname,
+            "basePath": this.basePath,
+            "pathname": this.pathname,
+            "params": this.params,
+            "baseParams": this.baseParams,
+            "record_type": this.record_type,
+            "record_id": this.record_id
+        };
+        return options;
+    }
+    set urlOptions(value) {
+        if (!value || value == null) return;
+        for(let k in value){
+            let v = value[k];
+            if (v && v != null) this[k] = value[k];
+        }
+    }
 }
-function $32ba22f6ec84c003$var$_getValue(value, record_type, path, key, tableFormat) {
+function $89b885d9c9545d83$var$ensureArray(value) {
+    if (Array.isArray(value)) return value;
+    else return [
+        value
+    ];
+}
+
+
+class $09aaf31e9efdd809$export$a6ec59f446d054ef extends (0, $89b885d9c9545d83$export$2ac64f08771c2db6) {
+    constructor(records, request){
+        super(records, request);
+    }
+    get content() {
+        return $09aaf31e9efdd809$var$_getHtmlUrl(null, this.urlOptions);
+    }
+}
+function $09aaf31e9efdd809$export$65e8537a85f61405(path, options) {
+    return $09aaf31e9efdd809$var$_getHtmlUrl(path, options);
+}
+function $09aaf31e9efdd809$var$_getHtmlUrl(path, options) {
+    let domain = options?.hostname || null;
+    if (!domain || domain == null) domain = "https://www.test.com";
+    let url = new URL(domain);
+    // Do params
+    let p = url.searchParams;
+    for(let k in options.baseParams)p.set(k, options.baseParams[k]);
+    for(let k in options.params)p.set(k, options.params[k]);
+    // Do pathname
+    let parts = [];
+    if (path && path != null) {
+        if (path.startsWith("/")) path = path.slice(1);
+        if (path.endsWith("/")) path = path.slice(-1);
+        parts = parts.concat(path.split("/"));
+    }
+    if (options.basePath && options.basePath != null) {
+        let path = options.basePath;
+        if (path.startsWith("/")) path = path.slice(1);
+        if (path.endsWith("/")) path = path.slice(-1);
+        parts = parts.concat(path.split("/"));
+    }
+    if (options.pathname && options.pathname != null) {
+        let path = options.pathname;
+        if (path.startsWith("/")) path = path.slice(1);
+        if (path.endsWith("/")) path = path.slice(-1);
+        parts = parts.concat(path.split("/"));
+    }
+    if (options.record_type) parts.push(options.record_type);
+    if (options.record_id) parts.push(options.record_id);
+    url.pathname = parts.join("/");
+    // Return pathname
+    return url.pathname + url.search;
+}
+
+
+function $32ba22f6ec84c003$export$3db5d5f902fa227b(value, record_type, key, options, tableFormat = false) {
+    return $32ba22f6ec84c003$var$_getValue(value, record_type, key, options, tableFormat);
+}
+function $32ba22f6ec84c003$var$_getValue(value, record_type, key, options, tableFormat) {
     if (!value || value == null) return null;
-    if ($32ba22f6ec84c003$var$_isDate(value)) return $32ba22f6ec84c003$var$_getValueDate(value, record_type, path, key, tableFormat);
-    else if ($32ba22f6ec84c003$var$_isObject(value)) return $32ba22f6ec84c003$var$_getValueObject(value, record_type, path, key, tableFormat);
-    else if ($32ba22f6ec84c003$var$_isArray(value)) return $32ba22f6ec84c003$var$_getValueArray(value, record_type, path, key, tableFormat);
-    else return $32ba22f6ec84c003$var$_getValueOther(value, record_type, path, key, tableFormat);
+    if ($32ba22f6ec84c003$var$_isDate(value)) return $32ba22f6ec84c003$var$_getValueDate(value, record_type, key, options, tableFormat);
+    else if ($32ba22f6ec84c003$var$_isObject(value)) return $32ba22f6ec84c003$var$_getValueObject(value, record_type, key, options, tableFormat);
+    else if ($32ba22f6ec84c003$var$_isArray(value)) return $32ba22f6ec84c003$var$_getValueArray(value, record_type, key, options, tableFormat);
+    else return $32ba22f6ec84c003$var$_getValueOther(value, record_type, key, options, tableFormat);
 }
-function $32ba22f6ec84c003$var$_getValueObject(value, record_type, path, key, tableFormat) {
+function $32ba22f6ec84c003$var$_getValueObject(value, record_type, key, options, tableFormat) {
     let content = "";
     let value_record_type = value?.["@type"] || null;
     let value_record_id = value?.["@id"] || null;
-    if (value_record_type && value_record_id) content += `<a href="${path}/${value_record_type}/${value_record_id}">${$32ba22f6ec84c003$var$_getHeading1(value)}</a>`;
-    else content += JSON.stringify(value);
+    if (value_record_type && value_record_id) {
+        let url = new (0, $09aaf31e9efdd809$export$a6ec59f446d054ef)();
+        url.urlOptions = options;
+        url.record_type = value_record_type;
+        url.record_id = value_record_id;
+        content += `<a href="${url.content}">${$32ba22f6ec84c003$var$_getHeading1(value)}</a>`;
+    } else content += JSON.stringify(value);
     return content;
 }
-function $32ba22f6ec84c003$var$_getValueArray(value, record_type, path, key, tableFormat) {
+function $32ba22f6ec84c003$var$_getValueArray(value, record_type, key, options, tableFormat) {
     if (value.length == 1) return $32ba22f6ec84c003$var$_getValue(value);
     let content = "";
     content += "<ul>";
-    for (let v of value)content += `<li>${$32ba22f6ec84c003$var$_getValue(v)}</li>`;
+    for (let v of value)content += `<li>${$32ba22f6ec84c003$var$_getValue(v, record_type, key, options, tableFormat)}</li>`;
     content += "</ul>";
     return `<details> <summary>[${value.length}]</summary>${content}</details>`;
 }
-function $32ba22f6ec84c003$var$_getValueDate(value, record_type, path, key, tableFormat) {
-    let options = {
+function $32ba22f6ec84c003$var$_getValueDate(value, record_type, key, options, tableFormat) {
+    let dateOptions = {
         weekday: "short",
         year: "numeric",
         month: "short",
@@ -34,7 +251,7 @@ function $32ba22f6ec84c003$var$_getValueDate(value, record_type, path, key, tabl
     };
     return value.toLocaleString();
 }
-function $32ba22f6ec84c003$var$_getValueOther(value, record_type, path, key, tableFormat) {
+function $32ba22f6ec84c003$var$_getValueOther(value, record_type, key, options, tableFormat) {
     let length = null;
     if (tableFormat == true) length = 30;
     if (!value || value == null) return null;
@@ -46,13 +263,20 @@ function $32ba22f6ec84c003$var$_getValueOther(value, record_type, path, key, tab
     }
     if (key && key != null) {
         if (key == "@id") {
-            value = `<a href="${path}/${record_type}/${value}">${$32ba22f6ec84c003$var$trimLength(value, length)}</a>`;
+            let url = new (0, $09aaf31e9efdd809$export$a6ec59f446d054ef)();
+            url.urlOptions = options;
+            url.record_type = record_type;
+            url.record_id = value;
+            value = `<a href="${url.content}">${$32ba22f6ec84c003$var$trimLength(value, length)}</a>`;
             return value;
         }
     }
     if (key && key != null) {
         if (key == "@type") {
-            value = `<a href="${path}/${value}">${$32ba22f6ec84c003$var$trimLength(value, length)}</a>`;
+            let url = new (0, $09aaf31e9efdd809$export$a6ec59f446d054ef)();
+            url.urlOptions = options;
+            url.record_type = record_type;
+            value = `<a href="${url.content}">${$32ba22f6ec84c003$var$trimLength(value, length)}</a>`;
             return value;
         }
     }
@@ -69,12 +293,12 @@ function $32ba22f6ec84c003$var$_getHeading1(value) {
     let heading1 = null;
     let record_type = value?.["@type"] || null;
     let record_id = value?.["@id"] || null;
-    let name = value?.["name"] || null;
-    let givenName = value?.["givenName"] || null;
-    let familyName = value?.["familyName"] || null;
-    let url = value?.["url"] || null;
-    let email = value?.["email"] || null;
-    let contentUrl = value?.["contentUrl"] || null;
+    let name = value["name"] || null;
+    let givenName = value["givenName"] || null;
+    let familyName = value["familyName"] || null;
+    let url = value["url"] || null;
+    let email = value["email"] || null;
+    let contentUrl = value["contentUrl"] || null;
     heading1 = record_type + "/" + record_id;
     if (url && url != null) heading1 = url;
     if (email && email != null) heading1 = email;
@@ -107,92 +331,6 @@ function $32ba22f6ec84c003$var$_isArray(value) {
 }
 
 
-class $89b885d9c9545d83$export$2ac64f08771c2db6 {
-    constructor(record, request){
-        if (Array.isArray(record)) this.things = record;
-        else this.thing = record;
-        // Object related
-        this.record_type = null;
-        this.record_id = null;
-        // Array related
-        this.query = null;
-        this.limit = 20;
-        this.offset = 0;
-        this.orderBy = "createdDate";
-        this.orderDirection = -1;
-        this.potentialActions = null;
-        // Links
-        this.baseUrl = null;
-        this.fullUrl = null;
-        this.path = null;
-        if (request) this.loadFromRequest(request);
-    }
-    get record() {
-        return this._record;
-    }
-    set record(value) {
-        this.thing = value;
-    }
-    get records() {
-        return this._records;
-    }
-    set records(value) {
-        this.things = value;
-    }
-    get thing() {
-        return this._thing;
-    }
-    set thing(value) {
-        if (value?.record_type) {
-            this._thing = value;
-            this._record = value.record;
-        } else this._record = value;
-    }
-    get things() {
-        return this._things;
-    }
-    set things(value) {
-        value = $89b885d9c9545d83$var$ensureArray(value);
-        if (value[0] && value[0]?.record_type) {
-            this._things = value;
-            this._records = value.map((x)=>x.record);
-        } else this._records = value;
-    }
-    set request(req) {
-        this.loadFromRequest(req);
-    }
-    loadFromRequest(req) {
-        this.record_type = req.query["@type"] || req.query["record_type"] || req.params["@type"] || req.params["record_type"];
-        this.record_id = req.query["@id"] || req.query["record_id"] || req.params["@id"] || req.params["record_id"];
-        this.query = req.query["query"] || req.query["q"];
-        this.offset = req.query["offset"] || req.query["o"];
-        this.limit = req.query["limit"] || req.query["l"];
-        this.orderBy = req.query["orderBy"] || req.query["order"];
-        this.orderDirection = req.query["orderDirection"] || req.query["direction"];
-        let PORT = "";
-        this.protocol = req.protocol;
-        this.host = req.hostname;
-        this.urlPath = req.originalUrl;
-        this.port = PORT;
-        this.baseUrl = `${this.protocol}://${this.host}`;
-        this.fullUrl = `${this.protocol}://${ByteLengthQueuingStrategy.host}/${this.urlPath}`;
-    }
-    get content() {
-        return null;
-    }
-    get element() {
-        let tempElement = document.createElement("div");
-        tempElement.innerHTMl = this.content;
-        let element = tempElement.firstChild;
-        return element;
-    }
-}
-function $89b885d9c9545d83$var$ensureArray(value) {
-    if (Array.isArray(value)) return value;
-    else return [
-        value
-    ];
-}
 
 
 class $c9d793a6343af207$export$6bfbce2f9cd9b0e4 extends (0, $89b885d9c9545d83$export$2ac64f08771c2db6) {
@@ -200,21 +338,24 @@ class $c9d793a6343af207$export$6bfbce2f9cd9b0e4 extends (0, $89b885d9c9545d83$ex
         super(records, request);
     }
     get content() {
-        return $c9d793a6343af207$var$_getHtml(this.record, this.urlPath);
+        return $c9d793a6343af207$var$_getHtml(this.record, this.record_type, null, this.urlOptions);
     }
 }
-function $c9d793a6343af207$export$9994024ef36d93e2(record, path) {
-    let content = `<dl class="row">${$c9d793a6343af207$var$_getHtml(record, record["@type"], path)} </dl>`;
+function $c9d793a6343af207$export$9994024ef36d93e2(record, options) {
+    let content = `
+        <dl class="row">
+            ${$c9d793a6343af207$var$_getHtml(record, record["@type"], null, options)} 
+        </dl>`;
     return content;
 }
-function $c9d793a6343af207$var$_getHtml(value, record_type, path) {
+function $c9d793a6343af207$var$_getHtml(value, record_type, key, options) {
     let content = "";
     if ($c9d793a6343af207$var$_isObject(value) == true) {
         content += `<dl class="row">`;
         for (let k of Object.keys(value)){
             let v = value[k];
             content += ` <dt class="col-sm-2">${k}</dt>`;
-            content += ` <dd class="col-sm-10">${$c9d793a6343af207$var$_getHtmlValue(v, record_type, path, k)}</dd>`;
+            content += ` <dd class="col-sm-10">${$c9d793a6343af207$var$_getHtmlValue(v, record_type, k, options)}</dd>`;
         }
         content += `</dl>`;
     } else if ($c9d793a6343af207$var$_isArray(value) == true) {
@@ -222,28 +363,28 @@ function $c9d793a6343af207$var$_getHtml(value, record_type, path) {
         content += `<dl class="row">`;
         for (let v of value){
             content += ` <dt class="col-sm-1">[${n}]</dt>`;
-            content += ` <dd class="col-sm-11">${$c9d793a6343af207$var$_getHtmlValue(v, record_type, path)}</dd>`;
+            content += ` <dd class="col-sm-11">${$c9d793a6343af207$var$_getHtmlValue(v, record_type, key, options)}</dd>`;
             n += 1;
         }
         content += `</dl>`;
-    } else content = content + String((0, $32ba22f6ec84c003$export$3db5d5f902fa227b)(value, record_type, path));
+    } else content = content + String((0, $32ba22f6ec84c003$export$3db5d5f902fa227b)(value, record_type, key, options));
     return content;
 }
-function $c9d793a6343af207$var$_getHtmlValue(value) {
+function $c9d793a6343af207$var$_getHtmlValue(value, record_type, key, options) {
     let content = "";
     if ($c9d793a6343af207$var$_isObject(value) == true) {
-        let s = (0, $32ba22f6ec84c003$export$3db5d5f902fa227b)(value);
+        let s = (0, $32ba22f6ec84c003$export$3db5d5f902fa227b)(value, record_type, key, options);
         content += ` <details>
                     <summary>${s}</summary>
-                    ${$c9d793a6343af207$var$_getHtml(value)}
+                    ${$c9d793a6343af207$var$_getHtml(value, record_type, key, options)}
                 </details>`;
     } else if ($c9d793a6343af207$var$_isArray(value) == true) {
         let s = value.length;
         content += ` <details>
                       <summary>[${s}]</summary>
-                      ${$c9d793a6343af207$var$_getHtml(value)}
+                      ${$c9d793a6343af207$var$_getHtml(value, record_type, key, options)}
                   </details>`;
-    } else content = (0, $32ba22f6ec84c003$export$3db5d5f902fa227b)(value);
+    } else content = (0, $32ba22f6ec84c003$export$3db5d5f902fa227b)(value, record_type, key, options);
     return content;
 }
 function $c9d793a6343af207$var$_isObject(value) {
@@ -254,6 +395,7 @@ function $c9d793a6343af207$var$_isArray(value) {
     if (Array.isArray(value) == true) return true;
     return false;
 }
+
 
 
 function $dd9b1b95cb167d3d$export$b7652f6cb30c4307(title, content) {
@@ -344,7 +486,16 @@ function $0ea0e18bb6665923$var$ensureArray(value) {
 
 
 
-function $0f8c405a4572c421$export$31c173b099afd3ce(value) {
+
+class $0f8c405a4572c421$export$9fb493bb1e1a940f extends (0, $89b885d9c9545d83$export$2ac64f08771c2db6) {
+    constructor(records, request){
+        super(records, request);
+    }
+    get content() {
+        return $0f8c405a4572c421$var$_getCard(this.record, this.urlOptions);
+    }
+}
+function $0f8c405a4572c421$export$31c173b099afd3ce(value, urlOptions) {
     return $0f8c405a4572c421$var$_getCard(value);
 }
 function $0f8c405a4572c421$export$c668812a50c07d21(value) {
@@ -859,6 +1010,8 @@ const $cf838c15c8b009ba$export$a4b3bd7dfd4f2cdb = {
     "section": (0, $a871279af8aa7d8b$export$e40a2164d99fef4d),
     "table": (0, $0ea0e18bb6665923$export$52d811370d113530),
     "TableClass": (0, $0ea0e18bb6665923$export$e4ef31a20800ff68),
+    "url": (0, $09aaf31e9efdd809$export$65e8537a85f61405),
+    "UrlClass": (0, $09aaf31e9efdd809$export$a6ec59f446d054ef),
     "value": (0, $32ba22f6ec84c003$export$3db5d5f902fa227b),
     "krakenWebsite": (0, $8965cbda443616d8$export$8ab84c004e37b3e)
 };

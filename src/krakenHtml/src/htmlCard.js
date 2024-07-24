@@ -2,9 +2,24 @@
 
 import { htmlValue } from './htmlValue.js'
 import { htmlRecord } from './htmlRecord.js'
+import { ClassBase } from './ClassBase.js'
 
 
-export function htmlCard(value){
+export class HtmlCardClass extends ClassBase {
+    constructor(records, request) {
+        super(records, request)
+    }
+
+    get content(){
+        return _getCard(this.record, this.urlOptions)
+    }
+
+}
+
+
+
+
+export function htmlCard(value, urlOptions){
 
     return _getCard(value)
     

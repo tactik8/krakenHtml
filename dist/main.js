@@ -812,12 +812,9 @@ class $b8d5dfc35bfd0099$export$8f2baf8a28f733af extends (0, $89b885d9c9545d83$ex
         else {
             let records = [];
             let items = this.urlPath.split("/");
-            let runningUrl = "/";
-            for (let item of items){
-                runningUrl = [
-                    runningUrl,
-                    item
-                ].join("/");
+            let runningUrl = "";
+            for (let item of items)if (item && item != null) {
+                runningUrl = runningUrl + "/" + item;
                 let record = {
                     "name": item,
                     "url": runningUrl

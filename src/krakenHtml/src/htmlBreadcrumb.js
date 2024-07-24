@@ -19,21 +19,23 @@ export class HtmlBreadcrumbClass extends ClassBase {
         let records = []
         let items = this.urlPath.split('/')
 
-        let runningUrl = '/'
+        let runningUrl = ''
+        
         for(let item of items ){
+          if(item && item != null){
 
-          runningUrl = [runningUrl, item].join('/')
-          let record = {
-            "name": item,
-            "url": runningUrl
+            runningUrl = runningUrl + '/' + item
+            let record = {
+              "name": item,
+              "url":  runningUrl
+            }
+            records.push(record)
+            
           }
-          records.push(record)
+        
         }
         return _getBreadcrumb(records)
-
-        
       }
-        
     }
 }
 

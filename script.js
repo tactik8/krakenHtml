@@ -13,6 +13,14 @@ function test1(){
 
     let element = document.getElementById('test1')
 
+
+    let b = new krakenHtml.BreadcrumbClass()
+    b.urlPath = '/test0/test1/test2'
+    console.log(b.content)
+    element.innerHTML += b.content
+
+
+    
     let records = [getArticle(), getArticle(),getArticle(),getArticle(),getArticle(),getArticle(),getArticle(),getArticle(),getArticle(),getArticle(),getArticle()]
 
     let record = getArticle()
@@ -20,7 +28,7 @@ function test1(){
     table.urlPath = '/test/test2'
     table.records = records
 
-    element.innerHTML = table.content
+    element.innerHTML += table.content
 
     let pagination = new HtmlPaginationClass()
     pagination.records = records
@@ -34,7 +42,8 @@ function test1(){
     let lc = new krakenHtml.RecordClass(record)
     
     element.innerHTML += lc.content
-   
+
+
 
     
 }

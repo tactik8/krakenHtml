@@ -29,10 +29,12 @@ function test1(){
     pagination.path = '/test1'
 
     element.innerHTML += pagination.content
-    
-    let re = krakenHtml.record(record)
-    element.innerHTML += re
 
+
+    let lc = new krakenHtml.RecordClass()
+    
+    
+   
 
     
 }

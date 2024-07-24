@@ -31,9 +31,9 @@ function test1(){
     element.innerHTML += pagination.content
 
 
-    let lc = new krakenHtml.RecordClass()
+    let lc = new krakenHtml.RecordClass(record)
     
-    
+    element.innerHTML += lc.content
    
 
     

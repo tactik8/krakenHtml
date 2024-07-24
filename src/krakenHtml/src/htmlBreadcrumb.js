@@ -17,10 +17,9 @@ export class HtmlBreadcrumbClass extends ClassBase {
       } else {
 
         let records = []
-
         let items = this.urlPath.split('/')
 
-        let runningUrl = ''
+        let runningUrl = '/'
         for(let item of items ){
 
           runningUrl = [runningUrl, item].join('/')

@@ -37,9 +37,7 @@ export class KrakenWebsite{
 
         // Values from the request
         this._req = null
-        this.hostname = null
-        this.pathname = null
-        this.params = {}
+     
         
     }
 
@@ -62,66 +60,7 @@ export class KrakenWebsite{
     }
 
 
-    loadFromRequest(req){
-
-
-        if(!req || req == null) { return }
-
-        this._req = req
-
-        this.record_type = req.query['@type'] || req.query['record_type'] || req.params['@type'] || req.params['record_type'] || this.record_type
-        this.record_id = req.query['@id'] || req.query['record_id'] || req.params['@id'] || req.params['record_id'] || this.record_id
-
-
-        this.params =  req.query['query'] ||  req.query['q']
-
-        if(!this.params || this.params == null) { this.params = {}}
-
-        
-        
-        this.params.offset =  req.query['offset'] ||  req.query['o']
-        this.params.limit =  req.query['limit'] ||  req.query['l']
-        this.params.orderBy =  req.query['orderBy'] || req.query['order'] 
-        this.params.orderDirection =  req.query['orderDirection'] ||  req.query['direction']
-
-        let PORT = "";
-        let protocol = req.protocol;
-        this.hostname = req.hostname;
-        this.pathname = req.originalUrl
-        //let port = process.env.PORT || PORT;
-        //let baseUrl = `${protocol}://${this.hostname}`;
-        //let fullUrl = `${protocol}://${this.hostname}/${urlPath}`;
-
-    }
-
-    get urlOptions(){
-
-        let options = {
-            'hostname': this?.hostname || null,
-            'basePath': this?.basePath || null,
-            'pathname': this?.pathname || null,
-            'params': this?.params || null,
-            'baseParams': this?.baseParams || null,
-            'record_type': this?.record_type || null,
-            'record_id': this?.record_id || null
-        }
-        return options
-    }
-
-    set urlOptions(value){
-
-        if(!value || value == null) { return }
-
-        value = JSON.parse(JSON.stringify(value))
-
-        for(let k in value){
-            let v = value[k]
-            if(v && v != null){
-                this[k] = value[k]
-            }
-        }
-
-    }
+    
     
     get record(){
 
@@ -260,13 +199,64 @@ export class KrakenWebsite{
     //  Info from request 
     // -----------------------------------------------------
 
+    loadFromRequest(req){
+        
+        if(!req || req == null) { return }
+
+        this._req = req
+
+        this.record_type = req.query['@type'] || req.query['record_type'] || req.params['@type'] || req.params['record_type'] || this.record_type
+        this.record_id = req.query['@id'] || req.query['record_id'] || req.params['@id'] || req.params['record_id'] || this.record_id
+
+        this.params =  req.query['query'] ||  req.query['q']
+
+        if(!this.params || this.params == null) { this.params = {}}
+
+
+
+        this.params.offset =  req.query['offset'] ||  req.query['o']
+        this.params.limit =  req.query['limit'] ||  req.query['l']
+        this.params.orderBy =  req.query['orderBy'] || req.query['order'] 
+        this.params.orderDirection =  req.query['orderDirection'] ||  req.query['direction']
+
+        //let PORT = "";
+        //let protocol = req.protocol;
+        //this.hostname = req.hostname;
+        //this.pathname = req.originalUrl
+        //let port = process.env.PORT || PORT;
+        //let baseUrl = `${protocol}://${this.hostname}`;
+        //let fullUrl = `${protocol}://${this.hostname}/${urlPath}`;
+
+    }
+
+    get urlOptions(){
+
+        let options = {
+            'hostname': this._req.hostname || null,
+            'basePath': this._req.basePath || null,
+            'pathname': this._req.pathname || null,
+            'params': this._req.query || null,
+            'record_type': this._req.query['@type'] || this._req.query['record_type'],
+            'record_id': this._req.query['@id'] || this._req.query['record_id']
+        }
+
+        options.basePath = this.basePath || options.basePath        
+        return options
+    }
+
+    
     get pathname(){
         if(!this._req || this._req == null){ return null }
         let pathname = this._req.path
         return pathname
     }
     get requestUrl(){
-        let content = this._req.protocol + ':' + this._req.hostname + this._req.originalUrl
+
+        let subDomainString = ''
+        if(this._req.subdomains && this._req.subdomains.length > 0){
+            subDomainString = this._req.subdomains.join('.') + "."
+        }
+        let content = this._req.protocol + ':' + subDomainString + this._req.hostname + this._req.originalUrl
         return content
     }
     

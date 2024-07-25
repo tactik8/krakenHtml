@@ -21,6 +21,8 @@ function _getValue(value, record_type, key, options, tableFormat){
     if(!value || value == null){ return null }
 
 
+
+    
     if(_isDate(value)){
         return _getValueDate(value, record_type, key, options, tableFormat)
     }
@@ -50,7 +52,7 @@ function _getValueObject(value, record_type, key, options, tableFormat){
     let value_record_type = value?.['@type'] || null
     let value_record_id = value?.['@id'] || null
 
-
+    
     if(value_record_type && value_record_id){
 
         let url = new HtmlUrlClass()
@@ -122,13 +124,12 @@ function _getValueOther(value, record_type, key, options, tableFormat){
     
     if(key && key != null){
       if(key=="@id"){
-
           let url = new HtmlUrlClass()
           url.urlOptions = options
           url.record_type = record_type
           url.record_id = value
-          
           value = `<a href="${url.content}">${trimLength(value, length)}</a>`
+
            return value
       }  
        

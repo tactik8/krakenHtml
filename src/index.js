@@ -83,10 +83,11 @@ export class KrakenHtmlClass {
 
     pagination(data, urlOptions){
         this.setData(data, urlOptions)
-        return htmlCards(this.data, this.urlOptions)
+        return htmlPagination(this.data, this.urlOptions)
     }
 
     table(data, urlOptions, keys, headers, potentialActions){
+
         this.setData(data, urlOptions)
         return htmlTable(this.data, keys, headers, this.urlOptions, potentialActions)
     }

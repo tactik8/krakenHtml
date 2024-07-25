@@ -19,7 +19,7 @@ class $89b885d9c9545d83$export$2ac64f08771c2db6 {
         this._basePath = null;
         this._baseParams = {};
         this._params = {};
-        this._urlOptions = urlOptions;
+        this.urlOptions = urlOptions;
     }
     get search() {
         return this._search;
@@ -144,10 +144,22 @@ class $89b885d9c9545d83$export$2ac64f08771c2db6 {
     //  Comment 
     // -----------------------------------------------------
     get urlOptions() {
-        return this._urlOptions;
+        let options = this._urlOptions;
+        if (!options || options == null) options = {};
+        if (this.basePath && this.basePath != null) options.basePath = this.basePath;
+        if (this.record_type && this.record_type != null) options.record_type = this.record_type;
+        if (this.record_id && this.record_id != null) options.record_id = this.record_id;
+        return options;
     }
     set urlOptions(value) {
+        if (!value || value == null) {
+            this._urlOptions = {};
+            return;
+        }
         this._urlOptions = value;
+        this.record_type = value.record_type || this.record_type;
+        this.record_id = value.record_id || this.record_id;
+        this.basePath = value.basePath || this.basePath;
     }
 }
 function $89b885d9c9545d83$var$ensureArray(value) {
@@ -170,7 +182,7 @@ function $09aaf31e9efdd809$export$65e8537a85f61405(path, options) {
     return $09aaf31e9efdd809$var$_getHtmlUrl(path, options);
 }
 function $09aaf31e9efdd809$var$_getHtmlUrl(path, options) {
-    let domain = 'https://' + options?.hostname || null;
+    let domain = options?.hostname || null;
     if (!domain || domain == null) domain = "https://www.test.com";
     let url = new URL(domain);
     // Do params
@@ -1212,7 +1224,7 @@ class $cf838c15c8b009ba$export$25b31ea8a1c7d629 {
     }
     pagination(data, urlOptions) {
         this.setData(data, urlOptions);
-        return (0, $0f8c405a4572c421$export$c668812a50c07d21)(this.data, this.urlOptions);
+        return (0, $7ff3a9d3bb644157$export$17c6b15dacb75ccc)(this.data, this.urlOptions);
     }
     table(data, urlOptions, keys, headers, potentialActions) {
         this.setData(data, urlOptions);

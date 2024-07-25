@@ -21,16 +21,17 @@ function test1(){
         }
 
 
+    let options = {'basePath': '/test0/test1'}
+
+    
+    let records = [record, record, record, record, record, record, record, record]
     let element = document.getElementById('test1')
 
-    let c = new KrakenHtmlClass(record)
-    element.innerHTML += c.media()
-    element.innerHTML += c.mediaThumbnail()
-  
-    element.innerHTML += c.card()
-    
-    
-    element.innerHTML += c.record()
+    let c = new KrakenHtmlClass(records)
+    c.urlOptions = options
+    //element.innerHTML += c.cards()
+    element.innerHTML += c.table()
+   
 }
 
 

@@ -32,6 +32,9 @@ export function htmlTable(records, keys, headers, options, potentialActions) {
 
 function _getTable(records, keys, headers, options, potentialActions){
 
+
+
+    
     records = ensureArray(records)
 
     // 

@@ -36,7 +36,7 @@ export class ClassBase {
         this._params = {}
         
 
-        this._urlOptions = urlOptions
+        this.urlOptions = urlOptions
         
         
     }
@@ -223,13 +223,36 @@ export class ClassBase {
     
     get urlOptions(){
 
-        return this._urlOptions
+        let options = this._urlOptions
+
+        if(!options || options == null){
+            options = {}
+        }
+
+        if(this.basePath && this.basePath != null){
+            options.basePath = this.basePath
+        }
+       
+        
+        if(this.record_type && this.record_type != null){
+            options.record_type = this.record_type
+        }
+        if(this.record_id && this.record_id != null){
+            options.record_id = this.record_id
+        }
+
+        return options
         
     }
 
     set urlOptions(value){
 
+        if(! value || value == null){ this._urlOptions = {}; return }
+        
        this._urlOptions=value
+        this.record_type = value.record_type || this.record_type
+        this.record_id = value.record_id || this.record_id
+        this.basePath = value.basePath || this.basePath
     }
 } 
 

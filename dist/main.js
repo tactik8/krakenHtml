@@ -904,19 +904,82 @@ function $81607166ccf27aff$var$ensureArray(value) {
 
 
 class $8965cbda443616d8$export$8ab84c004e37b3e {
-    constructor(){
+    /**
+     *
+     *
+     * Initializing:
+     * let website = new KrakenWebsite()
+     * website.addHeader("Data", "/data");
+     * website.addHeader("Test", "/test");
+     * website.addFooter("Data", "/data");
+     * website.addFooter("Test", "/test");
+     * website.legalName = "Kraken";
+     * website.name = "Kraken API";
+     * website.basePath = '/api/data'
+     *
+     * Initializing pages:
+     * let page = website.newPage(req)
+     * 
+     */ constructor(){
         this._record = {};
         this._headerRecord = {};
         this._footerRecord = {};
         this._content = "";
+        this.basePath = null;
+        this.hostname = null;
+        this.params = {};
+        this.record_type = null;
+        this.record_id = null;
+        this._req = null;
     }
     get page() {
         return this.newPage();
     }
-    newPage() {
+    newPage(req) {
         let page = new $8965cbda443616d8$export$8ab84c004e37b3e();
         page._record = this._record;
+        page.basePath = this.basePath;
+        if (req && req != null) page.loadFromRequest(req);
         return page;
+    }
+    loadFromRequest(req) {
+        if (!req || req == null) return;
+        this._req = req;
+        this.record_type = req.query["@type"] || req.query["record_type"] || req.params["@type"] || req.params["record_type"] || this.record_type;
+        this.record_id = req.query["@id"] || req.query["record_id"] || req.params["@id"] || req.params["record_id"] || this.record_id;
+        this.params = req.query["query"] || req.query["q"];
+        if (!this.params || this.params == null) this.params = {};
+        this.params.offset = req.query["offset"] || req.query["o"];
+        this.params.limit = req.query["limit"] || req.query["l"];
+        this.params.orderBy = req.query["orderBy"] || req.query["order"];
+        this.params.orderDirection = req.query["orderDirection"] || req.query["direction"];
+        let PORT = "";
+        let protocol = req.protocol;
+        this.hostname = req.hostname;
+        let urlPath = req.originalUrl;
+        let port = PORT;
+        let baseUrl = `${protocol}://${host}`;
+        let fullUrl = `${protocol}://${ByteLengthQueuingStrategy.host}/${urlPath}`;
+    }
+    get urlOptions() {
+        let options = {
+            "hostname": this?.hostname || null,
+            "basePath": this?.basePath || null,
+            "pathname": this?.pathname || null,
+            "params": this?.params || null,
+            "baseParams": this?.baseParams || null,
+            "record_type": this?.record_type || null,
+            "record_id": this?.record_id || null
+        };
+        return options;
+    }
+    set urlOptions(value) {
+        if (!value || value == null) return;
+        value = JSON.parse(JSON.stringify(value));
+        for(let k in value){
+            let v = value[k];
+            if (v && v != null) this[k] = value[k];
+        }
     }
     get record() {
         if (!this._record?.hasPart) this._record.hasPart = [];

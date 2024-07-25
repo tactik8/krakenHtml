@@ -62,7 +62,7 @@ export class KrakenWebsite{
         page.basePath = this.basePath
 
         if(req && req != null){
-            page.loadFromRequest(req)
+            page.req = req
         }
         
         return page

@@ -945,7 +945,7 @@ class $8965cbda443616d8$export$8ab84c004e37b3e {
         let page = new $8965cbda443616d8$export$8ab84c004e37b3e();
         page._record = this._record;
         page.basePath = this.basePath;
-        if (req && req != null) page.loadFromRequest(req);
+        if (req && req != null) page.req = req;
         return page;
     }
     get record() {

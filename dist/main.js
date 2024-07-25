@@ -925,12 +925,15 @@ class $8965cbda443616d8$export$8ab84c004e37b3e {
         this._headerRecord = {};
         this._footerRecord = {};
         this._content = "";
+        // Values for data api
         this.basePath = null;
-        this.hostname = null;
-        this.params = {};
         this.record_type = null;
         this.record_id = null;
+        // Values from the request
         this._req = null;
+        this.hostname = null;
+        this.pathname = null;
+        this.params = {};
     }
     get page() {
         return this.newPage();
@@ -956,10 +959,10 @@ class $8965cbda443616d8$export$8ab84c004e37b3e {
         let PORT = "";
         let protocol = req.protocol;
         this.hostname = req.hostname;
-        let urlPath = req.originalUrl;
-        let port = PORT;
-        let baseUrl = `${protocol}://${hostname}`;
-        let fullUrl = `${protocol}://${ByteLengthQueuingStrategy.host}/${urlPath}`;
+        this.pathname = req.originalUrl;
+    //let port = process.env.PORT || PORT;
+    //let baseUrl = `${protocol}://${this.hostname}`;
+    //let fullUrl = `${protocol}://${this.hostname}/${urlPath}`;
     }
     get urlOptions() {
         let options = {
@@ -1075,6 +1078,18 @@ class $8965cbda443616d8$export$8ab84c004e37b3e {
         content += this._content;
         content += (0, $eaa0dfe8dd336822$export$b565a899447a9241)(this.wpFooter);
         return (0, $dd9b1b95cb167d3d$export$b7652f6cb30c4307)(this.name, content);
+    }
+    // -----------------------------------------------------
+    //  Info from request 
+    // -----------------------------------------------------
+    get pathname() {
+        if (!this._req || this._req == null) return null;
+        let pathname = this._req.path;
+        return pathname;
+    }
+    get requestUrl() {
+        let content = this._req.protocol + ":" + this._req.hostname + this._req.originalUrl;
+        return content;
     }
 }
 

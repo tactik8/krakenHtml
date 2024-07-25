@@ -30,15 +30,16 @@ export class KrakenWebsite{
         this._footerRecord = {}
         this._content = ''
 
+        // Values for data api
         this.basePath = null
-        this.hostname = null
-        this.params = {}
-
         this.record_type = null
         this.record_id = null
 
+        // Values from the request
         this._req = null
-
+        this.hostname = null
+        this.pathname = null
+        this.params = {}
         
     }
 
@@ -86,10 +87,10 @@ export class KrakenWebsite{
         let PORT = "";
         let protocol = req.protocol;
         this.hostname = req.hostname;
-        let urlPath = req.originalUrl;
-        let port = process.env.PORT || PORT;
-        let baseUrl = `${protocol}://${hostname}`;
-        let fullUrl = `${protocol}://${ByteLengthQueuingStrategy.host}/${urlPath}`;
+        this.pathname = req.originalUrl
+        //let port = process.env.PORT || PORT;
+        //let baseUrl = `${protocol}://${this.hostname}`;
+        //let fullUrl = `${protocol}://${this.hostname}/${urlPath}`;
 
     }
 
@@ -253,5 +254,20 @@ export class KrakenWebsite{
         return htmlPage(this.name, content)
     }
 
+
+
+    // -----------------------------------------------------
+    //  Info from request 
+    // -----------------------------------------------------
+
+    get pathname(){
+        if(!this._req || this._req == null){ return null }
+        let pathname = this._req.path
+        return pathname
+    }
+    get requestUrl(){
+        let content = this._req.protocol + ':' + this._req.hostname + this._req.originalUrl
+        return content
+    }
     
 }

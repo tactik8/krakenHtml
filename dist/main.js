@@ -920,7 +920,7 @@ class $8965cbda443616d8$export$8ab84c004e37b3e {
      * Initializing pages:
      * let page = website.newPage(req)
      * 
-     */ constructor(){
+     */ constructor(req){
         this._record = {};
         this._headerRecord = {};
         this._footerRecord = {};
@@ -930,7 +930,13 @@ class $8965cbda443616d8$export$8ab84c004e37b3e {
         this.record_type = null;
         this.record_id = null;
         // Values from the request
-        this._req = null;
+        this._req = req;
+    }
+    get req() {
+        return this._req;
+    }
+    set req(value) {
+        this._req = value;
     }
     get page() {
         return this.newPage();
@@ -1040,29 +1046,10 @@ class $8965cbda443616d8$export$8ab84c004e37b3e {
     // -----------------------------------------------------
     //  Info from request 
     // -----------------------------------------------------
-    loadFromRequest(req) {
-        if (!req || req == null) return;
-        this._req = req;
-        this.record_type = req.query["@type"] || req.query["record_type"] || req.params["@type"] || req.params["record_type"] || this.record_type;
-        this.record_id = req.query["@id"] || req.query["record_id"] || req.params["@id"] || req.params["record_id"] || this.record_id;
-        this.params = req.query["query"] || req.query["q"];
-        if (!this.params || this.params == null) this.params = {};
-        this.params.offset = req.query["offset"] || req.query["o"];
-        this.params.limit = req.query["limit"] || req.query["l"];
-        this.params.orderBy = req.query["orderBy"] || req.query["order"];
-        this.params.orderDirection = req.query["orderDirection"] || req.query["direction"];
-    //let PORT = "";
-    //let protocol = req.protocol;
-    //this.hostname = req.hostname;
-    //this.pathname = req.originalUrl
-    //let port = process.env.PORT || PORT;
-    //let baseUrl = `${protocol}://${this.hostname}`;
-    //let fullUrl = `${protocol}://${this.hostname}/${urlPath}`;
-    }
     get urlOptions() {
         let options = {
             "hostname": this._req.hostname || null,
-            "basePath": this._req.basePath || null,
+            "basePath": this.basePath || null,
             "pathname": this._req.pathname || null,
             "params": this._req.query || null,
             "record_type": this._req.query["@type"] || this._req.query["record_type"],

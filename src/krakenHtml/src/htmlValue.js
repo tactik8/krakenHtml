@@ -3,6 +3,7 @@ import {htmlRecord} from './htmlRecord.js'
 
 import { HtmlUrlClass, htmlUrl } from './htmlUrl.js'
 
+import {htmlMediaThumbnail} from './htmlMediaThumbnail.js'
 
 
 
@@ -163,7 +164,7 @@ function trimLength(value, length=30){
 }
 
 
-function _getHeading1(value){
+function _getHeading1(value, options){
 
     let heading1 = null
     let record_type = value?.['@type'] || null
@@ -201,11 +202,11 @@ function _getHeading1(value){
 
 
     if(record_type == "ImageObject" && contentUrl){
-        heading1 = `<img src="${contentUrl}" class="img-fluid" alt="...">` 
+        heading1 = htmlMediaThumbnail(value, options) 
     }
 
     if(record_type == "VideoObject" && contentUrl){
-        heading1 = `<video src="${contentUrl}" class="img-fluid" alt="...">` 
+        heading1 = htmlMediaThumbnail(value, options)  
     }
 
     
@@ -214,23 +215,6 @@ function _getHeading1(value){
 }
 
 
-function _getValueImage(value){
-
-
-    let contentUrl = value?.['contentUrl'] || null
-
-    let content = `<img src="${contentUrl}" class="img-fluid" alt="...">` 
-    
-}
-
-function _getValueVideo(value){
-
-
-    let contentUrl = value?.['contentUrl'] || null
-
-    let content = `<video src="${contentUrl}" class="img-fluid" alt="...">` 
-
-}
 
 
 

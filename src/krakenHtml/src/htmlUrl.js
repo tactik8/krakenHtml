@@ -34,11 +34,11 @@ function _getHtmlUrl(path, options){
 
     let p = url.searchParams
 
-    for(let k in options.baseParams){
+    for(let k in options?.baseParams){
         p.set(k, options.baseParams[k])
     }
 
-    for(let k in options.params){
+    for(let k in options?.params){
         p.set(k, options.params[k])
     }
 
@@ -52,7 +52,7 @@ function _getHtmlUrl(path, options){
     }
 
 
-    if(options.basePath && options.basePath != null){
+    if(options && options.basePath && options.basePath != null){
         let path = options.basePath
         if(path.startsWith('/')) { path = path.slice(1)}
         if(path.endsWith('/')) { path = path.slice(-1)}
@@ -60,18 +60,18 @@ function _getHtmlUrl(path, options){
     }
 
     
-    if(options.pathname && options.pathname != null){
+    if(options && options.pathname && options.pathname != null){
         let path = options.pathname
         if(path.startsWith('/')) { path = path.slice(1)}
         if(path.endsWith('/')) { path = path.slice(-1)}
         parts = parts.concat(path.split('/'))
     }
 
-    if(options.record_type){
+    if(options?.record_type && options?.record_type != null){
         parts.push(options.record_type)
     }
 
-    if(options.record_id){
+    if(options?.record_id && options?.record_id != null){
         parts.push(options.record_id)
     }
 

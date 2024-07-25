@@ -1,5 +1,5 @@
 
-import { krakenHtml } from './src/index.js'
+import { krakenHtml, KrakenHtmlClass } from './src/index.js'
 
 
 
@@ -10,16 +10,30 @@ function test1(){
             "@type": "Thing",
             "@id": "thing1",
             "name": "thing1",
-            "veryLongKeyWith some stuff": "b"
+            "veryLongKeyWith some stuff": "b",
+            "image": {
+                    "@context": "https://schema.org/",
+                    "@type": "VideoObject",
+                    "@id": "video1",
+                    "name": "video1",
+                    "contentUrl": "https://videos.pexels.com/video-files/11376704/11376704-hd_1920_1080_30fps.mp4"
+                }
         }
 
 
     let element = document.getElementById('test1')
 
-
-    let r = new krakenHtml.RecordClass(record)
-    element.innerHTML = r.content
+    let c = new KrakenHtmlClass(record)
+    element.innerHTML += c.media()
+    element.innerHTML += c.mediaThumbnail()
+  
+    element.innerHTML += c.card()
+    
+    
+    element.innerHTML += c.record()
 }
 
 
 test1()
+
+

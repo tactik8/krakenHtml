@@ -4,6 +4,7 @@ import { htmlValue } from './htmlValue.js'
 import { htmlRecord } from './htmlRecord.js'
 import { ClassBase } from './ClassBase.js'
 
+import {htmlMedia} from './htmlMedia.js'
 
 export class HtmlCardClass extends ClassBase {
     constructor(records, request) {
@@ -21,13 +22,28 @@ export class HtmlCardClass extends ClassBase {
 
 export function htmlCard(value, options){
 
-    return _getCard(value)
+    return _getCard(value, options)
     
 }
 
+
+
+export class HtmlCardsClass extends ClassBase {
+    constructor(records, request) {
+        super(records, request)
+    }
+
+    get content(){
+        return _getCards(this.records, this.urlOptions)
+    }
+
+}
+
+
+
 export function htmlCards(value, options){
 
-    return _getCards(value)
+    return _getCards(value, options)
 
 }
 
@@ -49,7 +65,7 @@ function _getCards(values, options){
 
         content += '<div class="col">'
 
-            content += _getCard(value)
+            content += _getCard(value, options)
         
         content += '</div>'
 
@@ -63,9 +79,8 @@ function _getCards(values, options){
 }
 
 
-function _getCard(value){
+function _getCard(value, options){
 
-    let imageUrl = value.contentUrl || value.image?.contentUrl || ''
 
     let modalId = 'modal_' + String(crypto.randomUUID())
     
@@ -73,13 +88,11 @@ function _getCard(value){
     
     let desc = value?.text || value?.description || ''
 
-
-
     
     let content = `
         <div class="card h-100" style="width: 18rem;">
       <a type="button" data-bs-toggle="modal" data-bs-target="#${modalId}">
-        <img src="${imageUrl}" class="card-img-top" alt="...">
+        ${htmlMedia(value, options)}
       </a>
       <div class="card-body">
         <h5 class="card-title">${heading1}</h5>
@@ -97,7 +110,7 @@ function _getCard(value){
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                 <img src="${imageUrl}" class="card-img-top" alt="...">
+                 ${htmlMedia(value, options)}
                  <div>
                     <details><summary>${htmlValue(value, value['@type'], null, options)}</summary>${htmlRecord(value, options)}</details>
                 </div>

@@ -1,6 +1,6 @@
 
 class $89b885d9c9545d83$export$2ac64f08771c2db6 {
-    constructor(record, request){
+    constructor(record, urlOptions){
         this._record = {};
         this._records = [];
         this._record_type = null;
@@ -19,7 +19,7 @@ class $89b885d9c9545d83$export$2ac64f08771c2db6 {
         this._basePath = null;
         this._baseParams = {};
         this._params = {};
-        if (request) this.loadFromRequest(request);
+        this._urlOptions = urlOptions;
     }
     get search() {
         return this._search;
@@ -97,26 +97,6 @@ class $89b885d9c9545d83$export$2ac64f08771c2db6 {
             this._records = value.map((x)=>x.record);
         } else this._records = value;
     }
-    set request(req) {
-        this.loadFromRequest(req);
-    }
-    loadFromRequest(req) {
-        if (!req || req == null) return;
-        this.record_type = req.query["@type"] || req.query["record_type"] || req.params["@type"] || req.params["record_type"] || this.record_type;
-        this.record_id = req.query["@id"] || req.query["record_id"] || req.params["@id"] || req.params["record_id"] || this.record_id;
-        this.query = req.query["query"] || req.query["q"];
-        this.offset = req.query["offset"] || req.query["o"];
-        this.limit = req.query["limit"] || req.query["l"];
-        this.orderBy = req.query["orderBy"] || req.query["order"];
-        this.orderDirection = req.query["orderDirection"] || req.query["direction"];
-        let PORT = "";
-        this.protocol = req.protocol;
-        this.host = req.hostname;
-        this.urlPath = req.originalUrl;
-        this.port = PORT;
-        this.baseUrl = `${this.protocol}://${this.host}`;
-        this.fullUrl = `${this.protocol}://${ByteLengthQueuingStrategy.host}/${this.urlPath}`;
-    }
     get content() {
         return null;
     }
@@ -164,24 +144,10 @@ class $89b885d9c9545d83$export$2ac64f08771c2db6 {
     //  Comment 
     // -----------------------------------------------------
     get urlOptions() {
-        let options = {
-            "hostname": this.hostname,
-            "basePath": this.basePath,
-            "pathname": this.pathname,
-            "params": this.params,
-            "baseParams": this.baseParams,
-            "record_type": this.record_type,
-            "record_id": this.record_id
-        };
-        return options;
+        return this._urlOptions;
     }
     set urlOptions(value) {
-        if (!value || value == null) return;
-        value = JSON.parse(JSON.stringify(value));
-        for(let k in value){
-            let v = value[k];
-            if (v && v != null) this[k] = value[k];
-        }
+        this._urlOptions = value;
     }
 }
 function $89b885d9c9545d83$var$ensureArray(value) {
@@ -209,8 +175,8 @@ function $09aaf31e9efdd809$var$_getHtmlUrl(path, options) {
     let url = new URL(domain);
     // Do params
     let p = url.searchParams;
-    for(let k in options.baseParams)p.set(k, options.baseParams[k]);
-    for(let k in options.params)p.set(k, options.params[k]);
+    for(let k in options?.baseParams)p.set(k, options.baseParams[k]);
+    for(let k in options?.params)p.set(k, options.params[k]);
     // Do pathname
     let parts = [];
     if (path && path != null) {
@@ -218,23 +184,112 @@ function $09aaf31e9efdd809$var$_getHtmlUrl(path, options) {
         if (path.endsWith("/")) path = path.slice(-1);
         parts = parts.concat(path.split("/"));
     }
-    if (options.basePath && options.basePath != null) {
+    if (options && options.basePath && options.basePath != null) {
         let path = options.basePath;
         if (path.startsWith("/")) path = path.slice(1);
         if (path.endsWith("/")) path = path.slice(-1);
         parts = parts.concat(path.split("/"));
     }
-    if (options.pathname && options.pathname != null) {
+    if (options && options.pathname && options.pathname != null) {
         let path = options.pathname;
         if (path.startsWith("/")) path = path.slice(1);
         if (path.endsWith("/")) path = path.slice(-1);
         parts = parts.concat(path.split("/"));
     }
-    if (options.record_type) parts.push(options.record_type);
-    if (options.record_id) parts.push(options.record_id);
+    if (options?.record_type && options?.record_type != null) parts.push(options.record_type);
+    if (options?.record_id && options?.record_id != null) parts.push(options.record_id);
     url.pathname = parts.join("/");
     // Return pathname
     return url.pathname + url.search;
+}
+
+
+
+
+
+
+
+
+class $2dd5d2fdb56194d5$export$fdc09f86e562e652 extends (0, $89b885d9c9545d83$export$2ac64f08771c2db6) {
+    constructor(records, request){
+        super(records, request);
+    }
+    get content() {
+        return $2dd5d2fdb56194d5$var$_getMedia(this.record, this.urlOptions);
+    }
+}
+function $2dd5d2fdb56194d5$export$3e6dfd0ad1544147(record, options) {
+    return $2dd5d2fdb56194d5$var$_getMedia(record, options);
+}
+function $2dd5d2fdb56194d5$var$_getMedia(record, options) {
+    if (record?.image && record?.image != null) record = record.image;
+    let record_type = record?.["@type"];
+    let content = "";
+    if (record.contentUrl && record.contentUrl != null) {
+        if (record_type == "VideoObject") content = `
+             <div class="col-sm-12 col-md-10 col-lg-8"> 
+             <video controls class="object-fit-contain img-fluid">
+               <source src="${record.contentUrl}" type="video/mp4">
+               Your browser does not support the video tag.
+             </video>
+             </div>
+            
+             `;
+        else content = `<div class=""><img src="${record.contentUrl}" class="img-fluid" alt="..."></div>`;
+    } else if (record.embedUrl) content = record.embedUrl;
+    return content;
+}
+
+
+
+class $376c5de221df8b59$export$25431e64f49f97f4 extends (0, $89b885d9c9545d83$export$2ac64f08771c2db6) {
+    constructor(records, request){
+        super(records, request);
+    }
+    get content() {
+        return $376c5de221df8b59$var$_getMediaThumbnail(this.record, this.urlOptions);
+    }
+}
+function $376c5de221df8b59$export$f409e9957838cfdd(record, options) {
+    return $376c5de221df8b59$var$_getMediaThumbnail(record, options);
+}
+function $376c5de221df8b59$var$_getMediaThumbnail(record, options) {
+    if (record?.image && record?.image != null) record = record.image;
+    let content = "";
+    let modalId = "modal_" + String(crypto.randomUUID());
+    content = `
+
+      <div style="max-width:200px">
+          <a type="button" data-bs-toggle="modal" data-bs-target="#${modalId}">
+            ${(0, $2dd5d2fdb56194d5$export$3e6dfd0ad1544147)(record, options)}
+          </a>
+      </div>
+    
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="${modalId}" tabindex="-1" aria-labelledby="${modalId}" aria-hidden="true">
+          <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+              <div class="modal-header">
+
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                 ${(0, $2dd5d2fdb56194d5$export$3e6dfd0ad1544147)(record, options)}
+                 <div>
+                    <details><summary>Details</summary>${(0, $c9d793a6343af207$export$9994024ef36d93e2)(record, options)}</details>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+
+
+ `;
+    return content;
 }
 
 
@@ -302,6 +357,7 @@ function $32ba22f6ec84c003$var$_getValueOther(value, record_type, key, options, 
         if (key == "@type") {
             let url = new (0, $09aaf31e9efdd809$export$a6ec59f446d054ef)();
             url.urlOptions = options;
+            url.record_id = null;
             url.record_type = record_type;
             value = `<a href="${url.content}">${$32ba22f6ec84c003$var$trimLength(value, length)}</a>`;
             return value;
@@ -316,7 +372,7 @@ function $32ba22f6ec84c003$var$trimLength(value, length = 30) {
     } catch  {}
     return value;
 }
-function $32ba22f6ec84c003$var$_getHeading1(value) {
+function $32ba22f6ec84c003$var$_getHeading1(value, options) {
     let heading1 = null;
     let record_type = value?.["@type"] || null;
     let record_id = value?.["@id"] || null;
@@ -332,17 +388,9 @@ function $32ba22f6ec84c003$var$_getHeading1(value) {
     if (name && name != null) heading1 = name;
     if (givenName && givenName != null) heading1 = `${givenName} ${familyName}`;
     if (record_type == "PostalAddress") heading1 = `${value.streetAddress}, ${value.addressLocality}, ${value.addressRegion}, ${value.addressCountry}, ${value.postalCode}`;
-    if (record_type == "ImageObject" && contentUrl) heading1 = `<img src="${contentUrl}" class="img-fluid" alt="...">`;
-    if (record_type == "VideoObject" && contentUrl) heading1 = `<video src="${contentUrl}" class="img-fluid" alt="...">`;
+    if (record_type == "ImageObject" && contentUrl) heading1 = (0, $376c5de221df8b59$export$f409e9957838cfdd)(value, options);
+    if (record_type == "VideoObject" && contentUrl) heading1 = (0, $376c5de221df8b59$export$f409e9957838cfdd)(value, options);
     return heading1;
-}
-function $32ba22f6ec84c003$var$_getValueImage(value) {
-    let contentUrl = value?.["contentUrl"] || null;
-    let content = `<img src="${contentUrl}" class="img-fluid" alt="...">`;
-}
-function $32ba22f6ec84c003$var$_getValueVideo(value) {
-    let contentUrl = value?.["contentUrl"] || null;
-    let content = `<video src="${contentUrl}" class="img-fluid" alt="...">`;
 }
 function $32ba22f6ec84c003$var$_isDate(value) {
     if (typeof value.getMonth === "function") return true;
@@ -381,16 +429,16 @@ function $c9d793a6343af207$var$_getHtml(value, record_type, key, options) {
         content += `<dl class="row">`;
         for (let k of Object.keys(value)){
             let v = value[k];
-            content += ` <dt class="col-sm-2">${k}</dt>`;
-            content += ` <dd class="col-sm-10">${$c9d793a6343af207$var$_getHtmlValue(v, record_type, k, options)}</dd>`;
+            content += ` <dt class="col-sm-12 col-lg-2">${k}</dt>`;
+            content += ` <dd class="col-sm-12 col-lg-10">${$c9d793a6343af207$var$_getHtmlValue(v, record_type, k, options)}</dd>`;
         }
         content += `</dl>`;
     } else if ($c9d793a6343af207$var$_isArray(value) == true) {
         let n = 0;
         content += `<dl class="row">`;
         for (let v of value){
-            content += ` <dt class="col-sm-1">[${n}]</dt>`;
-            content += ` <dd class="col-sm-11">${$c9d793a6343af207$var$_getHtmlValue(v, record_type, key, options)}</dd>`;
+            content += ` <dt class="col-sm-1 col-lg-1">[${n}]</dt>`;
+            content += ` <dd class="col-sm-11 col-lg-11">${$c9d793a6343af207$var$_getHtmlValue(v, record_type, key, options)}</dd>`;
             n += 1;
         }
         content += `</dl>`;
@@ -514,6 +562,7 @@ function $0ea0e18bb6665923$var$ensureArray(value) {
 
 
 
+
 class $0f8c405a4572c421$export$9fb493bb1e1a940f extends (0, $89b885d9c9545d83$export$2ac64f08771c2db6) {
     constructor(records, request){
         super(records, request);
@@ -522,33 +571,40 @@ class $0f8c405a4572c421$export$9fb493bb1e1a940f extends (0, $89b885d9c9545d83$ex
         return $0f8c405a4572c421$var$_getCard(this.record, this.urlOptions);
     }
 }
-function $0f8c405a4572c421$export$31c173b099afd3ce(value, options1) {
-    return $0f8c405a4572c421$var$_getCard(value);
+function $0f8c405a4572c421$export$31c173b099afd3ce(value, options) {
+    return $0f8c405a4572c421$var$_getCard(value, options);
 }
-function $0f8c405a4572c421$export$c668812a50c07d21(value, options1) {
-    return $0f8c405a4572c421$var$_getCards(value);
+class $0f8c405a4572c421$export$21b6c3340a001878 extends (0, $89b885d9c9545d83$export$2ac64f08771c2db6) {
+    constructor(records, request){
+        super(records, request);
+    }
+    get content() {
+        return $0f8c405a4572c421$var$_getCards(this.records, this.urlOptions);
+    }
 }
-function $0f8c405a4572c421$var$_getCards(values, options1) {
+function $0f8c405a4572c421$export$c668812a50c07d21(value, options) {
+    return $0f8c405a4572c421$var$_getCards(value, options);
+}
+function $0f8c405a4572c421$var$_getCards(values, options) {
     values = $0f8c405a4572c421$var$ensureArray(values);
     let content = ``;
     content += `<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">`;
     for (let value of values){
         content += '<div class="col">';
-        content += $0f8c405a4572c421$var$_getCard(value);
+        content += $0f8c405a4572c421$var$_getCard(value, options);
         content += "</div>";
     }
     content += "</div>";
     return content;
 }
-function $0f8c405a4572c421$var$_getCard(value) {
-    let imageUrl = value.contentUrl || value.image?.contentUrl || "";
+function $0f8c405a4572c421$var$_getCard(value, options) {
     let modalId = "modal_" + String(crypto.randomUUID());
     let heading1 = (0, $32ba22f6ec84c003$export$3db5d5f902fa227b)(value);
     let desc = value?.text || value?.description || "";
     let content = `
         <div class="card h-100" style="width: 18rem;">
       <a type="button" data-bs-toggle="modal" data-bs-target="#${modalId}">
-        <img src="${imageUrl}" class="card-img-top" alt="...">
+        ${(0, $2dd5d2fdb56194d5$export$3e6dfd0ad1544147)(value, options)}
       </a>
       <div class="card-body">
         <h5 class="card-title">${heading1}</h5>
@@ -566,7 +622,7 @@ function $0f8c405a4572c421$var$_getCard(value) {
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                 <img src="${imageUrl}" class="card-img-top" alt="...">
+                 ${(0, $2dd5d2fdb56194d5$export$3e6dfd0ad1544147)(value, options)}
                  <div>
                     <details><summary>${(0, $32ba22f6ec84c003$export$3db5d5f902fa227b)(value, value["@type"], null, options)}</summary>${(0, $c9d793a6343af207$export$9994024ef36d93e2)(value, options)}</details>
                 </div>
@@ -903,6 +959,8 @@ function $81607166ccf27aff$var$ensureArray(value) {
 
 
 
+
+
 class $8965cbda443616d8$export$8ab84c004e37b3e {
     /**
      *
@@ -1111,6 +1169,56 @@ function $b8d5dfc35bfd0099$var$_getBreadcrumb(records) {
 }
 
 
+class $cf838c15c8b009ba$export$25b31ea8a1c7d629 {
+    constructor(data, urlOptions){
+        this._data = data;
+        this._urlOptions = urlOptions;
+    }
+    get data() {
+        return this._data;
+    }
+    set data(value) {
+        if (value && value != null) this._data = value;
+    }
+    get urlOptions() {
+        return this._urlOptions;
+    }
+    set urlOptions(value) {
+        if (value && value != null) this._urlOptions = value;
+    }
+    setData(data, urlOptions) {
+        this.data = data;
+        this.urlOptions = urlOptions;
+    }
+    card(data, urlOptions) {
+        this.setData(data, urlOptions);
+        return (0, $0f8c405a4572c421$export$31c173b099afd3ce)(this.data, this.urlOptions);
+    }
+    cards(data, urlOptions) {
+        this.setData(data, urlOptions);
+        return (0, $0f8c405a4572c421$export$c668812a50c07d21)(this.data, this.urlOptions);
+    }
+    media(data, urlOptions) {
+        this.setData(data, urlOptions);
+        return (0, $2dd5d2fdb56194d5$export$3e6dfd0ad1544147)(this.data, this.urlOptions);
+    }
+    mediaThumbnail(data, urlOptions) {
+        this.setData(data, urlOptions);
+        return (0, $376c5de221df8b59$export$f409e9957838cfdd)(this.data, this.urlOptions);
+    }
+    record(data, urlOptions) {
+        this.setData(data, urlOptions);
+        return (0, $c9d793a6343af207$export$9994024ef36d93e2)(this.data, this.urlOptions);
+    }
+    pagination(data, urlOptions) {
+        this.setData(data, urlOptions);
+        return (0, $0f8c405a4572c421$export$c668812a50c07d21)(this.data, this.urlOptions);
+    }
+    table(data, urlOptions, keys, headers, potentialActions) {
+        this.setData(data, urlOptions);
+        return (0, $0ea0e18bb6665923$export$52d811370d113530)(this.data, keys, headers, this.urlOptions, potentialActions);
+    }
+}
 const $cf838c15c8b009ba$export$a4b3bd7dfd4f2cdb = {
     "accordion": (0, $805cd539bcbfab21$export$41da80d3811e604b),
     "actionMenu": (0, $81607166ccf27aff$export$b03720a6c3e1de32),
@@ -1118,8 +1226,14 @@ const $cf838c15c8b009ba$export$a4b3bd7dfd4f2cdb = {
     "breadcrumb": (0, $b8d5dfc35bfd0099$export$a8a68544893af06),
     "BreadcrumbClass": (0, $b8d5dfc35bfd0099$export$8f2baf8a28f733af),
     "card": (0, $0f8c405a4572c421$export$31c173b099afd3ce),
+    "CardClass": (0, $0f8c405a4572c421$export$9fb493bb1e1a940f),
     "cards": (0, $0f8c405a4572c421$export$c668812a50c07d21),
+    "CardsClass": (0, $0f8c405a4572c421$export$21b6c3340a001878),
     "footer": (0, $eaa0dfe8dd336822$export$b565a899447a9241),
+    "media": (0, $2dd5d2fdb56194d5$export$3e6dfd0ad1544147),
+    "MediaClass": (0, $2dd5d2fdb56194d5$export$fdc09f86e562e652),
+    "mediaThumbnail": (0, $376c5de221df8b59$export$f409e9957838cfdd),
+    "MediaThumbnailClass": (0, $376c5de221df8b59$export$25431e64f49f97f4),
     "navbar": (0, $04bed36c37a84390$export$a5436958d2eb8066),
     "page": (0, $dd9b1b95cb167d3d$export$b7652f6cb30c4307),
     "pagination": (0, $7ff3a9d3bb644157$export$17c6b15dacb75ccc),
@@ -1132,9 +1246,10 @@ const $cf838c15c8b009ba$export$a4b3bd7dfd4f2cdb = {
     "url": (0, $09aaf31e9efdd809$export$65e8537a85f61405),
     "UrlClass": (0, $09aaf31e9efdd809$export$a6ec59f446d054ef),
     "value": (0, $32ba22f6ec84c003$export$3db5d5f902fa227b),
-    "krakenWebsite": (0, $8965cbda443616d8$export$8ab84c004e37b3e)
+    "krakenWebsite": (0, $8965cbda443616d8$export$8ab84c004e37b3e),
+    "KrakenHtmlClass": $cf838c15c8b009ba$export$25b31ea8a1c7d629
 };
 
 
-export {$cf838c15c8b009ba$export$a4b3bd7dfd4f2cdb as krakenHtml};
+export {$cf838c15c8b009ba$export$25b31ea8a1c7d629 as KrakenHtmlClass, $cf838c15c8b009ba$export$a4b3bd7dfd4f2cdb as krakenHtml};
 //# sourceMappingURL=main.js.map

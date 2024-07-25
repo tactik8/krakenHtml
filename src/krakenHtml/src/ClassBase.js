@@ -2,7 +2,7 @@
 
 export class ClassBase {
 
-    constructor(record, request) {
+    constructor(record, urlOptions) {
 
 
         this._record = {}
@@ -36,9 +36,9 @@ export class ClassBase {
         this._params = {}
         
 
-        if(request){
-            this.loadFromRequest(request)
-        }
+        this._urlOptions = urlOptions
+        
+        
     }
 
     get search(){
@@ -151,35 +151,8 @@ export class ClassBase {
         }
     }
 
-    set request(req){
-        this.loadFromRequest(req)
-
-    }
-
-    loadFromRequest(req){
-
-
-        if(!req || req == null) { return }
-        
-        this.record_type = req.query['@type'] || req.query['record_type'] || req.params['@type'] || req.params['record_type'] || this.record_type
-        this.record_id = req.query['@id'] || req.query['record_id'] || req.params['@id'] || req.params['record_id'] || this.record_id
-
-        
-        this.query =  req.query['query'] ||  req.query['q']
-        this.offset =  req.query['offset'] ||  req.query['o']
-        this.limit =  req.query['limit'] ||  req.query['l']
-        this.orderBy =  req.query['orderBy'] || req.query['order'] 
-        this.orderDirection =  req.query['orderDirection'] ||  req.query['direction']
-
-        let PORT = "";
-        this.protocol = req.protocol;
-        this.host = req.hostname;
-        this.urlPath = req.originalUrl;
-        this.port = process.env.PORT || PORT;
-        this.baseUrl = `${this.protocol}://${this.host}`;
-        this.fullUrl = `${this.protocol}://${ByteLengthQueuingStrategy.host}/${this.urlPath}`;
-        
-    }
+ 
+   
 
     get content(){
         return null
@@ -250,31 +223,13 @@ export class ClassBase {
     
     get urlOptions(){
 
-        let options = {
-            'hostname': this.hostname,
-            'basePath': this.basePath,
-            'pathname': this.pathname,
-            'params': this.params,
-            'baseParams': this.baseParams,
-            'record_type': this.record_type,
-            'record_id': this.record_id
-        }
-        return options
+        return this._urlOptions
+        
     }
 
     set urlOptions(value){
 
-        if(!value || value == null) { return }
-
-        value = JSON.parse(JSON.stringify(value))
-        
-        for(let k in value){
-            let v = value[k]
-            if(v && v != null){
-                this[k] = value[k]
-            }
-        }
-     
+       this._urlOptions=value
     }
 } 
 

@@ -24,7 +24,7 @@ export function htmlUrl(path, options){
 
 function _getHtmlUrl(path, options){
 
-    let domain = options?.hostname || null
+    let domain = 'https://' + options?.hostname || null
     if(!domain || domain == null){ domain = 'https://www.test.com'}
     let url = new URL(domain)
 

@@ -182,7 +182,7 @@ function $09aaf31e9efdd809$export$65e8537a85f61405(path, options) {
     return $09aaf31e9efdd809$var$_getHtmlUrl(path, options);
 }
 function $09aaf31e9efdd809$var$_getHtmlUrl(path, options) {
-    let domain = options?.hostname || null;
+    let domain = "https://" + options?.hostname;
     if (!domain || domain == null) domain = "https://www.test.com";
     let url = new URL(domain);
     // Do params

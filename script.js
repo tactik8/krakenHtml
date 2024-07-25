@@ -26,7 +26,7 @@ function test1(){
     }
 
 
-    let r = new krakenHtml.PaginationClass(records)
+    let r = new krakenHtml.TableClass(records)
 
     r.offset = 200
     r.limit = 20

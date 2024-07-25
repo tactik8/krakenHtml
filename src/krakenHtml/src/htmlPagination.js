@@ -1,7 +1,7 @@
 
 
 import { ClassBase } from './ClassBase.js'
-
+import {HtmlUrlClass} from './htmlUrl.js'
 
 export class HtmlPaginationClass extends ClassBase {
     constructor(records, request) {
@@ -9,60 +9,46 @@ export class HtmlPaginationClass extends ClassBase {
     }
     
     get content() {
-        return _getPagination(
-            this.baseUrl + this.path,
-            this.query,
-            this.offset,
-            this.limit,
-            this.orderBy,
-            this.orderDirection,
-            this.maxNo,
-        );
+        return _getPagination(this.urlOptions);
     }
 }
 
-export function htmlPagination(
-    baseUrl,
-    query,
-    offset,
-    limit,
-    orderBy,
-    orderDirection,
-    maxNo,
-) {
-    return _getPagination(
-        baseUrl,
-        query,
-        offset,
-        limit,
-        orderBy,
-        orderDirection,
-        maxNo,
-    );
+export function htmlPagination(basePath, limit, offset, orderBy, orderDirection, params) {
+
+    let options = {}
+    options.params = params
+    options.basePath = basePath
+    if(!options.params || options.params == null) { options.params = {} }
+    
+    options.params.limit = limit
+    options.params.offset = offset
+    options.params.orderBy = orderBy
+    options.params.orderDirection = orderDirection
+    
+    return _getPagination(options);
 }
 
-function _getPagination(
-    baseUrl,
-    query,
-    offset,
-    limit,
-    orderBy,
-    orderDirection,
-    maxNo,
-) {
-    offset = Number(offset) || 0;
-    limit = Number(limit) || 20;
+function _getPagination(options) {
 
-    let NoOfItems = 5;
 
+    // Parameters 
+    let NoOfItems = 5;  // Defines the number of links presented
+
+    // Init variables
+    
+    let offset = Number(options.params?.offset) || 0;
+    let limit = Number(options.params?.limit) || 20;
     let content = ``;
+    let items = ``;
+    let maxNo = null
 
+
+    // Deifne startNo
     let startNo = offset - Math.floor(NoOfItems / 2) * limit;
 
     if (maxNo && maxNo != null) {
         if (startNo + (NoOfItems - 1) * limit > maxNo) {
-            startNo =
-                (Math.floor(maxNo / limit) + 1) * limit - NoOfItems * limit;
+            startNo = (Math.floor(maxNo / limit) + 1) * limit - NoOfItems * limit;
         }
     }
 
@@ -70,44 +56,41 @@ function _getPagination(
         startNo = 0;
     }
 
-    let items = ``;
-    items += _getLine(
-        "Previous",
-        baseUrl,
-        query,
-        offset - limit,
-        limit,
-        orderBy,
-        orderDirection,
-    );
+    
 
+    // Get first Line
+    let firstUrl = new HtmlUrlClass()
+    firstUrl.urlOptions = options
+    firstUrl.offset = startNo
+    items += _getLine("Previous", firstUrl.content);
+
+    
+    // Get middle lines
     for (let x = 0; x < NoOfItems; x++) {
         let recordNo = startNo + x * limit;
         let pageNumber = Math.floor((startNo + x * limit) / limit) + 1;
-
+        
         if (!maxNo || maxNo == null || recordNo < maxNo) {
-            items += _getLine(
-                pageNumber,
-                baseUrl,
-                query,
-                recordNo,
-                limit,
-                orderBy,
-                orderDirection,
-            );
+
+            let runningUrl = new HtmlUrlClass()
+            runningUrl.urlOptions = options
+            runningUrl.offset = startNo
+            items += _getLine(String(pageNumber), runningUrl.content)
+
+            
         }
     }
 
-    items += _getLine(
-        "Next",
-        baseUrl,
-        query,
-        offset + limit,
-        limit,
-        orderBy,
-        orderDirection,
-    );
+    // Get last Line
 
+    let lastUrl = new HtmlUrlClass()
+    lastUrl.urlOptions = options
+    lastUrl.offset = startNo
+    items += _getLine("Next", lastUrl.content);
+
+    
+
+    // Get wrapper
     content += `
      <nav aria-label="Navigation">
           <ul class="pagination justify-content-center">
@@ -118,7 +101,24 @@ function _getPagination(
     return content;
 }
 
-function _getLine(
+
+
+
+function _getLine(caption, url) {
+
+    // disable condition
+    let isDisabled = "";
+    
+
+    let item = `<li class="page-item ${isDisabled}">
+      <a href="${url}" class="page-link">${caption}</a>
+    </li>`;
+
+    return item;
+}
+
+
+function _getLine2(
     caption,
     baseUrl,
     query,
@@ -127,6 +127,9 @@ function _getLine(
     orderBy,
     orderDirection,
 ) {
+
+
+    
     let url = new URL(baseUrl);
     let params = url.searchParams;
 

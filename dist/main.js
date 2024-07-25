@@ -9,11 +9,6 @@ class $89b885d9c9545d83$export$2ac64f08771c2db6 {
         else this.thing = record;
         // Object related
         // Array related
-        this.query = null;
-        this.limit = 20;
-        this.offset = 0;
-        this.orderBy = "createdDate";
-        this.orderDirection = -1;
         this.potentialActions = null;
         // Links
         this.baseUrl = null;
@@ -55,12 +50,6 @@ class $89b885d9c9545d83$export$2ac64f08771c2db6 {
     }
     set baseParams(value) {
         this._baseParams = value;
-    }
-    get params() {
-        return this._params;
-    }
-    set params(value) {
-        this._params = value;
     }
     get record() {
         return this._record;
@@ -137,6 +126,43 @@ class $89b885d9c9545d83$export$2ac64f08771c2db6 {
         let element = tempElement.firstChild;
         return element;
     }
+    get params() {
+        if (!this._params || this._params == null) this._params = {};
+        return this._params;
+    }
+    set params(value) {
+        this._params = value;
+    }
+    // -----------------------------------------------------
+    //  Atrirbutes for .params 
+    // -----------------------------------------------------
+    get limit() {
+        return this.params?.limit;
+    }
+    set limit(value) {
+        this.params.limit = value;
+    }
+    get offset() {
+        return this.params?.offset;
+    }
+    set offset(value) {
+        this.params.offset = value;
+    }
+    get orderBy() {
+        return this.params?.orderBy;
+    }
+    set orderBy(value) {
+        this.params.orderBy = value;
+    }
+    get orderDirection() {
+        return this.params?.orderDirection;
+    }
+    set orderDirection(value) {
+        this.params.orderDirection = value;
+    }
+    // -----------------------------------------------------
+    //  Comment 
+    // -----------------------------------------------------
     get urlOptions() {
         let options = {
             "hostname": this.hostname,
@@ -151,6 +177,7 @@ class $89b885d9c9545d83$export$2ac64f08771c2db6 {
     }
     set urlOptions(value) {
         if (!value || value == null) return;
+        value = JSON.parse(JSON.stringify(value));
         for(let k in value){
             let v = value[k];
             if (v && v != null) this[k] = value[k];
@@ -495,13 +522,13 @@ class $0f8c405a4572c421$export$9fb493bb1e1a940f extends (0, $89b885d9c9545d83$ex
         return $0f8c405a4572c421$var$_getCard(this.record, this.urlOptions);
     }
 }
-function $0f8c405a4572c421$export$31c173b099afd3ce(value, urlOptions) {
+function $0f8c405a4572c421$export$31c173b099afd3ce(value, options1) {
     return $0f8c405a4572c421$var$_getCard(value);
 }
-function $0f8c405a4572c421$export$c668812a50c07d21(value) {
+function $0f8c405a4572c421$export$c668812a50c07d21(value, options1) {
     return $0f8c405a4572c421$var$_getCards(value);
 }
-function $0f8c405a4572c421$var$_getCards(values) {
+function $0f8c405a4572c421$var$_getCards(values, options1) {
     values = $0f8c405a4572c421$var$ensureArray(values);
     let content = ``;
     content += `<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">`;
@@ -541,7 +568,7 @@ function $0f8c405a4572c421$var$_getCard(value) {
               <div class="modal-body">
                  <img src="${imageUrl}" class="card-img-top" alt="...">
                  <div>
-                    <details><summary>${(0, $32ba22f6ec84c003$export$3db5d5f902fa227b)(value)}</summary>${(0, $c9d793a6343af207$export$9994024ef36d93e2)(value)}</details>
+                    <details><summary>${(0, $32ba22f6ec84c003$export$3db5d5f902fa227b)(value, value["@type"], null, options)}</summary>${(0, $c9d793a6343af207$export$9994024ef36d93e2)(value, options)}</details>
                 </div>
               </div>
               
@@ -710,35 +737,63 @@ function $64ebcd7c9c5f16e6$var$_getToC(value, level = 1) {
 
 
 
+
 class $7ff3a9d3bb644157$export$726ef0cd58bc84d1 extends (0, $89b885d9c9545d83$export$2ac64f08771c2db6) {
     constructor(records, request){
         super(records, request);
     }
     get content() {
-        return $7ff3a9d3bb644157$var$_getPagination(this.baseUrl + this.path, this.query, this.offset, this.limit, this.orderBy, this.orderDirection, this.maxNo);
+        return $7ff3a9d3bb644157$var$_getPagination(this.urlOptions);
     }
 }
-function $7ff3a9d3bb644157$export$17c6b15dacb75ccc(baseUrl, query, offset, limit, orderBy, orderDirection, maxNo) {
-    return $7ff3a9d3bb644157$var$_getPagination(baseUrl, query, offset, limit, orderBy, orderDirection, maxNo);
+function $7ff3a9d3bb644157$export$17c6b15dacb75ccc(basePath, limit, offset, orderBy, orderDirection, params) {
+    let options = {};
+    options.params = params;
+    options.basePath = basePath;
+    if (!options.params || options.params == null) options.params = {};
+    options.params.limit = limit;
+    options.params.offset = offset;
+    options.params.orderBy = orderBy;
+    options.params.orderDirection = orderDirection;
+    return $7ff3a9d3bb644157$var$_getPagination(options);
 }
-function $7ff3a9d3bb644157$var$_getPagination(baseUrl, query, offset, limit, orderBy, orderDirection, maxNo) {
-    offset = Number(offset) || 0;
-    limit = Number(limit) || 20;
-    let NoOfItems = 5;
+function $7ff3a9d3bb644157$var$_getPagination(options) {
+    // Parameters 
+    let NoOfItems = 5; // Defines the number of links presented
+    // Init variables
+    let offset = Number(options.params?.offset) || 0;
+    let limit = Number(options.params?.limit) || 20;
     let content = ``;
+    let items = ``;
+    let maxNo = null;
+    // Deifne startNo
     let startNo = offset - Math.floor(NoOfItems / 2) * limit;
     if (maxNo && maxNo != null) {
         if (startNo + (NoOfItems - 1) * limit > maxNo) startNo = (Math.floor(maxNo / limit) + 1) * limit - NoOfItems * limit;
     }
     if (startNo < 0) startNo = 0;
-    let items = ``;
-    items += $7ff3a9d3bb644157$var$_getLine("Previous", baseUrl, query, offset - limit, limit, orderBy, orderDirection);
+    // Get first Line
+    let firstUrl = new (0, $09aaf31e9efdd809$export$a6ec59f446d054ef)();
+    firstUrl.urlOptions = options;
+    firstUrl.offset = startNo;
+    items += $7ff3a9d3bb644157$var$_getLine("Previous", firstUrl.content);
+    // Get middle lines
     for(let x = 0; x < NoOfItems; x++){
         let recordNo = startNo + x * limit;
         let pageNumber = Math.floor((startNo + x * limit) / limit) + 1;
-        if (!maxNo || maxNo == null || recordNo < maxNo) items += $7ff3a9d3bb644157$var$_getLine(pageNumber, baseUrl, query, recordNo, limit, orderBy, orderDirection);
+        if (!maxNo || maxNo == null || recordNo < maxNo) {
+            let runningUrl = new (0, $09aaf31e9efdd809$export$a6ec59f446d054ef)();
+            runningUrl.urlOptions = options;
+            runningUrl.offset = startNo;
+            items += $7ff3a9d3bb644157$var$_getLine(String(pageNumber), runningUrl.content);
+        }
     }
-    items += $7ff3a9d3bb644157$var$_getLine("Next", baseUrl, query, offset + limit, limit, orderBy, orderDirection);
+    // Get last Line
+    let lastUrl = new (0, $09aaf31e9efdd809$export$a6ec59f446d054ef)();
+    lastUrl.urlOptions = options;
+    lastUrl.offset = startNo;
+    items += $7ff3a9d3bb644157$var$_getLine("Next", lastUrl.content);
+    // Get wrapper
     content += `
      <nav aria-label="Navigation">
           <ul class="pagination justify-content-center">
@@ -747,7 +802,15 @@ function $7ff3a9d3bb644157$var$_getPagination(baseUrl, query, offset, limit, ord
         </nav>`;
     return content;
 }
-function $7ff3a9d3bb644157$var$_getLine(caption, baseUrl, query, offset, limit, orderBy, orderDirection) {
+function $7ff3a9d3bb644157$var$_getLine(caption, url) {
+    // disable condition
+    let isDisabled = "";
+    let item = `<li class="page-item ${isDisabled}">
+      <a href="${url}" class="page-link">${caption}</a>
+    </li>`;
+    return item;
+}
+function $7ff3a9d3bb644157$var$_getLine2(caption, baseUrl, query, offset, limit, orderBy, orderDirection) {
     let url = new URL(baseUrl);
     let params = url.searchParams;
     if (query && query != null) params.append("query", query);

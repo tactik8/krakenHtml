@@ -9,45 +9,38 @@ import { HtmlUrlClass } from './src/krakenHtml/src/htmlUrl.js'
 
 function test1(){
 
+    console.log('pp')
     let element = document.getElementById('test1')
 
 
-
-
-    
+    let records = []
     let record = {
-             "@type": "Person",
-             "@id": "person_1",
-             "givenName": "givenName_1",
-             "familyName": "familyName_1",
-             "email": "test@test.com",
-             "telephone": "1-514-111-2222",
-             "hasOccupation": {
-                 "@type": "Occupation",
-                 "@id": "occupation_1",
-                 "name": "occupation_1"
-                 },
-             "worksfor": {
-                 "@type": "Organization",
-                 "@id": "organization_1",
-                 "name": "test_org_1",
-                 "url": "https://www.test.com"
-                 }
-         }
-    
-    let r = new krakenHtml.RecordClass(record)
-   
-    r.basePath = '/test1/test2'
+            "@context": "https://schema.org/",
+            "@type": "Thing",
+            "@id": "thing1",
+            "name": "thing1"
+        }
 
+    for(let i=0; i< 150; i++){
+        records.push(record)
+    }
+
+
+    let r = new krakenHtml.PaginationClass(records)
+
+    r.offset = 200
+    r.limit = 20
+    r.orderBy = 'name'
+    r.orderDirection = -1
+
+    r.params['test'] = 'test1'
+    r.basePath = '/test0/test1/test2'
     element.innerHTML = r.content
-
-
-
     
 }
 test1()
 
-
+console.log('ii')
 
 function getLorem(){
     return 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'

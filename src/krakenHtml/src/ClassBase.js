@@ -22,11 +22,6 @@ export class ClassBase {
     
         
         // Array related
-        this.query = null
-        this.limit = 20
-        this.offset = 0
-        this.orderBy = 'createdDate'
-        this.orderDirection = -1
         this.potentialActions = null
 
         // Links
@@ -88,14 +83,7 @@ export class ClassBase {
          this._baseParams= value
     }
 
-    get params(){
-        return this._params
-    }
-
-    set params(value){
-         this._params= value
-    }
-
+ 
     
     get record(){
         return this._record
@@ -205,7 +193,60 @@ export class ClassBase {
         return element
     }
 
+
+
+    get params(){
+        if(!this._params || this._params == null) { this._params = {}}
+        return this._params
+    }
+
+    set params(value){
+        this._params = value
+    }
+
+
+    // -----------------------------------------------------
+    //  Atrirbutes for .params 
+    // -----------------------------------------------------
+
     
+    get limit(){
+        return this.params?.limit
+    }    
+
+    set limit(value){
+        this.params.limit = value
+    } 
+
+    get offset(){
+        return this.params?.offset
+    }    
+
+    set offset(value){
+        this.params.offset = value
+    } 
+
+    get orderBy(){
+        return this.params?.orderBy
+    }    
+
+    set orderBy(value){
+        this.params.orderBy = value
+    } 
+
+    get orderDirection(){
+        return this.params?.orderDirection
+    }    
+
+    set orderDirection(value){
+        this.params.orderDirection = value
+    } 
+
+
+    // -----------------------------------------------------
+    //  Comment 
+    // -----------------------------------------------------
+
     
     get urlOptions(){
 
@@ -224,9 +265,11 @@ export class ClassBase {
     set urlOptions(value){
 
         if(!value || value == null) { return }
+
+        value = JSON.parse(JSON.stringify(value))
+        
         for(let k in value){
             let v = value[k]
-
             if(v && v != null){
                 this[k] = value[k]
             }

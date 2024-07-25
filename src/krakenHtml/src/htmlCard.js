@@ -19,12 +19,13 @@ export class HtmlCardClass extends ClassBase {
 
 
 
-export function htmlCard(value, urlOptions){
+export function htmlCard(value, options){
 
     return _getCard(value)
     
 }
-export function htmlCards(value){
+
+export function htmlCards(value, options){
 
     return _getCards(value)
 
@@ -36,7 +37,7 @@ export function htmlCards(value){
 
 
 
-function _getCards(values){
+function _getCards(values, options){
 
     values = ensureArray(values)
 
@@ -71,6 +72,9 @@ function _getCard(value){
     let heading1 = htmlValue(value)
     
     let desc = value?.text || value?.description || ''
+
+
+
     
     let content = `
         <div class="card h-100" style="width: 18rem;">
@@ -95,7 +99,7 @@ function _getCard(value){
               <div class="modal-body">
                  <img src="${imageUrl}" class="card-img-top" alt="...">
                  <div>
-                    <details><summary>${htmlValue(value)}</summary>${htmlRecord(value)}</details>
+                    <details><summary>${htmlValue(value, value['@type'], null, options)}</summary>${htmlRecord(value, options)}</details>
                 </div>
               </div>
               

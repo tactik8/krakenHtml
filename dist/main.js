@@ -466,13 +466,13 @@ class $0ea0e18bb6665923$export$e4ef31a20800ff68 extends (0, $89b885d9c9545d83$ex
         super(records, request);
     }
     get content() {
-        return $0ea0e18bb6665923$var$_getTable(this.records, this.keys, this.headers, this.urlPath, this.potentialActions);
+        return $0ea0e18bb6665923$var$_getTable(this.records, this.keys, this.headers, this.urlOptions, this.potentialActions);
     }
 }
-function $0ea0e18bb6665923$export$52d811370d113530(records, keys, headers, path, potentialActions) {
-    return $0ea0e18bb6665923$var$_getTable(records, keys, headers, path, potentialActions);
+function $0ea0e18bb6665923$export$52d811370d113530(records, keys, headers, options, potentialActions) {
+    return $0ea0e18bb6665923$var$_getTable(records, keys, headers, options, potentialActions);
 }
-function $0ea0e18bb6665923$var$_getTable(records, keys, headers, path, potentialActions) {
+function $0ea0e18bb6665923$var$_getTable(records, keys, headers, options, potentialActions) {
     records = $0ea0e18bb6665923$var$ensureArray(records);
     // 
     if (records.length == 0 && (!keys || keys == null)) keys = [
@@ -481,7 +481,7 @@ function $0ea0e18bb6665923$var$_getTable(records, keys, headers, path, potential
     ];
     if (!keys || keys == null) keys = Object.keys(records[0]);
     if (!headers || headers == null) headers = keys;
-    let content = `<table class="table table-responsive-xl">${$0ea0e18bb6665923$var$_getTableHeader(headers, path)} ${$0ea0e18bb6665923$var$_getTableRows(keys, records, path)}</table>`;
+    let content = `<table class="table table-responsive-xl">${$0ea0e18bb6665923$var$_getTableHeader(headers, options)} ${$0ea0e18bb6665923$var$_getTableRows(keys, records, options)}</table>`;
     return content;
 }
 function $0ea0e18bb6665923$var$_getTableHeader(keys) {

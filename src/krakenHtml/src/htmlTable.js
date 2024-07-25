@@ -12,7 +12,7 @@ export class HtmlTableClass extends ClassBase {
     }
 
     get content(){
-        return _getTable(this.records, this.keys, this.headers, this.urlPath, this.potentialActions)
+        return _getTable(this.records, this.keys, this.headers, this.urlOptions, this.potentialActions)
     }
 
 }
@@ -22,15 +22,15 @@ export class HtmlTableClass extends ClassBase {
 
 
 
-export function htmlTable(records, keys, headers, path, potentialActions) {
+export function htmlTable(records, keys, headers, options, potentialActions) {
 
 
-    return _getTable(records, keys, headers, path, potentialActions)
+    return _getTable(records, keys, headers, options, potentialActions)
 
 }
 
 
-function _getTable(records, keys, headers, path, potentialActions){
+function _getTable(records, keys, headers, options, potentialActions){
 
     records = ensureArray(records)
 
@@ -49,7 +49,7 @@ function _getTable(records, keys, headers, path, potentialActions){
 
     
     
-    let content = `<table class="table table-responsive-xl">${_getTableHeader(headers, path)} ${_getTableRows(keys, records, path)}</table>`
+    let content = `<table class="table table-responsive-xl">${_getTableHeader(headers, options)} ${_getTableRows(keys, records, options)}</table>`
 
     return content
 }

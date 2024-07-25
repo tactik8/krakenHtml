@@ -958,7 +958,7 @@ class $8965cbda443616d8$export$8ab84c004e37b3e {
         this.hostname = req.hostname;
         let urlPath = req.originalUrl;
         let port = PORT;
-        let baseUrl = `${protocol}://${host}`;
+        let baseUrl = `${protocol}://${hostname}`;
         let fullUrl = `${protocol}://${ByteLengthQueuingStrategy.host}/${urlPath}`;
     }
     get urlOptions() {

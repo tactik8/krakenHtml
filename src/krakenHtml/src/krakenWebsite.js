@@ -88,7 +88,7 @@ export class KrakenWebsite{
         this.hostname = req.hostname;
         let urlPath = req.originalUrl;
         let port = process.env.PORT || PORT;
-        let baseUrl = `${protocol}://${host}`;
+        let baseUrl = `${protocol}://${hostname}`;
         let fullUrl = `${protocol}://${ByteLengthQueuingStrategy.host}/${urlPath}`;
 
     }

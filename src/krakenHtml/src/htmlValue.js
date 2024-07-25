@@ -110,7 +110,7 @@ function _getValueOther(value, record_type, key, options, tableFormat){
         length = 30
     }
 
-    if(!value || value == null){ return null }
+    if(!value || value == null){ return '' }
     
     if(key && key != null){
       if(key.toLowerCase().endsWith('url') ){

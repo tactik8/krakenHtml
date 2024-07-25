@@ -281,7 +281,7 @@ function $32ba22f6ec84c003$var$_getValueDate(value, record_type, key, options, t
 function $32ba22f6ec84c003$var$_getValueOther(value, record_type, key, options, tableFormat) {
     let length = null;
     if (tableFormat == true) length = 30;
-    if (!value || value == null) return null;
+    if (!value || value == null) return "";
     if (key && key != null) {
         if (key.toLowerCase().endsWith("url")) {
             value = `<a href="${value}">${$32ba22f6ec84c003$var$trimLength(value, length)}</a>`;

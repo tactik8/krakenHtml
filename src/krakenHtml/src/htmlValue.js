@@ -137,6 +137,7 @@ function _getValueOther(value, record_type, key, options, tableFormat){
       if(key=="@type"){
             let url = new HtmlUrlClass()
             url.urlOptions = options
+            url.record_id = null
           
             url.record_type = record_type
 

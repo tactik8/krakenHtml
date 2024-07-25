@@ -42,8 +42,8 @@ function _getHtml(value, record_type, key, options) {
         content += `<dl class="row">`
         for (let k of Object.keys(value)) {
             let v = value[k]
-            content += ` <dt class="col-sm-2">${k}</dt>`
-            content += ` <dd class="col-sm-10">${_getHtmlValue(v, record_type, k, options)}</dd>`
+            content += ` <dt class="col-sm-12 col-lg-2">${k}</dt>`
+            content += ` <dd class="col-sm-12 col-lg-10">${_getHtmlValue(v, record_type, k, options)}</dd>`
         }
         content += `</dl>`
 
@@ -52,8 +52,8 @@ function _getHtml(value, record_type, key, options) {
         let n = 0
         content += `<dl class="row">`
         for (let v of value) {
-            content += ` <dt class="col-sm-1">[${n}]</dt>`
-            content += ` <dd class="col-sm-11">${_getHtmlValue(v, record_type, key, options)}</dd>`
+            content += ` <dt class="col-sm-1 col-lg-1">[${n}]</dt>`
+            content += ` <dd class="col-sm-11 col-lg-11">${_getHtmlValue(v, record_type, key, options)}</dd>`
             n += 1
         }
         content += `</dl>`

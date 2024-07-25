@@ -4,10 +4,7 @@ import { HtmlPaginationClass } from './src/krakenHtml/src/htmlPagination.js'
 import { HtmlTableClass } from './src/krakenHtml/src/htmlTable.js'
 import { HtmlUrlClass } from './src/krakenHtml/src/htmlUrl.js'
 
-function clickFnA() {
 
-    console.log('click fn')
-}
 
 
 function test1(){

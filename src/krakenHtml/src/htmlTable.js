@@ -56,7 +56,7 @@ function _getTable(records, keys, headers, path, potentialActions){
 
 
 
-function _getTableHeader(keys, path){
+function _getTableHeader(keys){
 
     let content = ``
 
@@ -73,7 +73,7 @@ function _getTableHeader(keys, path){
 }
 
 
-function _getTableRows(keys, records, path){
+function _getTableRows(keys, records, options){
 
     let content = ''
     content += `<tbody>`
@@ -85,7 +85,7 @@ function _getTableRows(keys, records, path){
 
         for(let k of keys){
 
-            content += `<td  class="text-truncate">${htmlValue(record[k], record['@type'], path, k, true)}</td>`
+            content += `<td  class="text-truncate">${htmlValue(record[k], record['@type'], k, options, true)}</td>`
             
         }
 

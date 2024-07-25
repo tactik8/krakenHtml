@@ -457,19 +457,19 @@ function $0ea0e18bb6665923$var$_getTable(records, keys, headers, path, potential
     let content = `<table class="table table-responsive-xl">${$0ea0e18bb6665923$var$_getTableHeader(headers, path)} ${$0ea0e18bb6665923$var$_getTableRows(keys, records, path)}</table>`;
     return content;
 }
-function $0ea0e18bb6665923$var$_getTableHeader(keys, path) {
+function $0ea0e18bb6665923$var$_getTableHeader(keys) {
     let content = ``;
     content += `<thead><tr>`;
     for (let k of keys)content += `  <th style="max-width: 30%" class="text-truncate" scope="col">${k}</th>`;
     content += `</tr></thead>`;
     return content;
 }
-function $0ea0e18bb6665923$var$_getTableRows(keys, records, path) {
+function $0ea0e18bb6665923$var$_getTableRows(keys, records, options) {
     let content = "";
     content += `<tbody>`;
     for (let record of records){
         content += `<tr>`;
-        for (let k of keys)content += `<td  class="text-truncate">${(0, $32ba22f6ec84c003$export$3db5d5f902fa227b)(record[k], record["@type"], path, k, true)}</td>`;
+        for (let k of keys)content += `<td  class="text-truncate">${(0, $32ba22f6ec84c003$export$3db5d5f902fa227b)(record[k], record["@type"], k, options, true)}</td>`;
         content += `</tr>`;
     }
     content += `</tbody>`;

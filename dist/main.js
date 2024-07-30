@@ -1166,7 +1166,7 @@ class $8965cbda443616d8$export$8ab84c004e37b3e {
             "record_type": this._req.query["@type"] || this._req.query["record_type"],
             "record_id": this._req.query["@id"] || this._req.query["record_id"]
         };
-        options.params.breadcrumbs = this.breadcrumbs.concat(this._breadcrumbs);
+        options.params.breadcrumbs = this.breadcrumbRecord;
         return options;
     }
     get pathname() {

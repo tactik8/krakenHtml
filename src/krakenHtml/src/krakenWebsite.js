@@ -3,6 +3,9 @@ import { htmlNavbar} from './htmlNavbar.js'
 import { htmlFooter} from './htmlFooter.js'
 import { htmlSection} from './htmlSection.js'
 
+import { htmlBreadcrumb} from './htmlBreadcrumb.js'
+
+
 import { htmlPage} from './htmlPage.js'
 
 export class KrakenWebsite{
@@ -242,23 +245,37 @@ export class KrakenWebsite{
         return content
     }
 
-    get breadcrumbs(){
 
-        let breadcrumbs = []
+    get reqBreadcrumbRecord(){
+        let breadcrumbsRecords = []
         if(this._req?.query?.breadcrumbs){
             try{
-                breadcrumbs = JSON.parse(this._req.query.breadcrumbs)
+                    breadcrumbsRecords = JSON.parse(this._req.query.breadcrumbs)
             } catch {}
         }
-        return breadcrumbs
+        return breadcrumbsRecords
+        
+    }
+    
+    get breadcrumbRecord(){
+
+        let breadcrumbsRecord = this._breadcrumbs
+        breadcrumbsRecord = breadcrumbsRecord.concat(this.reqBreadcrumbRecord)
+        return breadcrumbsRecord
     }
 
-    set breadcrumbs(value){
+    set breadcrumbRecord(value){
         this._breadcrumbs = value
     }
     
-    addBreadcrumb(name, url){
+    addBreadcrumbRecord(name, url){
         this._breadcrumbs.push({"name": name, "url": url})
+        
+    }
+
+    get breadcrumb(){
+
+        return htmlBreadcrumb( this.breadcrumbRecord )
         
     }
     

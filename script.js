@@ -22,8 +22,11 @@ function test1() {
             "2d432316-7c15-4f0f-9214-d4f6fba60627-00-1b1hmvrd8c12s.spock.replit.dev",
         basePath: "/data/testAgg",
         pathname: null,
-        params: {limit: 20,
-                    offset: 2000},
+        params: {
+            limit: 20,
+            offset: 2000,
+            breadcrumbs: [ { name: 'name', url: '/data/testAgg/PropertyValue/id_99' } ]
+        },
         record_type: undefined,
         record_id: undefined
     };
@@ -49,6 +52,7 @@ function test1() {
     //element.innerHTML += c.table()
 
     element.innerHTML += c.pagination();
+    element.innerHTML += krakenHtml.breadcrumb([ { name: 'name', url: '/data/testAgg/PropertyValue/id_99' } ]);
 }
 
 test1();

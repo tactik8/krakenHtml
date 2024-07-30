@@ -974,6 +974,45 @@ function $81607166ccf27aff$var$ensureArray(value) {
 
 
 
+class $b8d5dfc35bfd0099$export$8f2baf8a28f733af extends (0, $89b885d9c9545d83$export$2ac64f08771c2db6) {
+    constructor(records, request){
+        super(records, request);
+    }
+    get content() {
+        if (this.records && this.records != null && this.records.length > 0) return $b8d5dfc35bfd0099$var$_getBreadcrumb(this.records);
+        else {
+            let records = [];
+            let items = this.urlPath.split("/");
+            let runningUrl = "";
+            for (let item of items)if (item && item != null) {
+                runningUrl = runningUrl + "/" + item;
+                let record = {
+                    "name": item,
+                    "url": runningUrl
+                };
+                records.push(record);
+            }
+            return $b8d5dfc35bfd0099$var$_getBreadcrumb(records);
+        }
+    }
+}
+function $b8d5dfc35bfd0099$export$a8a68544893af06(records) {
+    return $b8d5dfc35bfd0099$var$_getBreadcrumb(records);
+}
+function $b8d5dfc35bfd0099$var$_getBreadcrumb(records) {
+    let parts = "";
+    for (let record of records)parts += `<li class="breadcrumb-item"><a href="${record.url}">${record.name}</a></li>`;
+    let content = `
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+       ${parts}
+      </ol>
+    </nav>`;
+    return content;
+}
+
+
+
 class $8965cbda443616d8$export$8ab84c004e37b3e {
     /**
      *
@@ -1141,62 +1180,32 @@ class $8965cbda443616d8$export$8ab84c004e37b3e {
         let content = this._req.protocol + ":" + subDomainString + this._req.hostname + this._req.originalUrl;
         return content;
     }
-    get breadcrumbs() {
-        let breadcrumbs = [];
+    get reqBreadcrumbRecord() {
+        let breadcrumbsRecords = [];
         if (this._req?.query?.breadcrumbs) try {
-            breadcrumbs = JSON.parse(this._req.query.breadcrumbs);
+            breadcrumbsRecords = JSON.parse(this._req.query.breadcrumbs);
         } catch  {}
-        return breadcrumbs;
+        return breadcrumbsRecords;
     }
-    set breadcrumbs(value) {
+    get breadcrumbRecord() {
+        let breadcrumbsRecord = this._breadcrumbs;
+        breadcrumbsRecord = breadcrumbsRecord.concat(this.reqBreadcrumbRecord);
+        return breadcrumbsRecord;
+    }
+    set breadcrumbRecord(value) {
         this._breadcrumbs = value;
     }
-    addBreadcrumb(name, url) {
+    addBreadcrumbRecord(name, url) {
         this._breadcrumbs.push({
             "name": name,
             "url": url
         });
     }
-}
-
-
-
-class $b8d5dfc35bfd0099$export$8f2baf8a28f733af extends (0, $89b885d9c9545d83$export$2ac64f08771c2db6) {
-    constructor(records, request){
-        super(records, request);
-    }
-    get content() {
-        if (this.records && this.records != null && this.records.length > 0) return $b8d5dfc35bfd0099$var$_getBreadcrumb(this.records);
-        else {
-            let records = [];
-            let items = this.urlPath.split("/");
-            let runningUrl = "";
-            for (let item of items)if (item && item != null) {
-                runningUrl = runningUrl + "/" + item;
-                let record = {
-                    "name": item,
-                    "url": runningUrl
-                };
-                records.push(record);
-            }
-            return $b8d5dfc35bfd0099$var$_getBreadcrumb(records);
-        }
+    get breadcrumb() {
+        return (0, $b8d5dfc35bfd0099$export$a8a68544893af06)(this.breadcrumbRecord);
     }
 }
-function $b8d5dfc35bfd0099$export$a8a68544893af06(records) {
-    return $b8d5dfc35bfd0099$var$_getBreadcrumb(records);
-}
-function $b8d5dfc35bfd0099$var$_getBreadcrumb(records) {
-    let parts = "";
-    for (let record of records)parts += `<li class="breadcrumb-item"><a href="${record.url}">${record.name}</a></li>`;
-    let content = `
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-       ${parts}
-      </ol>
-    </nav>`;
-    return content;
-}
+
 
 
 class $cf838c15c8b009ba$export$25b31ea8a1c7d629 {

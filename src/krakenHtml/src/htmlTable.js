@@ -33,6 +33,7 @@ export function htmlTable(records, keys, headers, options, potentialActions) {
 function _getTable(records, keys, headers, options, potentialActions){
 
 
+    options = JSON.parse(JSON.stringify(options))
 
     
     records = ensureArray(records)

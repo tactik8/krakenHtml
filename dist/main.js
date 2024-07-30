@@ -203,7 +203,6 @@ function $09aaf31e9efdd809$var$_getHtmlUrl(path, options) {
     }
     if (options && options.basePath && options.basePath != null) {
         let path = options.basePath;
-        console.log("p", path);
         if (path.startsWith("/")) path = path.slice(1);
         if (path.endsWith("/")) path = path.slice(-1);
         parts = parts.concat(path.split("/"));
@@ -1135,7 +1134,6 @@ class $8965cbda443616d8$export$8ab84c004e37b3e {
             "record_type": this._req.query["@type"] || this._req.query["record_type"],
             "record_id": this._req.query["@id"] || this._req.query["record_id"]
         };
-        options.basePath = this.basePath || options.basePath;
         return options;
     }
     get pathname() {

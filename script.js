@@ -21,7 +21,14 @@ function test1(){
         }
 
 
-    let options = {'basePath': '/test0/test1'}
+    let options = {
+      hostname: '2d432316-7c15-4f0f-9214-d4f6fba60627-00-1b1hmvrd8c12s.spock.replit.dev',
+      basePath: '/data/testAgg',
+      pathname: null,
+      params: {},
+      record_type: undefined,
+      record_id: undefined
+    }
 
     
     let records = [record, record, record, record, record, record, record, record]
@@ -30,8 +37,12 @@ function test1(){
     let c = new KrakenHtmlClass(records)
     c.urlOptions = options
     //element.innerHTML += c.cards()
-    element.innerHTML += c.table()
+    //element.innerHTML += c.table()
 
+
+   
+
+    
     element.innerHTML += c.pagination()
    
 }

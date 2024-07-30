@@ -52,7 +52,6 @@ export class KrakenWebsite{
     }
     
     get page(){
-
         return this.newPage()
     }
 
@@ -220,7 +219,7 @@ export class KrakenWebsite{
             'record_id': this._req.query['@id'] || this._req.query['record_id']
         }
 
-        options.basePath = this.basePath || options.basePath        
+         
         return options
     }
 

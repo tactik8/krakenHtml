@@ -58,7 +58,7 @@ function _getPagination(data, options) {
     options.limit = limit
     options.orderBy = orderBy
     options.orderDirection = orderDirection
-
+    
 
     
     // Get first Line

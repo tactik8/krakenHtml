@@ -73,7 +73,6 @@ function _getHtmlUrl(path, options){
     if(options && options.basePath && options.basePath != null){
         
         let path = options.basePath 
-        console.log('p', path)
         if(path.startsWith('/')) { path = path.slice(1)}
         if(path.endsWith('/')) { path = path.slice(-1)}
         parts = parts.concat(path.split('/'))

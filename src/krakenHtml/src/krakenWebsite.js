@@ -37,6 +37,8 @@ export class KrakenWebsite{
 
         // Values from the request
         this._req = req
+
+        this._breadcrumbs = []
      
         
     }
@@ -214,11 +216,12 @@ export class KrakenWebsite{
             'hostname': this._req.hostname || null,
             'basePath': this.basePath || null,
             'pathname': this._req.pathname || null,
-            'params': this._req.query || null,
+            'params': this._req.query || {},
             'record_type': this._req.query['@type'] || this._req.query['record_type'],
             'record_id': this._req.query['@id'] || this._req.query['record_id']
         }
 
+        options.params.breadcrumbs = this.breadcrumbs.concat(this._breadcrumbs)
          
         return options
     }
@@ -237,6 +240,24 @@ export class KrakenWebsite{
         }
         let content = this._req.protocol + ':' + subDomainString + this._req.hostname + this._req.originalUrl
         return content
+    }
+
+    get breadcrumbs(){
+
+        let breadcrumbs = []
+        if(this._req?.query?.breadcrumbs){
+            breadcrumbs = JSON.parse(this._req?.query.breadcrumbs)
+        }
+        return breadcrumbs
+    }
+
+    set breadcrumbs(value){
+        this._breadcrumbs = value
+    }
+    
+    addBreadcrumb(name, url){
+        this._breadcrumbs.push({"name": name, "url": url})
+        
     }
     
 }

@@ -1002,6 +1002,7 @@ class $8965cbda443616d8$export$8ab84c004e37b3e {
         this.record_id = null;
         // Values from the request
         this._req = req;
+        this._breadcrumbs = [];
     }
     get req() {
         return this._req;
@@ -1122,10 +1123,11 @@ class $8965cbda443616d8$export$8ab84c004e37b3e {
             "hostname": this._req.hostname || null,
             "basePath": this.basePath || null,
             "pathname": this._req.pathname || null,
-            "params": this._req.query || null,
+            "params": this._req.query || {},
             "record_type": this._req.query["@type"] || this._req.query["record_type"],
             "record_id": this._req.query["@id"] || this._req.query["record_id"]
         };
+        options.params.breadcrumbs = this.breadcrumbs.concat(this._breadcrumbs);
         return options;
     }
     get pathname() {
@@ -1138,6 +1140,20 @@ class $8965cbda443616d8$export$8ab84c004e37b3e {
         if (this._req.subdomains && this._req.subdomains.length > 0) subDomainString = this._req.subdomains.join(".") + ".";
         let content = this._req.protocol + ":" + subDomainString + this._req.hostname + this._req.originalUrl;
         return content;
+    }
+    get breadcrumbs() {
+        let breadcrumbs = [];
+        if (this._req?.query?.breadcrumbs) breadcrumbs = JSON.parse(this._req?.query.breadcrumbs);
+        return breadcrumbs;
+    }
+    set breadcrumbs(value) {
+        this._breadcrumbs = value;
+    }
+    addBreadcrumb(name, url) {
+        this._breadcrumbs.push({
+            "name": name,
+            "url": url
+        });
     }
 }
 

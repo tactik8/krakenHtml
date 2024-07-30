@@ -22,7 +22,6 @@ export function htmlPagination(data, options) {
 
 function _getPagination(data, options) {
 
-
     options = JSON.parse(JSON.stringify(options))
     
     // Parameters 
@@ -30,17 +29,17 @@ function _getPagination(data, options) {
 
     // Init variables
     
-    let offset = Number(options.params?.offset) || 0;
-    let limit = Number(options.params?.limit) || 20;
-    let orderBy = Number(options.params?.orderBy) || 'createdDate';
-    let orderDirection = Number(options.params?.orderDirection) || '-1';
+    let offset = Number(options?.params?.offset) || 0;
+    let limit = Number(options?.params?.limit) || 20;
+    let orderBy = Number(options?.params?.orderBy) || 'createdDate';
+    let orderDirection = Number(options?.params?.orderDirection) || '-1';
     let content = ``;
     let items = ``;
     let maxNo = null
 
 
     // Deifne startNo
-    let startNo = offset - Math.floor(NoOfItems / 2) * limit;
+    let startNo = offset - (Math.floor(NoOfItems / 2) * limit);
 
     if (maxNo && maxNo != null) {
         if (startNo + (NoOfItems - 1) * limit > maxNo) {
@@ -54,17 +53,12 @@ function _getPagination(data, options) {
 
 
     // Assign to urlOptions
-    options.offset = startNo
-    options.limit = limit
-    options.orderBy = orderBy
-    options.orderDirection = orderDirection
-    
 
     
     // Get first Line
     let firstUrl = new HtmlUrlClass()
+    options.params.offset = startNo
     firstUrl.urlOptions = options
-    firstUrl.urlOptions.offset = startNo
     items += _getLine("Previous", firstUrl.content);
     
     // Get middle lines
@@ -75,7 +69,7 @@ function _getPagination(data, options) {
         if (!maxNo || maxNo == null || recordNo < maxNo) {
 
             let runningUrl = new HtmlUrlClass()
-            options.offset = recordNo
+            options.params.offset = recordNo
             runningUrl.urlOptions = options
             items += _getLine(String(pageNumber), runningUrl.content)
             
@@ -85,7 +79,7 @@ function _getPagination(data, options) {
     // Get last Line
 
     let lastUrl = new HtmlUrlClass()
-    options.offset = offset + limit
+    options.params.offset = offset + limit
     lastUrl.urlOptions = options
     items += _getLine("Next", lastUrl.content);
 

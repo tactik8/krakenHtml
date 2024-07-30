@@ -189,11 +189,6 @@ function $09aaf31e9efdd809$var$_getHtmlUrl(path, options) {
     let p = url.searchParams;
     for(let k in options?.baseParams)p.set(k, options.baseParams[k]);
     for(let k in options?.params)p.set(k, options.params[k]);
-    //
-    if (options.offset || options.offset != null) p.set("offset", options.offset);
-    if (options.limit || options.limit != null) p.set("limit", options.limit);
-    if (options.orderBy || options.orderBy != null) p.set("orderBy", options.orderBy);
-    if (options.orderDirection || options.orderDirection != null) p.set("orderDirection", options.orderDirection);
     // Do pathname
     let parts = [];
     if (path && path != null) {
@@ -831,10 +826,10 @@ function $7ff3a9d3bb644157$var$_getPagination(data, options) {
     // Parameters 
     let NoOfItems = 5; // Defines the number of links presented
     // Init variables
-    let offset = Number(options.params?.offset) || 0;
-    let limit = Number(options.params?.limit) || 20;
-    let orderBy = Number(options.params?.orderBy) || "createdDate";
-    let orderDirection = Number(options.params?.orderDirection) || "-1";
+    let offset = Number(options?.params?.offset) || 0;
+    let limit = Number(options?.params?.limit) || 20;
+    let orderBy = Number(options?.params?.orderBy) || "createdDate";
+    let orderDirection = Number(options?.params?.orderDirection) || "-1";
     let content = ``;
     let items = ``;
     let maxNo = null;
@@ -845,14 +840,10 @@ function $7ff3a9d3bb644157$var$_getPagination(data, options) {
     }
     if (startNo < 0) startNo = 0;
     // Assign to urlOptions
-    options.offset = startNo;
-    options.limit = limit;
-    options.orderBy = orderBy;
-    options.orderDirection = orderDirection;
     // Get first Line
     let firstUrl = new (0, $09aaf31e9efdd809$export$a6ec59f446d054ef)();
+    options.params.offset = startNo;
     firstUrl.urlOptions = options;
-    firstUrl.urlOptions.offset = startNo;
     items += $7ff3a9d3bb644157$var$_getLine("Previous", firstUrl.content);
     // Get middle lines
     for(let x = 0; x < NoOfItems; x++){
@@ -860,14 +851,14 @@ function $7ff3a9d3bb644157$var$_getPagination(data, options) {
         let pageNumber = Math.floor((startNo + x * limit) / limit) + 1;
         if (!maxNo || maxNo == null || recordNo < maxNo) {
             let runningUrl = new (0, $09aaf31e9efdd809$export$a6ec59f446d054ef)();
-            options.offset = recordNo;
+            options.params.offset = recordNo;
             runningUrl.urlOptions = options;
             items += $7ff3a9d3bb644157$var$_getLine(String(pageNumber), runningUrl.content);
         }
     }
     // Get last Line
     let lastUrl = new (0, $09aaf31e9efdd809$export$a6ec59f446d054ef)();
-    options.offset = offset + limit;
+    options.params.offset = offset + limit;
     lastUrl.urlOptions = options;
     items += $7ff3a9d3bb644157$var$_getLine("Next", lastUrl.content);
     // Get wrapper

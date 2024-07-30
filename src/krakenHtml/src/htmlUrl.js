@@ -44,20 +44,7 @@ function _getHtmlUrl(path, options){
 
 
 
-    //
-    if (options.offset || options.offset != null){
-        p.set('offset', options.offset)
-    }
-    if (options.limit || options.limit != null){
-        p.set('limit', options.limit)
-    }
-    if (options.orderBy || options.orderBy != null){
-        p.set('orderBy', options.orderBy)
-    }
-    if (options.orderDirection || options.orderDirection != null){
-        p.set('orderDirection', options.orderDirection)
-    }
-    
+   
 
     
     // Do pathname

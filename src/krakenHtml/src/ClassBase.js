@@ -247,7 +247,7 @@ export class ClassBase {
 
     set urlOptions(value){
 
-        if(! value || value == null){ this._urlOptions = {}; return }
+        if(!value || value == null){ this._urlOptions = {}; return }
         
        this._urlOptions=value
         this.record_type = value.record_type || this.record_type

@@ -1143,7 +1143,9 @@ class $8965cbda443616d8$export$8ab84c004e37b3e {
     }
     get breadcrumbs() {
         let breadcrumbs = [];
-        if (this._req?.query?.breadcrumbs) breadcrumbs = JSON.parse(this._req?.query.breadcrumbs);
+        if (this._req?.query?.breadcrumbs) try {
+            breadcrumbs = JSON.parse(this._req.query.breadcrumbs);
+        } catch  {}
         return breadcrumbs;
     }
     set breadcrumbs(value) {

@@ -246,7 +246,9 @@ export class KrakenWebsite{
 
         let breadcrumbs = []
         if(this._req?.query?.breadcrumbs){
-            breadcrumbs = JSON.parse(this._req?.query.breadcrumbs)
+            try{
+                breadcrumbs = JSON.parse(this._req.query.breadcrumbs)
+            } catch {}
         }
         return breadcrumbs
     }

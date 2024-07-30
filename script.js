@@ -46,13 +46,16 @@ function test1() {
     let c = new KrakenHtmlClass(records);
     c.urlOptions = options;
 
+    let p = new krakenHtml.krakenWebsite()
     
    
     //element.innerHTML += c.cards()
     //element.innerHTML += c.table()
 
     element.innerHTML += c.pagination();
-    element.innerHTML += krakenHtml.breadcrumb([ { name: 'name', url: '/data/testAgg/PropertyValue/id_99' } ]);
+
+    p.addBreadcrumbRecord('test', 'https://www.test.com')
+    element.innerHTML += p.breadcrumb;
 }
 
 test1();

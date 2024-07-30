@@ -253,7 +253,7 @@ export class KrakenWebsite{
                     breadcrumbsRecords = JSON.parse(this._req.query.breadcrumbs)
             } catch {}
         }
-        return breadcrumbsRecords
+        return ensureArray(breadcrumbsRecords)
         
     }
     
@@ -279,4 +279,17 @@ export class KrakenWebsite{
         
     }
     
+}
+
+
+
+
+
+
+function ensureArray(value) {
+    if (Array.isArray(value)) {
+        return value;
+    } else {
+        return [value];
+    }
 }

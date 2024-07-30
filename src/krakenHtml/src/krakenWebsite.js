@@ -224,8 +224,10 @@ export class KrakenWebsite{
             'record_id': this._req.query['@id'] || this._req.query['record_id']
         }
 
-        options.params.breadcrumbs = this.breadcrumbRecord
-         
+        try{
+            options.params.breadcrumbs = JSON.stringify(this.breadcrumbRecord)
+        } catch {options.params.breadcrumbs =[]}
+        
         return options
     }
 

@@ -175,13 +175,13 @@ class $09aaf31e9efdd809$export$a6ec59f446d054ef extends (0, $89b885d9c9545d83$ex
         super(records, request);
     }
     get content() {
-        return $09aaf31e9efdd809$var$_getHtmlUrl(null, this.urlOptions);
+        return $09aaf31e9efdd809$var$_getHtmlUrl(this.urlOptions);
     }
 }
-function $09aaf31e9efdd809$export$65e8537a85f61405(path, options) {
-    return $09aaf31e9efdd809$var$_getHtmlUrl(path, options);
+function $09aaf31e9efdd809$export$65e8537a85f61405(options) {
+    return $09aaf31e9efdd809$var$_getHtmlUrl(options);
 }
-function $09aaf31e9efdd809$var$_getHtmlUrl(path, options) {
+function $09aaf31e9efdd809$var$_getHtmlUrl(options) {
     let domain = "https://" + options?.hostname;
     if (!domain || domain == null) domain = "https://www.test.com";
     let url = new URL(domain);
@@ -191,11 +191,6 @@ function $09aaf31e9efdd809$var$_getHtmlUrl(path, options) {
     for(let k in options?.params)p.set(k, options.params[k]);
     // Do pathname
     let parts = [];
-    if (path && path != null) {
-        if (path.startsWith("/")) path = path.slice(1);
-        if (path.endsWith("/")) path = path.slice(-1);
-        parts = parts.concat(path.split("/"));
-    }
     if (options && options.basePath && options.basePath != null) {
         let path = options.basePath;
         if (path.startsWith("/")) path = path.slice(1);
@@ -974,34 +969,39 @@ function $81607166ccf27aff$var$ensureArray(value) {
 
 
 
+
 class $b8d5dfc35bfd0099$export$8f2baf8a28f733af extends (0, $89b885d9c9545d83$export$2ac64f08771c2db6) {
     constructor(records, request){
         super(records, request);
     }
     get content() {
-        if (this.records && this.records != null && this.records.length > 0) return $b8d5dfc35bfd0099$var$_getBreadcrumb(this.records);
-        else {
-            let records = [];
-            let items = this.urlPath.split("/");
-            let runningUrl = "";
-            for (let item of items)if (item && item != null) {
-                runningUrl = runningUrl + "/" + item;
-                let record = {
-                    "name": item,
-                    "url": runningUrl
-                };
-                records.push(record);
-            }
-            return $b8d5dfc35bfd0099$var$_getBreadcrumb(records);
-        }
+        return $b8d5dfc35bfd0099$var$_getBreadcrumb(this.record);
     }
 }
-function $b8d5dfc35bfd0099$export$a8a68544893af06(records) {
-    return $b8d5dfc35bfd0099$var$_getBreadcrumb(records);
+function $b8d5dfc35bfd0099$export$a8a68544893af06(record) {
+    return $b8d5dfc35bfd0099$var$_getBreadcrumb(record);
 }
-function $b8d5dfc35bfd0099$var$_getBreadcrumb(records) {
+function $b8d5dfc35bfd0099$var$_getBreadcrumb(record) {
+    let listItems = record?.itemListElement;
+    listItems = $b8d5dfc35bfd0099$var$ensureArray(listItems);
+    listItems = listItems.sort((a, b)=>a.position - b.position);
     let parts = "";
-    for (let record of records)parts += `<li class="breadcrumb-item"><a href="${record.url}">${record.name}</a></li>`;
+    let newBreadCrumbItems = [];
+    for (let listItem of listItems){
+        let item = listItem.item;
+        // Define new breadcrumbs
+        let newBreadcrumb = JSON.parse(JSON.stringify(item));
+        newBreadcrumb.itemListElement = JSON.parse(JSON.stringify(newBreadCrumbItems));
+        newBreadCrumbItems.push(listItem);
+        let options = {
+            basePath: item?.url,
+            params: {
+                breadcrumb: JSON.stringify(newBreadcrumb)
+            }
+        };
+        let url = (0, $09aaf31e9efdd809$export$65e8537a85f61405)(options);
+        parts += `<li class="breadcrumb-item"><a href="${url}">${item.name}</a></li>`;
+    }
     let content = `
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
@@ -1009,6 +1009,12 @@ function $b8d5dfc35bfd0099$var$_getBreadcrumb(records) {
       </ol>
     </nav>`;
     return content;
+}
+function $b8d5dfc35bfd0099$var$ensureArray(value) {
+    if (Array.isArray(value)) return value;
+    else return [
+        value
+    ];
 }
 
 
@@ -1029,7 +1035,7 @@ class $8965cbda443616d8$export$8ab84c004e37b3e {
      *
      * Initializing pages:
      * let page = website.newPage(req)
-     * 
+     *
      */ constructor(req){
         this._record = {};
         this._headerRecord = {};
@@ -1040,7 +1046,7 @@ class $8965cbda443616d8$export$8ab84c004e37b3e {
         this.record_type = null;
         this.record_id = null;
         // Values from the request
-        this._req = req;
+        this.req = req;
         this._breadcrumbs = [];
     }
     get req() {
@@ -1048,6 +1054,10 @@ class $8965cbda443616d8$export$8ab84c004e37b3e {
     }
     set req(value) {
         this._req = value;
+        let content = this._req?.query?.breadcrumb;
+        if (content || content != null) try {
+            this.breadcrumb = JSON.parse(content);
+        } catch (error) {}
     }
     get page() {
         return this.newPage();
@@ -1075,11 +1085,11 @@ class $8965cbda443616d8$export$8ab84c004e37b3e {
         for (let p of this._record?.hasPart || []){
             if (p["@type"] == "WPHeader") return p;
         }
-        // Create new 
+        // Create new
         let r = {
             "@type": "WPHeader",
-            "name": this._record.name,
-            "hasPart": []
+            name: this._record.name,
+            hasPart: []
         };
         if (!this._record?.hasPart) this._record.hasPart = [];
         this._record.hasPart.push(r);
@@ -1088,8 +1098,8 @@ class $8965cbda443616d8$export$8ab84c004e37b3e {
     addHeader(name, url) {
         let newWebpage = {
             "@type": "WebPage",
-            "name": name,
-            "url": url
+            name: name,
+            url: url
         };
         if (!this.wpHeader?.hasPart) this.wpHeader.hasPart = [];
         this.wpHeader.hasPart.push(newWebpage);
@@ -1098,11 +1108,11 @@ class $8965cbda443616d8$export$8ab84c004e37b3e {
         for (let p of this._record?.hasPart || []){
             if (p["@type"] == "WPFooter") return p;
         }
-        // Create new 
+        // Create new
         let r = {
             "@type": "WPFooter",
-            "name": this._record.name,
-            "hasPart": []
+            name: this._record.name,
+            hasPart: []
         };
         if (!this._record?.hasPart) this._record.hasPart = [];
         this._record.hasPart.push(r);
@@ -1111,8 +1121,8 @@ class $8965cbda443616d8$export$8ab84c004e37b3e {
     addFooter(name, url) {
         let newWebpage = {
             "@type": "WebPage",
-            "name": name,
-            "url": url
+            name: name,
+            url: url
         };
         if (!this.wpFooter?.hasPart) this.wpFooter.hasPart = [];
         this.wpFooter.hasPart.push(newWebpage);
@@ -1155,21 +1165,21 @@ class $8965cbda443616d8$export$8ab84c004e37b3e {
         return (0, $dd9b1b95cb167d3d$export$b7652f6cb30c4307)(this.name, content);
     }
     // -----------------------------------------------------
-    //  Info from request 
+    //  Info from request
     // -----------------------------------------------------
     get urlOptions() {
         let options = {
-            "hostname": this._req.hostname || null,
-            "basePath": this.basePath || null,
-            "pathname": this._req.pathname || null,
-            "params": this._req.query || {},
-            "record_type": this._req.query["@type"] || this._req.query["record_type"],
-            "record_id": this._req.query["@id"] || this._req.query["record_id"]
+            hostname: this._req.hostname || null,
+            basePath: this.basePath || null,
+            pathname: this._req.pathname || null,
+            params: this._req.query || {},
+            record_type: this._req.query["@type"] || this._req.query["record_type"],
+            record_id: this._req.query["@id"] || this._req.query["record_id"]
         };
         try {
-            options.params.breadcrumbs = JSON.stringify(this.breadcrumbRecord);
+            options.params.breadcrumb = JSON.stringify(this.breadcrumb);
         } catch  {
-            options.params.breadcrumbs = [];
+            options.params.breadcrumb = JSON.stringify({});
         }
         return options;
     }
@@ -1184,29 +1194,47 @@ class $8965cbda443616d8$export$8ab84c004e37b3e {
         let content = this._req.protocol + ":" + subDomainString + this._req.hostname + this._req.originalUrl;
         return content;
     }
-    get reqBreadcrumbRecord() {
-        let breadcrumbsRecords = [];
-        if (this._req?.query?.breadcrumbs) try {
-            breadcrumbsRecords = JSON.parse(this._req.query.breadcrumbs);
-        } catch  {}
-        return $8965cbda443616d8$var$ensureArray(breadcrumbsRecords);
-    }
-    get breadcrumbRecord() {
-        let breadcrumbsRecord = this._breadcrumbs;
-        breadcrumbsRecord = breadcrumbsRecord.concat(this.reqBreadcrumbRecord);
-        return breadcrumbsRecord;
-    }
-    set breadcrumbRecord(value) {
-        this._breadcrumbs = value;
-    }
-    addBreadcrumbRecord(name, url) {
-        this._breadcrumbs.push({
-            "name": name,
-            "url": url
-        });
-    }
+    // -----------------------------------------------------
+    //  Breadcrumb 
+    // -----------------------------------------------------
     get breadcrumb() {
-        return (0, $b8d5dfc35bfd0099$export$a8a68544893af06)(this.breadcrumbRecord);
+        if (!this._record.breadcrumb || this._record.breadcrumb == null) this._record.breadcrumb = {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "@id": String(crypto.randomUUID()),
+            itemListElement: []
+        };
+        if (!this._record.breadcrumb.itemListElement) this._record.breadcrumb.itemListElement = [];
+        this._record.breadcrumb.itemListElement = $8965cbda443616d8$var$ensureArray(this._record.breadcrumb.itemListElement);
+        return this._record?.breadcrumb;
+    }
+    set breadcrumb(value) {
+        this._record.breadcrumb = value;
+    }
+    addBreadcrumb(name, url) {
+        // Add a breadcrumb record
+        //
+        let listItems = this.breadcrumb?.itemListElement;
+        // Ensure not already part of items
+        for (let listItem of listItems){
+            if (listItem?.item?.["url"] == url) return;
+        }
+        let maxPosition = 0;
+        for (let listItem of listItems)if ((listItem?.position || 0) > maxPosition) maxPosition = listItem.position;
+        let record = {
+            "@type": "ListItem",
+            position: maxPosition + 1,
+            item: {
+                "@type": "WebPage",
+                "@id": url,
+                name: name,
+                url: url
+            }
+        };
+        this.breadcrumb.itemListElement.push(record);
+    }
+    get breadcrumbContent() {
+        return (0, $b8d5dfc35bfd0099$export$a8a68544893af06)(this.breadcrumb);
     }
 }
 function $8965cbda443616d8$var$ensureArray(value) {

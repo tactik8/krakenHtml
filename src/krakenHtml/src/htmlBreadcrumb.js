@@ -1,75 +1,67 @@
+import { ClassBase } from "./ClassBase.js";
 
-
-
-
-import { ClassBase } from './ClassBase.js'
-
+import { htmlUrl } from "./htmlUrl.js";
 
 export class HtmlBreadcrumbClass extends ClassBase {
-    constructor(records, request) {
-        super(records, request)
-    }
+  constructor(records, request) {
+    super(records, request);
+  }
 
-    get content() {
-
-      if (this.records && this.records != null && this.records.length > 0){
-        return _getBreadcrumb(this.records)
-      } else {
-
-        let records = []
-        let items = this.urlPath.split('/')
-
-        let runningUrl = ''
-        
-        for(let item of items ){
-          if(item && item != null){
-
-            runningUrl = runningUrl + '/' + item
-            let record = {
-              "name": item,
-              "url":  runningUrl
-            }
-            records.push(record)
-            
-          }
-        
-        }
-        return _getBreadcrumb(records)
-      }
-    }
+  get content() {
+    return _getBreadcrumb(this.record);
+  }
 }
 
-
-
-export function htmlBreadcrumb(records){
-
-    return _getBreadcrumb(records)
-
+export function htmlBreadcrumb(record) {
+  return _getBreadcrumb(record);
 }
 
-
-function _getBreadcrumb(records){
-
-
-    let parts = ''
-    for(let record of records){
-
-        parts += `<li class="breadcrumb-item"><a href="${record.url}">${record.name}</a></li>`
-
-    }
-
+function _getBreadcrumb(record) {
   
-    let content = `
+  let listItems = record?.itemListElement;
+
+  listItems = ensureArray(listItems);
+
+  listItems = listItems.sort((a, b) => a.position - b.position);
+
+  let parts = "";
+  let newBreadCrumbItems = [];
+  for (let listItem of listItems) {
+    
+    let item = listItem.item;
+
+    // Define new breadcrumbs
+    let newBreadcrumb = JSON.parse(JSON.stringify(item));
+    newBreadcrumb.itemListElement = JSON.parse(JSON.stringify(newBreadCrumbItems));
+    newBreadCrumbItems.push(listItem);
+
+   
+    let options = {
+      basePath: item?.url,
+      params: {
+        breadcrumb: JSON.stringify(newBreadcrumb),
+      },
+    };
+
+    let url = htmlUrl(options);
+
+    parts += `<li class="breadcrumb-item"><a href="${url}">${item.name}</a></li>`;
+  }
+
+  let content = `
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
        ${parts}
       </ol>
-    </nav>`
-        
-  
-    return content
+    </nav>`;
+
+  return content;
 }
 
-
-
-
+function ensureArray(value) {
+  if (Array.isArray(value)) {
+    return value;
+  } else {
+    return [value];
+  }
+}

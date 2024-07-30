@@ -17,15 +17,41 @@ function test1() {
         },
     };
 
-    let options = {
+
+    let req = {
         hostname:
             "2d432316-7c15-4f0f-9214-d4f6fba60627-00-1b1hmvrd8c12s.spock.replit.dev",
-        basePath: "/data/testAgg",
+        pathname: null,
+        query: {
+            limit: 20,
+            offset: 2000,
+            breadcrumb: JSON.stringify(
+                 
+                    {
+                        "@type": "BreadcrumbList",
+                        itemListElement: 
+                        [ 
+                            {
+                                "@type": "ListItem",
+                                "position": 0,
+                                item: { 
+                                    name: 'name', 
+                                    url: '/data/testAgg/PropertyValue/id_99' 
+                                }
+                            }
+                        ] 
+                    }
+                
+            )
+        }
+    }
+
+    
+    let options = {
         pathname: null,
         params: {
             limit: 20,
-            offset: 2000,
-            breadcrumbs: [ { name: 'name', url: '/data/testAgg/PropertyValue/id_99' } ]
+            offset: 2000
         },
         record_type: undefined,
         record_id: undefined
@@ -46,7 +72,8 @@ function test1() {
     let c = new KrakenHtmlClass(records);
     c.urlOptions = options;
 
-    let p = new krakenHtml.krakenWebsite()
+    let p = new krakenHtml.krakenWebsite(req)
+    
     
    
     //element.innerHTML += c.cards()
@@ -54,8 +81,13 @@ function test1() {
 
     element.innerHTML += c.pagination();
 
-    p.addBreadcrumbRecord('test', 'https://www.test.com')
-    element.innerHTML += p.breadcrumb;
+    p.addBreadcrumb('test', 'https://www.test.com')
+    p.addBreadcrumb('test2', 'https://www.test2.com')
+
+    p.addBreadcrumb('test3', 'https://www.test3.com')
+    p.addBreadcrumb('test4', 'https://www.test4.com')
+
+    element.innerHTML += p.breadcrumbContent;
 }
 
 test1();

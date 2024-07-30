@@ -8,21 +8,21 @@ export class HtmlUrlClass extends ClassBase {
     }
 
     get content() {
-        return _getHtmlUrl(null, this.urlOptions)
+        return _getHtmlUrl(this.urlOptions)
     }
 
     
 }
 
 
-export function htmlUrl(path, options){
+export function htmlUrl(options){
 
-    return _getHtmlUrl(path, options)
+    return _getHtmlUrl(options)
     
 }
 
 
-function _getHtmlUrl(path, options){
+function _getHtmlUrl(options){
 
     let domain = 'https://' + options?.hostname || null
     if(!domain || domain == null){ domain = 'https://www.test.com'}
@@ -50,12 +50,7 @@ function _getHtmlUrl(path, options){
     // Do pathname
     let parts = []
     
-    if(path && path != null){
-        if(path.startsWith('/')) { path = path.slice(1)}
-        if(path.endsWith('/')) { path = path.slice(-1)}
-        parts = parts.concat(path.split('/'))
-    }
-
+   
 
     if(options && options.basePath && options.basePath != null){
         

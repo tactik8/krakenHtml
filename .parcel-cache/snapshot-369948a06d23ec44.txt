@@ -1,12 +1,12 @@
 13681
-36/home/runner/krakenHtml/package.json1722346928573744778 0
+36/home/runner/krakenHtml/package.json1722348603623290294 0
 33/home/runner/krakenHtml/script.js1722346908341774406 0
 41/home/runner/krakenHtml/package-lock.json1722346043031048874 0
 52/home/runner/krakenHtml/.github/workflows/static.yml1720709834483864000 0
 31/home/runner/krakenHtml/.github1720709834483864000 1
-40/home/runner/krakenHtml/dist/main.js.map1722346932861738498 0
-36/home/runner/krakenHtml/dist/main.js1722346932861738498 0
-28/home/runner/krakenHtml/dist1722346932861738498 1
+40/home/runner/krakenHtml/dist/main.js.map1722348628467253892 0
+36/home/runner/krakenHtml/dist/main.js1722348628463253897 0
+28/home/runner/krakenHtml/dist1722348628467253892 1
 60/home/runner/krakenHtml/node_modules/regjsparser/parser.d.ts1721850532400174330 0
 58/home/runner/krakenHtml/node_modules/regjsparser/README.md1721850532340174418 0
 58/home/runner/krakenHtml/node_modules/regjsparser/parser.js1721850532260174537 0
@@ -2104,7 +2104,7 @@
 107/home/runner/krakenHtml/node_modules/@parcel/optimizer-htmlnano/node_modules/svgo/plugins/removeComments.js1719933946461555019 0
 68/home/runner/krakenHtml/node_modules/js-yaml/lib/js-yaml/type/int.js1719933761017677835 0
 83/home/runner/krakenHtml/node_modules/.bin/node-gyp-build-optional-packages-optional1719933947501554330 0
-55/home/runner/krakenHtml/src/krakenHtml/src/htmlTable.js1721936845051187777 0
+55/home/runner/krakenHtml/src/krakenHtml/src/htmlTable.js1722347062617548482 0
 52/home/runner/krakenHtml/node_modules/js-yaml/LICENSE1719933760273678328 0
 90/home/runner/krakenHtml/node_modules/@babel/helper-validator-identifier/lib/keyword.js.map1719933760737678020 0
 54/home/runner/krakenHtml/node_modules/find-up/readme.md1719933760469678197 0
@@ -3651,7 +3651,7 @@
 93/home/runner/krakenHtml/node_modules/@jridgewell/trace-mapping/dist/types/strip-filename.d.ts1719933761113677771 0
 84/home/runner/krakenHtml/node_modules/jest-resolve/node_modules/color-convert/LICENSE1719933760581678123 0
 86/home/runner/krakenHtml/node_modules/@jridgewell/trace-mapping/dist/types/any-map.d.ts1719933761081677792 0
-42/home/runner/krakenHtml/src/krakenHtml/src1722346870249830189 1
+42/home/runner/krakenHtml/src/krakenHtml/src1722348619783266616 1
 86/home/runner/krakenHtml/node_modules/csso/node_modules/css-tree/lib/generator/index.js1719933946609554921 0
 90/home/runner/krakenHtml/node_modules/@parcel/optimizer-svgo/node_modules/svgo/lib/types.ts1719933946561554953 0
 92/home/runner/krakenHtml/node_modules/@jridgewell/trace-mapping/dist/trace-mapping.umd.js.map1719933760977677861 0
@@ -4629,6 +4629,8 @@
 83/home/runner/krakenHtml/node_modules/@babel/traverse/lib/path/inference/util.js.map1721850532720173856 0
 80/home/runner/krakenHtml/node_modules/caniuse-lite/data/features/accelerometer.js1719933760653678075 0
 77/home/runner/krakenHtml/node_modules/css-tree/cjs/syntax/node/Parentheses.cjs1719933946533554972 0
+79/home/runner/krakenHtml/node_modules/pure-rand/lib/generator/RandomGenerator.js1719933761217677702 0
+77/home/runner/krakenHtml/node_modules/@babel/traverse/lib/scope/binding.js.map1721850532764173790 0
 59/home/runner/krakenHtml/src/krakenHtml/src/krakenWebsite.js1722345680011581345 0
 52/home/runner/krakenHtml/node_modules/posthtml-render1719933946133555236 1
 67/home/runner/krakenHtml/node_modules/@babel/core/lib/config/item.js1719933761221677699 0
@@ -4660,8 +4662,6 @@
 68/home/runner/krakenHtml/node_modules/@babel/helpers/lib/index.js.map1719933761361677607 0
 59/home/runner/krakenHtml/node_modules/picomatch/package.json1719933760729678025 0
 56/home/runner/krakenHtml/node_modules/strip-final-newline1719933760357678272 1
-79/home/runner/krakenHtml/node_modules/pure-rand/lib/generator/RandomGenerator.js1719933761217677702 0
-77/home/runner/krakenHtml/node_modules/@babel/traverse/lib/scope/binding.js.map1721850532764173790 0
 57/home/runner/krakenHtml/src/krakenHtml/src/htmlSection.js1719953473716622079 0
 70/home/runner/krakenHtml/node_modules/jest-circus/build/eventHandler.js1719933760453678208 0
 80/home/runner/krakenHtml/.cache/typescript/5.4/node_modules/@jest/schemas/LICENSE1719933743925689154 0
@@ -4703,7 +4703,7 @@
 110/home/runner/krakenHtml/.cache/typescript/5.4/node_modules/pretty-format/node_modules/ansi-styles/package.json1719933743929689151 0
 59/home/runner/krakenHtml/node_modules/jest-each/node_modules1719933758893679241 1
 75/home/runner/krakenHtml/node_modules/@parcel/packager-js/src/.eslintrc.json1719933946305555122 0
-54/home/runner/krakenHtml/src/krakenHtml/src/htmlPage.js1719956390702689607 0
+54/home/runner/krakenHtml/src/krakenHtml/src/htmlPage.js1722348619763266645 0
 65/home/runner/krakenHtml/node_modules/@babel/template/package.json1719933761069677800 0
 83/home/runner/krakenHtml/.cache/typescript/5.4/node_modules/@types/uuid/package.json1719933831245631323 0
 85/home/runner/krakenHtml/.cache/typescript/5.4/node_modules/pretty-format/node_modules1719933743609689363 1
@@ -5216,7 +5216,7 @@
 84/home/runner/krakenHtml/node_modules/@babel/runtime/helpers/esm/classNameTDZError.js1721850532740173826 0
 57/home/runner/krakenHtml/node_modules/y18n/build/index.cjs1719933760501678176 0
 112/home/runner/krakenHtml/.cache/typescript/5.4/node_modules/@babel/helper-validator-identifier/lib/keyword.js.map1719933743861689196 0
-23/home/runner/krakenHtml1722346928597744743 1
+23/home/runner/krakenHtml1722348604167289497 1
 91/home/runner/krakenHtml/node_modules/@babel/plugin-transform-parameters/lib/shadow-utils.js1721850532340174418 0
 65/home/runner/krakenHtml/node_modules/undici-types/filereader.d.ts1719933760865677935 0
 101/home/runner/krakenHtml/node_modules/@parcel/transformer-posthtml/node_modules/semver/functions/lt.js1719933946281555138 0

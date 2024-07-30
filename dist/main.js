@@ -509,7 +509,7 @@ function $dd9b1b95cb167d3d$export$b7652f6cb30c4307(title, content) {
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"></script>
 
-        <script type="module" src="script.js"></script>
+        
 
 
     </body>
@@ -535,6 +535,7 @@ function $0ea0e18bb6665923$export$52d811370d113530(records, keys, headers, optio
     return $0ea0e18bb6665923$var$_getTable(records, keys, headers, options, potentialActions);
 }
 function $0ea0e18bb6665923$var$_getTable(records, keys, headers, options, potentialActions) {
+    options = JSON.parse(JSON.stringify(options));
     records = $0ea0e18bb6665923$var$ensureArray(records);
     // 
     if (records.length == 0 && (!keys || keys == null)) keys = [

@@ -1185,7 +1185,7 @@ class $8965cbda443616d8$export$8ab84c004e37b3e {
         if (this._req?.query?.breadcrumbs) try {
             breadcrumbsRecords = JSON.parse(this._req.query.breadcrumbs);
         } catch  {}
-        return breadcrumbsRecords;
+        return $8965cbda443616d8$var$ensureArray(breadcrumbsRecords);
     }
     get breadcrumbRecord() {
         let breadcrumbsRecord = this._breadcrumbs;
@@ -1204,6 +1204,12 @@ class $8965cbda443616d8$export$8ab84c004e37b3e {
     get breadcrumb() {
         return (0, $b8d5dfc35bfd0099$export$a8a68544893af06)(this.breadcrumbRecord);
     }
+}
+function $8965cbda443616d8$var$ensureArray(value) {
+    if (Array.isArray(value)) return value;
+    else return [
+        value
+    ];
 }
 
 

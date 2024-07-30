@@ -31,6 +31,8 @@ function test1(){
     c.urlOptions = options
     //element.innerHTML += c.cards()
     element.innerHTML += c.table()
+
+    element.innerHTML += c.pagination()
    
 }
 

@@ -9,28 +9,22 @@ export class HtmlPaginationClass extends ClassBase {
     }
     
     get content() {
-        return _getPagination(this.urlOptions);
+        return _getPagination(this.data, this.urlOptions);
     }
 }
 
-export function htmlPagination(basePath, limit, offset, orderBy, orderDirection, params) {
+export function htmlPagination(data, options) {
 
-    let options = {}
-    options.params = params
-    options.basePath = basePath
-    if(!options.params || options.params == null) { options.params = {} }
+   
     
-    options.params.limit = limit
-    options.params.offset = offset
-    options.params.orderBy = orderBy
-    options.params.orderDirection = orderDirection
-    
-    return _getPagination(options);
+    return _getPagination(data, options);
 }
 
-function _getPagination(options) {
+function _getPagination(data, options) {
 
 
+    options = JSON.parse(JSON.stringify(options))
+    
     // Parameters 
     let NoOfItems = 5;  // Defines the number of links presented
 
@@ -38,6 +32,8 @@ function _getPagination(options) {
     
     let offset = Number(options.params?.offset) || 0;
     let limit = Number(options.params?.limit) || 20;
+    let orderBy = Number(options.params?.orderBy) || 'createdDate';
+    let orderDirection = Number(options.params?.orderDirection) || '-1';
     let content = ``;
     let items = ``;
     let maxNo = null
@@ -56,14 +52,20 @@ function _getPagination(options) {
         startNo = 0;
     }
 
-    
 
+    // Assign to urlOptions
+    options.offset = startNo
+    options.limit = limit
+    options.orderBy = orderBy
+    options.orderDirection = orderDirection
+
+
+    
     // Get first Line
     let firstUrl = new HtmlUrlClass()
     firstUrl.urlOptions = options
-    firstUrl.offset = startNo
+    firstUrl.urlOptions.offset = startNo
     items += _getLine("Previous", firstUrl.content);
-
     
     // Get middle lines
     for (let x = 0; x < NoOfItems; x++) {
@@ -73,10 +75,9 @@ function _getPagination(options) {
         if (!maxNo || maxNo == null || recordNo < maxNo) {
 
             let runningUrl = new HtmlUrlClass()
+            options.offset = recordNo
             runningUrl.urlOptions = options
-            runningUrl.offset = startNo
             items += _getLine(String(pageNumber), runningUrl.content)
-
             
         }
     }
@@ -84,8 +85,8 @@ function _getPagination(options) {
     // Get last Line
 
     let lastUrl = new HtmlUrlClass()
+    options.offset = offset + limit
     lastUrl.urlOptions = options
-    lastUrl.offset = startNo
     items += _getLine("Next", lastUrl.content);
 
     

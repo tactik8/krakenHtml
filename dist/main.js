@@ -189,6 +189,11 @@ function $09aaf31e9efdd809$var$_getHtmlUrl(path, options) {
     let p = url.searchParams;
     for(let k in options?.baseParams)p.set(k, options.baseParams[k]);
     for(let k in options?.params)p.set(k, options.params[k]);
+    //
+    if (options.offset || options.offset != null) p.set("offset", options.offset);
+    if (options.limit || options.limit != null) p.set("limit", options.limit);
+    if (options.orderBy || options.orderBy != null) p.set("orderBy", options.orderBy);
+    if (options.orderDirection || options.orderDirection != null) p.set("orderDirection", options.orderDirection);
     // Do pathname
     let parts = [];
     if (path && path != null) {
@@ -198,6 +203,7 @@ function $09aaf31e9efdd809$var$_getHtmlUrl(path, options) {
     }
     if (options && options.basePath && options.basePath != null) {
         let path = options.basePath;
+        console.log("p", path);
         if (path.startsWith("/")) path = path.slice(1);
         if (path.endsWith("/")) path = path.slice(-1);
         parts = parts.concat(path.split("/"));
@@ -239,15 +245,17 @@ function $2dd5d2fdb56194d5$var$_getMedia(record, options) {
     let content = "";
     if (record.contentUrl && record.contentUrl != null) {
         if (record_type == "VideoObject") content = `
+             <span class="kr-property kr-video">
              <div class="col-sm-12 col-md-10 col-lg-8"> 
              <video controls class="object-fit-contain img-fluid">
                <source src="${record.contentUrl}" type="video/mp4">
                Your browser does not support the video tag.
              </video>
              </div>
+             </span>
             
              `;
-        else content = `<div class=""><img src="${record.contentUrl}" class="img-fluid" alt="..."></div>`;
+        else content = `<span class="kr-property kr-image"><div class=""><img src="${record.contentUrl}" class="img-fluid" alt="..."></div></span>`;
     } else if (record.embedUrl) content = record.embedUrl;
     return content;
 }
@@ -351,7 +359,7 @@ function $32ba22f6ec84c003$var$_getValueOther(value, record_type, key, options, 
     if (!value || value == null) return "";
     if (key && key != null) {
         if (key.toLowerCase().endsWith("url")) {
-            value = `<a href="${value}">${$32ba22f6ec84c003$var$trimLength(value, length)}</a>`;
+            value = `<span class="kr-${key}"><a href="${value}">${$32ba22f6ec84c003$var$trimLength(value, length)}</a></span>`;
             return value;
         }
     }
@@ -361,7 +369,7 @@ function $32ba22f6ec84c003$var$_getValueOther(value, record_type, key, options, 
             url.urlOptions = options;
             url.record_type = record_type;
             url.record_id = value;
-            value = `<a href="${url.content}">${$32ba22f6ec84c003$var$trimLength(value, length)}</a>`;
+            value = `<span class="kr-${key}"><a href="${url.content}">${$32ba22f6ec84c003$var$trimLength(value, length)}</a></span>`;
             return value;
         }
     }
@@ -371,7 +379,7 @@ function $32ba22f6ec84c003$var$_getValueOther(value, record_type, key, options, 
             url.urlOptions = options;
             url.record_id = null;
             url.record_type = record_type;
-            value = `<a href="${url.content}">${$32ba22f6ec84c003$var$trimLength(value, length)}</a>`;
+            value = `<span class="kr-${key}"><a href="${url.content}">${$32ba22f6ec84c003$var$trimLength(value, length)}</a></span>`;
             return value;
         }
     }
@@ -614,13 +622,14 @@ function $0f8c405a4572c421$var$_getCard(value, options) {
     let heading1 = (0, $32ba22f6ec84c003$export$3db5d5f902fa227b)(value);
     let desc = value?.text || value?.description || "";
     let content = `
+    <div class="kr-thing kr-card">
         <div class="card h-100" style="width: 18rem;">
-      <a type="button" data-bs-toggle="modal" data-bs-target="#${modalId}">
-        ${(0, $2dd5d2fdb56194d5$export$3e6dfd0ad1544147)(value, options)}
-      </a>
+            <a type="button" data-bs-toggle="modal" data-bs-target="#${modalId}">
+                ${(0, $2dd5d2fdb56194d5$export$3e6dfd0ad1544147)(value, options)}
+            </a>
       <div class="card-body">
-        <h5 class="card-title">${heading1}</h5>
-        <p class="card-text">${desc}</p>
+        <h5 class="card-title kr-property kr-headline">${heading1}</h5>
+        <p class="card-text kr-property kr-text">${desc}</p>
         
       </div>
 
@@ -646,6 +655,7 @@ function $0f8c405a4572c421$var$_getCard(value, options) {
     
 
       
+    </div>
     </div>`;
     return content;
 }
@@ -811,26 +821,21 @@ class $7ff3a9d3bb644157$export$726ef0cd58bc84d1 extends (0, $89b885d9c9545d83$ex
         super(records, request);
     }
     get content() {
-        return $7ff3a9d3bb644157$var$_getPagination(this.urlOptions);
+        return $7ff3a9d3bb644157$var$_getPagination(this.data, this.urlOptions);
     }
 }
-function $7ff3a9d3bb644157$export$17c6b15dacb75ccc(basePath, limit, offset, orderBy, orderDirection, params) {
-    let options = {};
-    options.params = params;
-    options.basePath = basePath;
-    if (!options.params || options.params == null) options.params = {};
-    options.params.limit = limit;
-    options.params.offset = offset;
-    options.params.orderBy = orderBy;
-    options.params.orderDirection = orderDirection;
-    return $7ff3a9d3bb644157$var$_getPagination(options);
+function $7ff3a9d3bb644157$export$17c6b15dacb75ccc(data, options) {
+    return $7ff3a9d3bb644157$var$_getPagination(data, options);
 }
-function $7ff3a9d3bb644157$var$_getPagination(options) {
+function $7ff3a9d3bb644157$var$_getPagination(data, options) {
+    options = JSON.parse(JSON.stringify(options));
     // Parameters 
     let NoOfItems = 5; // Defines the number of links presented
     // Init variables
     let offset = Number(options.params?.offset) || 0;
     let limit = Number(options.params?.limit) || 20;
+    let orderBy = Number(options.params?.orderBy) || "createdDate";
+    let orderDirection = Number(options.params?.orderDirection) || "-1";
     let content = ``;
     let items = ``;
     let maxNo = null;
@@ -840,10 +845,15 @@ function $7ff3a9d3bb644157$var$_getPagination(options) {
         if (startNo + (NoOfItems - 1) * limit > maxNo) startNo = (Math.floor(maxNo / limit) + 1) * limit - NoOfItems * limit;
     }
     if (startNo < 0) startNo = 0;
+    // Assign to urlOptions
+    options.offset = startNo;
+    options.limit = limit;
+    options.orderBy = orderBy;
+    options.orderDirection = orderDirection;
     // Get first Line
     let firstUrl = new (0, $09aaf31e9efdd809$export$a6ec59f446d054ef)();
     firstUrl.urlOptions = options;
-    firstUrl.offset = startNo;
+    firstUrl.urlOptions.offset = startNo;
     items += $7ff3a9d3bb644157$var$_getLine("Previous", firstUrl.content);
     // Get middle lines
     for(let x = 0; x < NoOfItems; x++){
@@ -851,15 +861,15 @@ function $7ff3a9d3bb644157$var$_getPagination(options) {
         let pageNumber = Math.floor((startNo + x * limit) / limit) + 1;
         if (!maxNo || maxNo == null || recordNo < maxNo) {
             let runningUrl = new (0, $09aaf31e9efdd809$export$a6ec59f446d054ef)();
+            options.offset = recordNo;
             runningUrl.urlOptions = options;
-            runningUrl.offset = startNo;
             items += $7ff3a9d3bb644157$var$_getLine(String(pageNumber), runningUrl.content);
         }
     }
     // Get last Line
     let lastUrl = new (0, $09aaf31e9efdd809$export$a6ec59f446d054ef)();
+    options.offset = offset + limit;
     lastUrl.urlOptions = options;
-    lastUrl.offset = startNo;
     items += $7ff3a9d3bb644157$var$_getLine("Next", lastUrl.content);
     // Get wrapper
     content += `

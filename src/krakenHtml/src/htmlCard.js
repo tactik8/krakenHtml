@@ -90,13 +90,14 @@ function _getCard(value, options){
 
     
     let content = `
+    <div class="kr-thing kr-card">
         <div class="card h-100" style="width: 18rem;">
-      <a type="button" data-bs-toggle="modal" data-bs-target="#${modalId}">
-        ${htmlMedia(value, options)}
-      </a>
+            <a type="button" data-bs-toggle="modal" data-bs-target="#${modalId}">
+                ${htmlMedia(value, options)}
+            </a>
       <div class="card-body">
-        <h5 class="card-title">${heading1}</h5>
-        <p class="card-text">${desc}</p>
+        <h5 class="card-title kr-property kr-headline">${heading1}</h5>
+        <p class="card-text kr-property kr-text">${desc}</p>
         
       </div>
 
@@ -122,6 +123,7 @@ function _getCard(value, options){
     
 
       
+    </div>
     </div>`
 
     return content

@@ -8,6 +8,9 @@ import {htmlMediaThumbnail} from './htmlMediaThumbnail.js'
 
 
 
+
+
+
 export function htmlValue(value, record_type, key, options, tableFormat=false) {
 
 
@@ -117,7 +120,7 @@ function _getValueOther(value, record_type, key, options, tableFormat){
     
     if(key && key != null){
       if(key.toLowerCase().endsWith('url') ){
-          value = `<a href="${value}">${trimLength(value, length)}</a>`
+          value = `<span class="kr-${key}"><a href="${value}">${trimLength(value, length)}</a></span>`
           return value
       }  
     } 
@@ -128,7 +131,7 @@ function _getValueOther(value, record_type, key, options, tableFormat){
           url.urlOptions = options
           url.record_type = record_type
           url.record_id = value
-          value = `<a href="${url.content}">${trimLength(value, length)}</a>`
+          value = `<span class="kr-${key}"><a href="${url.content}">${trimLength(value, length)}</a></span>`
 
            return value
       }  
@@ -143,7 +146,7 @@ function _getValueOther(value, record_type, key, options, tableFormat){
           
             url.record_type = record_type
 
-          value = `<a href="${url.content}">${trimLength(value, length)}</a>`
+          value = `<span class="kr-${key}"><a href="${url.content}">${trimLength(value, length)}</a></span>`
           return value
       }  
     } 

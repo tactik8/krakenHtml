@@ -92,6 +92,8 @@ export class KrakenHtmlClass {
         return htmlTable(this.data, keys, headers, this.urlOptions, potentialActions)
     }
 
+
+
 }
 
 

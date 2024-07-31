@@ -1064,7 +1064,7 @@ class $8965cbda443616d8$export$8ab84c004e37b3e {
     }
     newPage(req) {
         let page = new $8965cbda443616d8$export$8ab84c004e37b3e();
-        page._record = this._record;
+        page._record = JSON.parse(JSON.stringify(this._record));
         page.basePath = this.basePath;
         if (req && req != null) page.req = req;
         return page;

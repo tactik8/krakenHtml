@@ -23,8 +23,6 @@ function _getValue(value, record_type, key, options, tableFormat){
 
     if(!value || value == null){ return null }
 
-
-
     
     if(_isDate(value)){
         return _getValueDate(value, record_type, key, options, tableFormat)
@@ -143,7 +141,6 @@ function _getValueOther(value, record_type, key, options, tableFormat){
             let url = new HtmlUrlClass()
             url.urlOptions = options
             url.record_id = null
-          
             url.record_type = record_type
 
           value = `<span class="kr-${key}"><a href="${url.content}">${trimLength(value, length)}</a></span>`

@@ -62,7 +62,7 @@ export class KrakenWebsite {
 
     newPage(req) {
         let page = new KrakenWebsite();
-        page._record = this._record;
+        page._record = JSON.parse(JSON.stringify(this._record));
         page.basePath = this.basePath;
 
         if (req && req != null) {

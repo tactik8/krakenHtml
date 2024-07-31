@@ -48,6 +48,7 @@ function test1() {
 
     
     let options = {
+        basePath: '/test0/test1',
         pathname: null,
         params: {
             limit: 20,
@@ -77,7 +78,7 @@ function test1() {
     
    
     //element.innerHTML += c.cards()
-    //element.innerHTML += c.table()
+    element.innerHTML += c.table()
 
     element.innerHTML += c.pagination();
 

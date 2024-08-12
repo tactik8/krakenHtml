@@ -531,6 +531,8 @@ function $0ea0e18bb6665923$export$52d811370d113530(records, keys, headers, optio
 }
 function $0ea0e18bb6665923$var$_getTable(records, keys, headers, options, potentialActions) {
     options = JSON.parse(JSON.stringify(options));
+    // Use itemLsitElements if ListItem
+    if (Array.isArray(records) == false && records?.["@type"] == "ItemList") records = records.itemListElement;
     records = $0ea0e18bb6665923$var$ensureArray(records);
     // 
     if (records.length == 0 && (!keys || keys == null)) keys = [
@@ -574,8 +576,8 @@ function $0ea0e18bb6665923$var$ensureArray(value) {
 
 
 class $0f8c405a4572c421$export$9fb493bb1e1a940f extends (0, $89b885d9c9545d83$export$2ac64f08771c2db6) {
-    constructor(records, request){
-        super(records, request);
+    constructor(records1, request){
+        super(records1, request);
     }
     get content() {
         return $0f8c405a4572c421$var$_getCard(this.record, this.urlOptions);
@@ -585,8 +587,8 @@ function $0f8c405a4572c421$export$31c173b099afd3ce(value, options) {
     return $0f8c405a4572c421$var$_getCard(value, options);
 }
 class $0f8c405a4572c421$export$21b6c3340a001878 extends (0, $89b885d9c9545d83$export$2ac64f08771c2db6) {
-    constructor(records, request){
-        super(records, request);
+    constructor(records1, request){
+        super(records1, request);
     }
     get content() {
         return $0f8c405a4572c421$var$_getCards(this.records, this.urlOptions);
@@ -596,6 +598,8 @@ function $0f8c405a4572c421$export$c668812a50c07d21(value, options) {
     return $0f8c405a4572c421$var$_getCards(value, options);
 }
 function $0f8c405a4572c421$var$_getCards(values, options) {
+    // Use itemLsitElements if ListItem
+    if (Array.isArray(records) == false && records?.["@type"] == "ItemList") records = records.itemListElement;
     values = $0f8c405a4572c421$var$ensureArray(values);
     let content = ``;
     content += `<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">`;
@@ -1216,9 +1220,11 @@ class $8965cbda443616d8$export$8ab84c004e37b3e {
         //
         let listItems = this.breadcrumb?.itemListElement;
         // Ensure not already part of items
-        for (let listItem of listItems){
-            if (listItem?.item?.["url"] == url) return;
+        if (listItems && listItems.length > 0) {
+            let lastItem = listItems[-1];
+            if (lastItem?.item?.["url"] == url) return;
         }
+        // Calculate next position
         let maxPosition = 0;
         for (let listItem of listItems)if ((listItem?.position || 0) > maxPosition) maxPosition = listItem.position;
         let record = {

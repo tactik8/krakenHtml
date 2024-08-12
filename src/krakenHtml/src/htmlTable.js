@@ -35,6 +35,13 @@ function _getTable(records, keys, headers, options, potentialActions){
 
     options = JSON.parse(JSON.stringify(options))
 
+
+    // Use itemLsitElements if ListItem
+    if(Array.isArray(records) == false && records?.['@type'] == 'ItemList'){
+        records = records.itemListElement
+    }
+
+
     
     records = ensureArray(records)
 

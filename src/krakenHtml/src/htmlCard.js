@@ -55,6 +55,13 @@ export function htmlCards(value, options){
 
 function _getCards(values, options){
 
+
+    // Use itemLsitElements if ListItem
+    if(Array.isArray(records) == false && records?.['@type'] == 'ItemList'){
+        records = records.itemListElement
+    }
+
+    
     values = ensureArray(values)
 
     let content = ``

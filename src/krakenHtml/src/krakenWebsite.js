@@ -275,12 +275,14 @@ export class KrakenWebsite {
         let listItems = this.breadcrumb?.itemListElement;
 
         // Ensure not already part of items
-        for (let listItem of listItems) {
-            if (listItem?.item?.["url"] == url) {
+        if(listItems && listItems.length > 0){
+            let lastItem = listItems[-1]
+            if (lastItem?.item?.["url"] == url) {
                 return;
             }
         }
-
+      
+        // Calculate next position
         let maxPosition = 0;
         for (let listItem of listItems) {
             if ((listItem?.position || 0) > maxPosition) {

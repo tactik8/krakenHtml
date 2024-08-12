@@ -532,7 +532,11 @@ function $0ea0e18bb6665923$export$52d811370d113530(records, keys, headers, optio
 function $0ea0e18bb6665923$var$_getTable(records, keys, headers, options, potentialActions) {
     options = JSON.parse(JSON.stringify(options));
     // Use itemLsitElements if ListItem
-    if (Array.isArray(records) == false && records?.["@type"] == "ItemList") records = records.itemListElement;
+    if (Array.isArray(records) == false && records?.["@type"] == "ItemList") {
+        records = records.itemListElement;
+        records = $0ea0e18bb6665923$var$ensureArray(records);
+        records = records.map((x)=>x?.item);
+    }
     records = $0ea0e18bb6665923$var$ensureArray(records);
     // 
     if (records.length == 0 && (!keys || keys == null)) keys = [
@@ -599,7 +603,11 @@ function $0f8c405a4572c421$export$c668812a50c07d21(value, options) {
 }
 function $0f8c405a4572c421$var$_getCards(values, options) {
     // Use itemLsitElements if ListItem
-    if (Array.isArray(records) == false && records?.["@type"] == "ItemList") records = records.itemListElement;
+    if (Array.isArray(records) == false && records?.["@type"] == "ItemList") {
+        records = records.itemListElement;
+        records = $0f8c405a4572c421$var$ensureArray(records);
+        records = records.map((x)=>x?.item);
+    }
     values = $0f8c405a4572c421$var$ensureArray(values);
     let content = ``;
     content += `<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">`;

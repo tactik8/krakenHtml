@@ -39,6 +39,9 @@ function _getTable(records, keys, headers, options, potentialActions){
     // Use itemLsitElements if ListItem
     if(Array.isArray(records) == false && records?.['@type'] == 'ItemList'){
         records = records.itemListElement
+        records = ensureArray(records)
+        records = records.map(x => x?.item)
+        
     }
 
 

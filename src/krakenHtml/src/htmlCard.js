@@ -59,6 +59,8 @@ function _getCards(values, options){
     // Use itemLsitElements if ListItem
     if(Array.isArray(records) == false && records?.['@type'] == 'ItemList'){
         records = records.itemListElement
+        records = ensureArray(records)
+        records = records.map(x => x?.item)
     }
 
     

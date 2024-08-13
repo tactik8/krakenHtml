@@ -533,10 +533,13 @@ function $0ea0e18bb6665923$var$_getTable(records, keys, headers, options, potent
     options = JSON.parse(JSON.stringify(options));
     // Use itemLsitElements if ListItem
     if (Array.isArray(records) == false && records?.["@type"] == "ItemList") {
-        records = records.itemListElement;
-        records = $0ea0e18bb6665923$var$ensureArray(records);
-        records = records.map((x)=>x?.item);
+        records = records?.itemListElement || null;
+        if (records && records != null) {
+            records = $0ea0e18bb6665923$var$ensureArray(records);
+            records = records.map((x)=>x?.item);
+        } else records = [];
     }
+    if (!records || records == null) records = [];
     records = $0ea0e18bb6665923$var$ensureArray(records);
     // 
     if (records.length == 0 && (!keys || keys == null)) keys = [

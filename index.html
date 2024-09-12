@@ -44,40 +44,7 @@
 
 
 
-    <script>
-
-        async function callApi2(url, element, datalist){
-
-            const requestOptions = {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({'propertyID': '_heading1', 'textContent': element.value, 'format': 'simple'})
-            };
-
-            let response;
-            try{
-                response = await fetch(url, requestOptions);
-            } catch (error) { 
-                console.log(error);
-                console.log('r', response);
-            }
-            if (!response.ok) {
-                  throw new Error('Network response was not ok');
-                  console.log('r', response);
-            };
-            let data = await response.json();
-            datalist.innerHTML = '';
-            for(let item of data.itemListElement){
-                var option = document.createElement('option');
-                option.value = item._heading1;
-                datalist.appendChild(option);
-            };
-        };
-
-        
-    </script>
+    
 
     
 </body>

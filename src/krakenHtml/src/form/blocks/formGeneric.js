@@ -14,7 +14,6 @@ export function formGeneric(url, record_type, record, locale, light=true){
          jsonSchema = k.get_jsonSchema(locale)
     }
 
-    console.log(JSON.stringify(jsonSchema, null, 4))
     let content = formJsonSchema(jsonSchema, record)
     // Wrap content in form
 

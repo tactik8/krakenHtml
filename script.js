@@ -323,13 +323,13 @@ function test2() {
                  "url": "https://www.test.com"
                  }
          }
-    record = null
+    //record = null
     let e = document.getElementById("test1");
     let w = new k.Website();
     let page = w.newPage("/", "ConformIT");
     
     let url = 'https://www.test.com'
-    let record_type = 'Action'
+    let record_type = 'Person'
     let locale = 'en-CA'
     let light = true
     page.add(

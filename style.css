@@ -2,3 +2,26 @@ html {
   height: 100%;
   width: 100%;
 }
+
+
+.hideTEMP {
+  display: none;
+}
+
+
+.krFormInputValueElementTEMP:only-child > .krFormInputValuePositionSection  {
+    display: none;
+}
+
+
+
+.krFormInputValueElementTEMP:hover > div > .hide {
+  display: block;
+  
+}
+
+
+.krFormInputElementTEMP:hover > div > .hide {
+  display: block;
+ 
+}

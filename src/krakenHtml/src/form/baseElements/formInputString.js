@@ -92,12 +92,10 @@ export function formInputWeek(propertyID, inputID, caption, value){
 
 export function formInputString(propertyID, inputID, caption, value, htmlType, autocompleteProperty){
 
+    
     if(!autocompleteProperty || autocompleteProperty==null){
         autocompleteProperty = _getAutocomplete(propertyID)
     }
-
-   
-    
 
     let content = `
     
@@ -108,6 +106,7 @@ export function formInputString(propertyID, inputID, caption, value, htmlType, a
             class="form-control" 
             value="${value || ''}" 
             id="${inputID}" 
+            name="${inputID}"
             data-propertyID="${propertyID}" 
             aria-describedby=""
             >
@@ -148,20 +147,30 @@ export function formInputString(propertyID, inputID, caption, value, htmlType, a
 
 function _getAutocomplete(propertyID){
 
+    if(!propertyID || propertyID == null ){ return '' }
 
+    let p = propertyID
+    
+    if(p.includes('.')){
+        
+         p = p.split('.')
+        p = p[p.length -1]
+    }
 
-    if(propertyID == 'addressLocality'){
+    console.log(propertyID, p)
+
+    if(p == 'addressLocality'){
         return 'address-level2'
     }
 
-    if(propertyID == 'addressRegion'){
+    if(p == 'addressRegion'){
         return 'address-level1'
     }
 
     
 
     
-     let autocompleteProperty = propertyID.replace(/[A-Z]/g, m => "-" + m.toLowerCase());
+     let autocompleteProperty = p.replace(/[A-Z]/g, m => "-" + m.toLowerCase());
 
     return autocompleteProperty
 

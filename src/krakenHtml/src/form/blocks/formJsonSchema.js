@@ -37,7 +37,7 @@ export function formJsonSchema(
             
             let newPropertyPrefix = JSON.parse(JSON.stringify(propertyPrefix));
             newPropertyPrefix.push(p);
-            let headerContent = jsonSchema.properties?.[p]?.title || newPropertyPrefix.join('.');
+            let headerContent = jsonSchema.properties?.[p]?.title || propertyID;
             let bodyContent = formJsonSchema(
                 jsonSchema.properties[p],
                 value?.[p] || null,
@@ -51,7 +51,12 @@ export function formJsonSchema(
     } else if (jsonSchema?.type == "array") {
 
         // Skip if maxItems == 1
-        if(jsonSchema?.maxItems == 1){ return formJsonSchema(jsonSchema.items, value, propertyID, propertyPrefix)}
+        if(jsonSchema?.maxItems == 1){ 
+            
+            let valueContent = formJsonSchema(jsonSchema.items, value, propertyID, propertyPrefix)
+            return _getValueTemplate(valueContent, 0);
+        
+        }
 
         //
         let position = 0;
@@ -76,7 +81,7 @@ export function formJsonSchema(
                 position
             );
             
-            content += valueContent
+            content += _getValueTemplate(valueContent, position);
             position += 1;
         }
         
@@ -169,6 +174,12 @@ function _getPropertyTemplate(propertyID, headerContent, bodyContent) {
 
 
 function _getValueTemplate(valueContent, position) {
+
+    let positionPlaceholder = ''
+    if (position && position != null && position != 0){
+        positionPlaceholder = '-'
+    }
+    
     let content = `
 
     <div class="d-flex krValue">
@@ -179,10 +190,10 @@ function _getValueTemplate(valueContent, position) {
             ${valueContent}
         </div>
         <div class="flex-shrink ms-auto krValueAction">
-            -
+            ${positionPlaceholder}
         </div>
         <div class="flex-shrink ms-auto krValueFooter">
-            -
+            
         </div>
     </div>
 

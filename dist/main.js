@@ -2076,6 +2076,7 @@ function $4742f1e99f93bc79$export$8bdc305b3195d73c(propertyID, inputID, caption,
             class="form-control" 
             value="${value || ""}" 
             id="${inputID}" 
+            name="${inputID}"
             data-propertyID="${propertyID}" 
             aria-describedby=""
             >
@@ -2107,9 +2108,16 @@ function $4742f1e99f93bc79$export$8bdc305b3195d73c(propertyID, inputID, caption,
 <input type="url">
 <input type="week">
  */ function $4742f1e99f93bc79$var$_getAutocomplete(propertyID) {
-    if (propertyID == "addressLocality") return "address-level2";
-    if (propertyID == "addressRegion") return "address-level1";
-    let autocompleteProperty = propertyID.replace(/[A-Z]/g, (m)=>"-" + m.toLowerCase());
+    if (!propertyID || propertyID == null) return "";
+    let p = propertyID;
+    if (p.includes(".")) {
+        p = p.split(".");
+        p = p[p.length - 1];
+    }
+    console.log(propertyID, p);
+    if (p == "addressLocality") return "address-level2";
+    if (p == "addressRegion") return "address-level1";
+    let autocompleteProperty = p.replace(/[A-Z]/g, (m)=>"-" + m.toLowerCase());
     return autocompleteProperty;
 }
 
@@ -2394,14 +2402,17 @@ function $0bade890bc12723f$export$8bcebfb81dcf8fce(jsonSchema, value, propertyID
         for(let p in jsonSchema.properties){
             let newPropertyPrefix = JSON.parse(JSON.stringify(propertyPrefix));
             newPropertyPrefix.push(p);
-            let headerContent = jsonSchema.properties?.[p]?.title || newPropertyPrefix.join(".");
+            let headerContent = jsonSchema.properties?.[p]?.title || propertyID;
             let bodyContent = $0bade890bc12723f$export$8bcebfb81dcf8fce(jsonSchema.properties[p], value?.[p] || null, p, newPropertyPrefix);
             content += $0bade890bc12723f$var$_getPropertyTemplate(p, headerContent, bodyContent);
         }
         content = $0bade890bc12723f$var$_getThingTemplate(value?.["@type"] || "", value?.["@id"] || "", propertyPrefix, content);
     } else if (jsonSchema?.type == "array") {
         // Skip if maxItems == 1
-        if (jsonSchema?.maxItems == 1) return $0bade890bc12723f$export$8bcebfb81dcf8fce(jsonSchema.items, value, propertyID, propertyPrefix);
+        if (jsonSchema?.maxItems == 1) {
+            let valueContent = $0bade890bc12723f$export$8bcebfb81dcf8fce(jsonSchema.items, value, propertyID, propertyPrefix);
+            return $0bade890bc12723f$var$_getValueTemplate(valueContent, 0);
+        }
         //
         let position = 0;
         value = $0bade890bc12723f$var$ensureArray(value);
@@ -2412,7 +2423,7 @@ function $0bade890bc12723f$export$8bcebfb81dcf8fce(jsonSchema, value, propertyID
             let newPropertyPrefix = propertyPrefix.slice(0, propertyPrefix.length - 2);
             newPropertyPrefix.push(propertyPrefix[propertyPrefix.length - 1] + "[" + String(position) + "]");
             let valueContent = $0bade890bc12723f$export$8bcebfb81dcf8fce(jsonSchema.items, v, propertyID, newPropertyPrefix, position);
-            content += valueContent;
+            content += $0bade890bc12723f$var$_getValueTemplate(valueContent, position);
             position += 1;
         }
     } else {
@@ -2465,6 +2476,8 @@ function $0bade890bc12723f$var$_getPropertyTemplate(propertyID, headerContent, b
     return content;
 }
 function $0bade890bc12723f$var$_getValueTemplate(valueContent, position) {
+    let positionPlaceholder = "";
+    if (position && position != null && position != 0) positionPlaceholder = "-";
     let content = `
 
     <div class="d-flex krValue">
@@ -2475,10 +2488,10 @@ function $0bade890bc12723f$var$_getValueTemplate(valueContent, position) {
             ${valueContent}
         </div>
         <div class="flex-shrink ms-auto krValueAction">
-            -
+            ${positionPlaceholder}
         </div>
         <div class="flex-shrink ms-auto krValueFooter">
-            -
+            
         </div>
     </div>
 
@@ -2500,7 +2513,6 @@ function $fa38939da7982707$export$7562876dfaed30a(url, record_type, record, loca
     let jsonSchema;
     if (light == true) jsonSchema = k.get_jsonSchemaLight(locale);
     else jsonSchema = k.get_jsonSchema(locale);
-    console.log(JSON.stringify(jsonSchema, null, 4));
     let content = (0, $0bade890bc12723f$export$8bcebfb81dcf8fce)(jsonSchema, record);
     // Wrap content in form
     let formContent = `

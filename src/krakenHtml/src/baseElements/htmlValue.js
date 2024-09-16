@@ -53,12 +53,10 @@ function _getValueObject(value, record_type, key, options, tableFormat){
     
     if(value_record_type && value_record_id){
 
-        let url = new HtmlUrlClass()
-        url.urlOptions = options
-        url.record_type = value_record_type
-        url.record_id = value_record_id
+        let urlContent = htmlUrl(options)
+     
         
-        content += `<a href="${url.content}">${_getHeading1(value)}</a>`
+        content += `<a href="${urlContent}">${_getHeading1(value)}</a>`
     } else {
         content += JSON.stringify(value)
     }
@@ -122,11 +120,9 @@ function _getValueOther(value, record_type, key, options, tableFormat){
     
     if(key && key != null){
       if(key=="@id"){
-          let url = new HtmlUrlClass()
-          url.urlOptions = options
-          url.record_type = record_type
-          url.record_id = value
-          value = `<span class="kr-${key}"><a href="${url.content}">${trimLength(value, length)}</a></span>`
+          let urlContent = htmlUrl(options)
+          
+          value = `<span class="kr-${key}"><a href="${urlContent}">${trimLength(value, length)}</a></span>`
 
            return value
       }  
@@ -135,12 +131,10 @@ function _getValueOther(value, record_type, key, options, tableFormat){
 
     if(key && key != null){
       if(key=="@type"){
-            let url = new HtmlUrlClass()
-            url.urlOptions = options
-            url.record_id = null
-            url.record_type = record_type
+            let urlContent = htmlUrl(options)
+           
 
-          value = `<span class="kr-${key}"><a href="${url.content}">${trimLength(value, length)}</a></span>`
+          value = `<span class="kr-${key}"><a href="${urlContent}">${trimLength(value, length)}</a></span>`
           return value
       }  
     } 

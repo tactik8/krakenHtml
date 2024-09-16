@@ -63,7 +63,7 @@ function _getHtmlValue(value, record_type, key, options) {
         let s = base.value(value, record_type, key, options)
         content += ` <details>
                     <summary>${s}</summary>
-                    ${_getHtml(value, record_type, key, options)}
+                    ${_getHtmlRecord(value, record_type, key, options)}
                 </details>`
     } else if (_isArray(value)==true) {
         let s = value.length

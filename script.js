@@ -323,6 +323,14 @@ function test2() {
                  "url": "https://www.test.com"
                  }
          }
+
+    let options = {
+            hostname:'https://test.com' ,
+            path: '/' ,
+            params: {} ,
+            record_type: record['@type'],
+            record_id: record['@id']
+        };
     //record = null
     let e = document.getElementById("test1");
     let w = new k.Website();
@@ -333,7 +341,7 @@ function test2() {
     let locale = 'en-CA'
     let light = true
     page.add(
-        k.form.generic(url, record_type, record, locale, light)
+        k.blocks.generic(record, options)
     );
 
     e.innerHTML = page.content;

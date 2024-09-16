@@ -341,11 +341,8 @@ function $76fedd621c1178a7$var$_getValueObject(value, record_type, key, options,
     let value_record_type = value?.["@type"] || null;
     let value_record_id = value?.["@id"] || null;
     if (value_record_type && value_record_id) {
-        let url = new HtmlUrlClass();
-        url.urlOptions = options;
-        url.record_type = value_record_type;
-        url.record_id = value_record_id;
-        content += `<a href="${url.content}">${$76fedd621c1178a7$var$_getHeading1(value)}</a>`;
+        let urlContent = (0, $82c030dbd9ee3da2$export$65e8537a85f61405)(options);
+        content += `<a href="${urlContent}">${$76fedd621c1178a7$var$_getHeading1(value)}</a>`;
     } else content += JSON.stringify(value);
     return content;
 }
@@ -378,21 +375,15 @@ function $76fedd621c1178a7$var$_getValueOther(value, record_type, key, options, 
     }
     if (key && key != null) {
         if (key == "@id") {
-            let url = new HtmlUrlClass();
-            url.urlOptions = options;
-            url.record_type = record_type;
-            url.record_id = value;
-            value = `<span class="kr-${key}"><a href="${url.content}">${$76fedd621c1178a7$var$trimLength(value, length)}</a></span>`;
+            let urlContent = (0, $82c030dbd9ee3da2$export$65e8537a85f61405)(options);
+            value = `<span class="kr-${key}"><a href="${urlContent}">${$76fedd621c1178a7$var$trimLength(value, length)}</a></span>`;
             return value;
         }
     }
     if (key && key != null) {
         if (key == "@type") {
-            let url = new HtmlUrlClass();
-            url.urlOptions = options;
-            url.record_id = null;
-            url.record_type = record_type;
-            value = `<span class="kr-${key}"><a href="${url.content}">${$76fedd621c1178a7$var$trimLength(value, length)}</a></span>`;
+            let urlContent = (0, $82c030dbd9ee3da2$export$65e8537a85f61405)(options);
+            value = `<span class="kr-${key}"><a href="${urlContent}">${$76fedd621c1178a7$var$trimLength(value, length)}</a></span>`;
             return value;
         }
     }
@@ -645,7 +636,7 @@ function $802f62d74c549e44$var$_getHtmlValue(value, record_type, key, options) {
         let s = (0, $7273c79db1984708$export$692781a1ff91f328).value(value, record_type, key, options);
         content += ` <details>
                     <summary>${s}</summary>
-                    ${_getHtml(value, record_type, key, options)}
+                    ${$802f62d74c549e44$var$_getHtmlRecord(value, record_type, key, options)}
                 </details>`;
     } else if ($802f62d74c549e44$var$_isArray(value) == true) {
         let s = value.length;

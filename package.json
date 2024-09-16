@@ -16,7 +16,7 @@
   },
   "name": "krakenhtml",
   "description": "Kraken HTML utilities",
-  "version": "1.0.57",
+  "version": "1.0.58",
   "dependencies": {
     "krakenschema": "^1.0.8"
   },
